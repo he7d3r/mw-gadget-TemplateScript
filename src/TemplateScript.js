@@ -20,25 +20,27 @@ function rmflinks() {
 
 function padronizar() {
 	/*******************
-	*** miscellaneous cleanup
+	*** Limpezas gerais na sintaxe wiki
 	*******************/
-	/*   templates */
+	/* Predefinições */
 	regex(/{{\s*(?:msg:|template:)?([^}]+)}}/ig,'{{$1}}');
  
-	/* syntax */
-	// headers
-	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig,'\n\n$1$2$1\n'); // whitespace
-	regex(/=\n+=/ig,'=\n='); // fix consecutive headers
+	// Cabeçalhos
+	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig,'\n\n$1$2$1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
+	regex(/=\n+=/ig,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
  
-	// categories
+	// Categorias
 	regex(/\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,'[[Categoria:$1$2$3]]');
  
-	//links
-	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,'[[$1$2$3]]'); // redundant starting and ending whitespace
-	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]'); // redundant link text
-	regex(/\[\[([^\|\]]+?)_/ig,'[[$1 ',5); // underscores
+	// Ligações
+	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,'[[$1$2$3]]'); // -espaços redundantes
+	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]'); // -texto redundante nas ligações
+	regex(/\[\[([^\|\]]+?)_/ig,'[[$1 ',5); // troca de underscores por espaços nas ligações
+
+	// Listas
+	regex(/^([*#:]+)\s*/mig,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
 
 	setreason('Padronização, atualizações e limpeza da sintaxe usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]] (em fase de testes)', 'append');
- 
-	regex(/^([*#:]+)\s*/mig,'$1 ');	doaction('diff');
+
+	doaction('diff');
 }
