@@ -38,7 +38,7 @@ function padronizar() {
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]'); // redundant link text
 	regex(/\[\[([^\|\]]+?)_/ig,'[[$1 ',5); // underscores
 
-	reason('Padronização, atualizações e limpeza da sintaxe usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]');
+	setreason('Padronização, atualizações e limpeza da sintaxe usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]', 'append');
  
 	regex(/^([*#:]+)\s*/mig,'$1 ');	doaction('diff');
 }
