@@ -31,7 +31,7 @@ function padronizar() {
 	regex(/=\n+=/ig,'=\n='); // fix consecutive headers
  
 	// categories
-	regex(/\[\[\s*category\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,'[[category:$1$2$3]]');
+	regex(/\[\[\s*(?:category|categoria)?\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,'[[Categoria:$1$2$3]]');
  
 	//links
 	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,'[[$1$2$3]]'); // redundant starting and ending whitespace
