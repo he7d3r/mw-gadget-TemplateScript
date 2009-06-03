@@ -35,7 +35,7 @@ function padronizar() {
 	// Ligações
 	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,'[[$1$2$3]]'); // -espaços redundantes
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]');   //  [[Texto|Texto]] → [[Texto]]
-	regex(/\[\[\/([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]'); // [[/Texto|Texto]] → [[/Texto/]]
+	regex(/\[\[/([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
 
 	regex(/\[\[([^\|\]]+?)_/ig,'[[$1 ',5); // troca de underscores por espaços nas ligações
 
