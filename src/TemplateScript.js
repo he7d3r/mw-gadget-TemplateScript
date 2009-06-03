@@ -37,7 +37,7 @@ function padronizar() {
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]');   //  [[Texto|Texto]] → [[Texto]]
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
 	if (wgPageName == wgBookName){
-		var reg = new RegExp("\[\[\s" + wgBookName + *\s\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]","ig");
+		var reg = new RegExp("\[\[\s" + wgBookName + "*\s\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]","ig");
 		//regex(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
 	}
 
