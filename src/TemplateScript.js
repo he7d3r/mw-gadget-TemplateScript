@@ -37,7 +37,8 @@ function padronizar() {
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]');   //  [[Texto|Texto]] → [[Texto]]
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
 	if (wgPageName == wgBookName){
-		var padrao = '\\[\\[\\s*' + wgBookName + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
+		var nome = wgBookName.replace('/_/ig',' '); remove underscores
+		var padrao = '\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
 		var reg = new RegExp(padrao,'ig');
 		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
 	}
