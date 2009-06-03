@@ -36,6 +36,10 @@ function padronizar() {
 	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,'[[$1$2$3]]'); // -espaços redundantes
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]');   //  [[Texto|Texto]] → [[Texto]]
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
+	if (wgPageName == wgBookName){
+		var reg = new RegExp("\[\[\s" + wgBookName + *\s\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]","ig");
+		//regex(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
+	}
 
 	regex(/\[\[([^\|\]]+?)_/ig,'[[$1 ',5); // troca de underscores por espaços nas ligações
 
