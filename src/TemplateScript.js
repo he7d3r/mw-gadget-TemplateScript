@@ -18,7 +18,7 @@ function rmflinks() {
 	regexTool('Regex no sumário','usando_regex()');
 
 
-	regexTool('« Regex personalizado »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
+	regexTool('« Testar regex »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
  
 /* scripts */
