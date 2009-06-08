@@ -27,7 +27,7 @@ function rmflinks() {
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
 
 function format_math() {
-	regex(/</math>\s*([\.,;:!\?\)])\s/mig,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+	regex(/<\/math>\s*([\.,;:!\?\)])\s/mig,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	setreason('format. <math> e pontuação', 'append');
 	doaction('diff');
 }
