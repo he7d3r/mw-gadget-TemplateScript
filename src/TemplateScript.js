@@ -16,13 +16,19 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Regex no sumário','usando_regex()');
 
-	regexTool('Custom regex','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
+	regexTool('« Regex personalizado »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
  
 /* scripts */
 // Abaixo, defina as funções referenciadas a partir de rmflinks(), logo acima. Estas funções podem usar qualquer JavaScript,
 // mas há um conjunto de ferramentas simplificadas documentadas em
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
+
+function format_math() {
+//	regex(/</math>\s*([\.,;:!\?\)])\s/mig,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+	setreason('format. <math> e pontuação', 'append');
+	doaction('diff');
+}
 
 function format_cab() {
 	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig,'\n\n$1$2$1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
