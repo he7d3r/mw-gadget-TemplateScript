@@ -14,7 +14,9 @@ function rmflinks() {
 	regexTool('Formatar categorias','format_cat()');
 	regexTool('Formatar listas','format_list()');
 	regexTool('Formatar links','format_links()');
+	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
+
 
 	regexTool('« Regex personalizado »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
@@ -25,7 +27,7 @@ function rmflinks() {
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
 
 function format_math() {
-//	regex(/</math>\s*([\.,;:!\?\)])\s/mig,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+	regex(/</math>\s*([\.,;:!\?\)])\s/mig,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	setreason('format. <math> e pontuação', 'append');
 	doaction('diff');
 }
