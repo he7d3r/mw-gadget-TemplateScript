@@ -33,7 +33,7 @@ function format_math() {
 }
 
 function format_cab() {
-	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig,'\n\n$1$2$1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
+	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig,'\n\n$1 $2 $1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
 	regex(/=\n+=/ig,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
 	setreason('format. cabeçalhos', 'append');
 	doaction('diff');
