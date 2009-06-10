@@ -44,9 +44,9 @@ function wiki2latex() {
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<math>/ig,'$');
 	regex(/<\/math>/ig,'$');
-	regex(/====/ig,'\subsubsubsection{');
-	regex(/===/ig,'\subsubsection{');
-	regex(/==/ig,'\subsection{');
+	regex(/====/ig,'\\subsubsubsection{');
+	regex(/===/ig,'\\subsubsection{');
+	regex(/==/ig,'\\subsection{');
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
 }
