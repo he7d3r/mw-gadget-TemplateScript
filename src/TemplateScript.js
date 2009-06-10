@@ -9,6 +9,8 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
+	regexTool('• Formatação geral','format_geral()');
+
 	regexTool('Formatar cabeçalhos','format_cab()');
 	regexTool('Formatar predefinições','format_predef()');
 	regexTool('Formatar categorias','format_cat()');
@@ -17,13 +19,23 @@ function rmflinks() {
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
 
-	regexTool('« Testar regex »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
+	regexTool('• Outro REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
  
 /* scripts */
 // Abaixo, defina as funções referenciadas a partir de rmflinks(), logo acima. Estas funções podem usar qualquer JavaScript,
 // mas há um conjunto de ferramentas simplificadas documentadas em
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
+function format_geral() {
+	format_cab;
+	format_predef;
+	format_cat;
+	format_list;
+	format_links;
+	format_math;
+	format_cab;
+	doaction('diff');
+}
 
 function format_cab() {
 	var antigo = editbox.value;
@@ -36,7 +48,6 @@ function format_cab() {
 
 	if (editbox.value != antigo) {
 		setreason('format. cabeçalhos', 'append');
-		doaction('diff');
 	}
 }
 
@@ -47,7 +58,6 @@ function format_predef() {
 
 	if (editbox.value != antigo) {
 		setreason('format. predefs', 'append');
-		doaction('diff');
 	}
 }
 
@@ -58,7 +68,6 @@ function format_cat() {
 
 	if (editbox.value != antigo) {
 		setreason('format. categorias', 'append');
-		doaction('diff');
 	}
 }
 
@@ -69,7 +78,6 @@ function format_list() {
 
 	if (editbox.value != antigo) {
 		setreason('format. listas', 'append');
-		doaction('diff');
 	}
 }
 
@@ -95,7 +103,6 @@ function format_links() {
 
 	if (editbox.value != antigo) {
 		setreason('simplificando links', 'append');
-		doaction('diff');
 	}
 }
 
@@ -106,7 +113,6 @@ function format_math() {
 
 	if (editbox.value != antigo) {
 		setreason('format. <math> e pontuação', 'append');
-		doaction('diff');
 	}
 }
 
