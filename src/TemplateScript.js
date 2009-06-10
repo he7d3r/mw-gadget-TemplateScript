@@ -86,7 +86,9 @@ function wiki2latex() {
 
 			+ '\\theoremstyle{remark}\n'
 			+ '\\newtheorem{obs}[teo]{Observação}\n\n'
+			+ '\\begin{document}\n\n'
 			+ editbox.value;
+			+ '\\end{document}'
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
 }
