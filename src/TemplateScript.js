@@ -10,6 +10,7 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• Formatação geral','format_geral()');
+	regexTool('• Wiki → Latex','wiki2latex()');
 
 	regexTool('Formatar cabeçalhos','format_cab()');
 	regexTool('Formatar predefinições','format_predef()');
