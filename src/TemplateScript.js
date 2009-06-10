@@ -39,17 +39,15 @@ function format_geral() {
 }
 
 function wiki2latex() {
-	regex(/{{AutoCat}}/ig,'');
-	regex(/{{AutoNav}}/ig,'');
+	regex(/\n*{{Auto(Cat|Nav)}}\n*/ig,'');
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
-	regex(/<math>/ig,'$');
-	regex(/<\/math>/ig,'$');
-	regex(/\n+====\s*/ig,'\\subsubsubsection{');
-	regex(/\s*====\n+/ig,'}');
-	regex(/\n+===\s*/ig,'\\subsubsection{');
-	regex(/\s*===\n/ig,'}');
-	regex(/\n+==\s*/ig,'\\subsection{');
-	regex(/\s*==\n+/ig,'}');
+	regex(/<\/?math>/ig,'$');
+	regex(/\n+====\s*/ig,'\n\\subsubsubsection{');
+	regex(/\s*====\n+/ig,'}\n\n');
+	regex(/\n+===\s*/ig,'\n\\subsubsection{');
+	regex(/\s*===\n/ig,'}\n\n');
+	regex(/\n+==\s*/ig,'\n\\subsection{');
+	regex(/\s*==\n+/ig,'}\n\n');
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
 }
