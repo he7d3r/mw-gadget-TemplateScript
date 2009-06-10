@@ -27,13 +27,13 @@ function rmflinks() {
 // mas há um conjunto de ferramentas simplificadas documentadas em
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
 function format_geral() {
-	format_cab;
-	format_predef;
-	format_cat;
-	format_list;
-	format_links;
-	format_math;
-	format_cab;
+	format_cab();
+	format_predef();
+	format_cat();
+	format_list();
+	format_links();
+	format_math();
+	format_cab();
 	doaction('diff');
 }
 
