@@ -57,7 +57,7 @@ function wiki2latex() {
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
 
-	regex(/<ref.*?>([^(?:<\/ref)]+)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé
+	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé
 	regex(/(?:\n*(?:=+)\s*Notas\s*(?:=+)\n*)?\n*<references\/>\n*/ig,'');
 
 	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsubsection{$2}\n\n'); //cabeçalhos
