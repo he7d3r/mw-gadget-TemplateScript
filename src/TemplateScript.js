@@ -16,7 +16,7 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
-
+	regexTool('TESTAR','testando()');
 
 	regexTool('« Testar regex »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
@@ -76,4 +76,10 @@ function format_links() {
 
 function usando_regex() {
 	setreason('[usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
+}
+
+function testando() {
+	var padrao = '/^([*#:]+)\s*/mig';
+	regex(padrao,'$1 ');
+	doaction('diff');
 }
