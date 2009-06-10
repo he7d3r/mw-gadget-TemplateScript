@@ -41,8 +41,9 @@ function format_geral() {
 function wiki2latex() {
 	regex(/{{AutoCat}}/ig,'');
 	regex(/{{AutoNav}}/ig,'');
+	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<math>/ig,'$');
-	regex(/</math>/ig,'$');
+	regex(/<\/math>/ig,'$');
 	regex(/====/ig,'\subsubsubsection{');
 	regex(/===/ig,'\subsubsection{');
 	regex(/==/ig,'\subsection{');
@@ -122,7 +123,7 @@ function format_links() {
 
 function format_math() {
 	var antigo = editbox.value;
-	var padrao = /<\/math>\s*([\.,;:!\?]) /mig;
+	var padrao = /<\/math>\s*([\.,;:!\?]) */mig;
 	regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 
 	if (editbox.value != antigo) {
