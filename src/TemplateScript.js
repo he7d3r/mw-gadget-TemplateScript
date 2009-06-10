@@ -25,17 +25,6 @@ function rmflinks() {
 // mas há um conjunto de ferramentas simplificadas documentadas em
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
 
-function format_math() {
-	var antigo = editbox.value;
-	var padrao = /<\/math>\s*([\.,;:!\?]) /mig;
-	regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
-
-	if (editbox.value != antigo) {
-		setreason('format. <math> e pontuação', 'append');
-		doaction('diff');
-	}
-}
-
 function format_cab() {
 	var antigo = editbox.value;
 
@@ -74,6 +63,7 @@ function format_cat() {
 }
 
 function format_list() {
+	var antigo = editbox.value;
 	var padrao = /^([*#:]+)\s*/mig;
 	regex(padrao,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
 
@@ -105,6 +95,17 @@ function format_links() {
 
 	if (editbox.value != antigo) {
 		setreason('simplificando links', 'append');
+		doaction('diff');
+	}
+}
+
+function format_math() {
+	var antigo = editbox.value;
+	var padrao = /<\/math>\s*([\.,;:!\?]) /mig;
+	regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+
+	if (editbox.value != antigo) {
+		setreason('format. <math> e pontuação', 'append');
 		doaction('diff');
 	}
 }
