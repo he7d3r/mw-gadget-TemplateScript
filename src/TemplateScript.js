@@ -16,7 +16,6 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
-	regexTool('TESTAR','testando()');
 
 	regexTool('« Testar regex »','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
@@ -27,59 +26,115 @@ function rmflinks() {
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
 
 function format_math() {
-	regex(/<\/math>\s*([\.,;:!\?]) /mig,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
-	setreason('format. <math> e pontuação', 'append');
-	doaction('diff');
+	var alterou = false;
+	var padrao = /<\/math>\s*([\.,;:!\?]) /mig;
+	if (regsearch(padrao)) {
+		regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+		alterou = true;
+	}
+
+	if (alterou) {
+		setreason('format. <math> e pontuação', 'append');
+		doaction('diff');
+	}
 }
 
 function format_cab() {
-	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig,'\n\n$1 $2 $1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
-	regex(/=\n+=/ig,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
-	setreason('format. cabeçalhos', 'append');
-	doaction('diff');
+	var alterou = false;
+	var padrao = /\n*^(=+)\s*(.*?)\s*\1\s*/mig;
+	if (regsearch(padrao)) {
+		regex(padrao,'\n\n$1 $2 $1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
+		alterou = true;
+	}
+	padrao = /=\n+=/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
+		alterou = true;
+	}
+
+	if (alterou) {
+		setreason('format. cabeçalhos', 'append');
+		doaction('diff');
+	}
 }
 
 function format_predef() {
-	regex(/{{\s*(?:msg:|template:)?([^}]+)}}/ig,'{{$1}}');
-	setreason('format. predefs', 'append');
-	doaction('diff');
+	var alterou = false;
+	var padrao = /{{\s*(?:msg:|template:)?([^}]+)}}/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'{{$1}}');
+		alterou = true;
+	}
+	if (alterou) {
+		setreason('format. predefs', 'append');
+		doaction('diff');
+	}
 }
 
 function format_cat() {
-	regex(/\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,'[[Categoria:$1$2$3]]');
-	setreason('format. categorias', 'append');
-	doaction('diff');
+	var alterou = false;
+	var padrao = /\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'[[Categoria:$1$2$3]]');
+		alterou = true;
+	}
+	if (alterou) {
+		setreason('format. categorias', 'append');
+		doaction('diff');
+	}
 }
 
 function format_list() {
-	regex(/^([*#:]+)\s*/mig,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
-	setreason('format. listas', 'append');
-	doaction('diff');
+	var padrao = /^([*#:]+)\s*/mig;
+	if (regsearch(padrao)) {
+		regex(padrao,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
+		alterou = true;
+	}
+	if (alterou) {
+		setreason('format. listas', 'append');
+		doaction('diff');
+	}
 }
 
 function format_links() {
-	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,'[[$1$2$3]]'); // -espaços redundantes
-	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig,'[[$1]]');   //  [[Texto|Texto]] → [[Texto]]
-	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
+	var alterou = false;
+	var padrao = /\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'[[$1$2$3]]'); // -espaços redundantes
+		alterou = true;
+	}
+	padrao = /\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'[[$1]]'); // [[Texto|Texto]] → [[Texto]]
+		alterou = true;
+	}
+	padrao = /\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
+		alterou = true;
+	}
+
 	if (wgPageName == wgBookName){
 		var nome = wgBookName.replace(/_/g,' '); //remove underscores
 		var padrao = '\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
 		var reg = new RegExp(padrao,'ig');
-		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
+		if (regsearch(reg)) {
+			editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
+			alterou = true;
+		}
+	}
+	padrao = /\[\[([^\|\]]+?)_/ig;
+	if (regsearch(padrao)) {
+		regex(padrao,'[[$1 ',5); // troca de underscores por espaços nas ligações
+		alterou = true;
 	}
 
-	regex(/\[\[([^\|\]]+?)_/ig,'[[$1 ',5); // troca de underscores por espaços nas ligações
-
-	setreason('simplificando links', 'append');
-	doaction('diff');
+	if (alterou) {
+		setreason('simplificando links', 'append');
+		doaction('diff');
+	}
 }
 
 function usando_regex() {
 	setreason('[usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
-}
-
-function testando() {
-	var padrao = /^([*#:]+)\s*/mig;
-	regex(padrao,'$1 ');
-	doaction('diff');
 }
