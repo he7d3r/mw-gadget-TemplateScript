@@ -56,7 +56,11 @@ function wiki2latex() {
 	regex(/\n*{{Auto(Cat|Nav)}}\n*/ig,'');
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
-	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsubsection{$2}\n\n');
+
+	regex(/<ref.*?>([^(?:<\/ref)]+)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé
+	regex(/(?:\n*(?:=+)\s*Notas\s*(?:=+)\n*)?\n*<references\/>\n*/ig,'');
+
+	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsubsection{$2}\n\n'); //cabeçalhos
 	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n');
 	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
 
@@ -65,7 +69,7 @@ function wiki2latex() {
 	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
 	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$1}');
 
-	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{def}\n$1\n\\end{def}');
+	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{def}\n$1\n\\end{def}'); //predefinições matemáticas
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}\n$1\n\\end{teo}');
 	regex(/{{\s*(?:Demonstração)\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
 	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}\n$1\n\\end{lema}');
@@ -89,7 +93,7 @@ function wiki2latex() {
 			+ '\\newtheorem{obs}[teo]{Observação}\n\n'
 			+ '\\begin{document}\n\n'
 			+ editbox.value
-			+ '\\end{document}';
+			+ '\n\n\\end{document}';
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
 }
