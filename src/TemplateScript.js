@@ -26,59 +26,48 @@ function rmflinks() {
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
 
 function format_math() {
-	var alterou = false;
+	var antigo = editbox.value;
 	var padrao = /<\/math>\s*([\.,;:!\?]) /mig;
-	if (regsearch(padrao)) {
-		regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
-		alterou = true;
-	}
+	regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 
-	if (alterou) {
+	if (editbox.value != antigo) {
 		setreason('format. <math> e pontuação', 'append');
 		doaction('diff');
 	}
 }
 
 function format_cab() {
-	var alterou = false;
-	var padrao = /\n*^(=+)\s*(.*?)\s*\1\s*/mig;
-	if (regsearch(padrao)) {
-		regex(padrao,'\n\n$1 $2 $1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
-		alterou = true;
-	}
-	padrao = /=\n+=/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
-		alterou = true;
-	}
+	var antigo = editbox.value;
 
-	if (alterou) {
+	var padrao = /\n*^(=+)\s*(.*?)\s*\1\s*/mig;
+	regex(padrao,'\n\n$1 $2 $1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
+
+	padrao = /=\n+=/ig;
+	regex(padrao,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
+
+	if (editbox.value != antigo) {
 		setreason('format. cabeçalhos', 'append');
 		doaction('diff');
 	}
 }
 
 function format_predef() {
-	var alterou = false;
+	var antigo = editbox.value;
 	var padrao = /{{\s*(?:msg:|template:)?([^}]+)}}/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'{{$1}}');
-		alterou = true;
-	}
-	if (alterou) {
+	regex(padrao,'{{$1}}');
+
+	if (editbox.value != antigo) {
 		setreason('format. predefs', 'append');
 		doaction('diff');
 	}
 }
 
 function format_cat() {
-	var alterou = false;
+	var antigo = editbox.value;
 	var padrao = /\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'[[Categoria:$1$2$3]]');
-		alterou = true;
-	}
-	if (alterou) {
+	regex(padrao,'[[Categoria:$1$2$3]]');
+
+	if (editbox.value != antigo) {
 		setreason('format. categorias', 'append');
 		doaction('diff');
 	}
@@ -86,50 +75,35 @@ function format_cat() {
 
 function format_list() {
 	var padrao = /^([*#:]+)\s*/mig;
-	if (regsearch(padrao)) {
-		regex(padrao,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
-		alterou = true;
-	}
-	if (alterou) {
+	regex(padrao,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
+
+	if (editbox.value != antigo) {
 		setreason('format. listas', 'append');
 		doaction('diff');
 	}
 }
 
 function format_links() {
-	var alterou = false;
+	var antigo = editbox.value;
 	var padrao = /\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'[[$1$2$3]]'); // -espaços redundantes
-		alterou = true;
-	}
+	regex(padrao,'[[$1$2$3]]'); // -espaços redundantes
+
 	padrao = /\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'[[$1]]'); // [[Texto|Texto]] → [[Texto]]
-		alterou = true;
-	}
+	regex(padrao,'[[$1]]'); // [[Texto|Texto]] → [[Texto]]
+
 	padrao = /\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
-		alterou = true;
-	}
+	regex(padrao,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
 
 	if (wgPageName == wgBookName){
 		var nome = wgBookName.replace(/_/g,' '); //remove underscores
 		var padrao = '\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
 		var reg = new RegExp(padrao,'ig');
-		if (regsearch(reg)) {
-			editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
-			alterou = true;
-		}
+		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
 	}
 	padrao = /\[\[([^\|\]]+?)_/ig;
-	if (regsearch(padrao)) {
-		regex(padrao,'[[$1 ',5); // troca de underscores por espaços nas ligações
-		alterou = true;
-	}
+	regex(padrao,'[[$1 ',5); // troca de underscores por espaços nas ligações
 
-	if (alterou) {
+	if (editbox.value != antigo) {
 		setreason('simplificando links', 'append');
 		doaction('diff');
 	}
