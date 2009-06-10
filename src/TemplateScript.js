@@ -48,6 +48,30 @@ function wiki2latex() {
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}');
 
+	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{def}\n$1\n\\end{def}');
+	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}\n$1\n\\end{teo}');
+	regex(/{{\s*(?:Demonstração)\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
+	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}\n$1\n\\end{lema}');
+	regex(/{{\s*(?:Proposição)\|([^}]+)}}/ig,'\\begin{prop}\n$1\n\\end{prop}');
+	regex(/{{\s*(?:Corolário)\|([^}]+)}}/ig,'\\begin{cor}\n$1\n\\end{cor}');
+	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}\n$1\n\\end{ex}');
+	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}\n$1\n\\end{exer}');
+	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}\n$1\n\\end{obs}');
+
+	editbox.value =	  '\\newtheorem{teo}{Teorema}[chapter]\n'
+			+ '\\newtheorem{lema}[teo]{Lema}\n'
+			+ '\\newtheorem{prop}[teo]{Proposição}\n'
+			+ '\\newtheorem{cor}[teo]{Corolário}\n\n'
+
+			+ '\\theoremstyle{definition}\n'
+			+ '\\newtheorem{defi}[teo]{Definição}\n'
+			+ '\\newtheorem{ex}[teo]{Exemplo}\n'
+			+ '\\newtheorem{exer}[teo]{Exercício}\n\n'
+
+			+ '\\theoremstyle{remark}\n'
+			+ '\\newtheorem{obs}[teo]{Observação}\n\n'
+			+ editbox.value;
+
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
 }
 
