@@ -39,6 +39,20 @@ function format_geral() {
 }
 
 function wiki2latex() {
+	var url1   = 'http://';
+	var url2   = '.org/wiki/Special:Search/';
+	var w = 'pt.wikipedia';
+//	var wikt = 'pt.wiktionary';
+//	var n = 'pt.wikinews';
+//	var b = 'pt.wikibooks';
+//	var q = 'pt.wikiquote';
+//	var s = 'pt.wikisource';
+//	var species = 'wikispecies.wikimedia';
+//	var v = 'pt.wikiversity';
+//	var wmf = 'wikimediafoundation';
+//	var commons = 'commons.wikimedia';
+//	var m = 'meta.wikimedia';
+
 	regex(/\n*{{Auto(Cat|Nav)}}\n*/ig,'');
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
@@ -47,6 +61,8 @@ function wiki2latex() {
 	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}');
+	regex(/\[\[\s*(?:w)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
+	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{def}\n$1\n\\end{def}');
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}\n$1\n\\end{teo}');
