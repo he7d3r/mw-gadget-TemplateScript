@@ -79,6 +79,10 @@ function wiki2latex() {
 	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}\n$1\n\\end{exer}');
 	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}\n$1\n\\end{obs}');
 
+
+	regex(:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
+	regex(/\n#\s*/ig,'\n\\item ');
+
 //	regex(//ig,'\\begin{enumerate}\n');
 //	regex(//ig,'\\begin{itemize}\n');
 //	regex(/* /ig,'\\item ');
