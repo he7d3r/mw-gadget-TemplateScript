@@ -37,6 +37,19 @@ function format_geral() {
 	doaction('diff');
 }
 
+function wiki2latex() {
+	regex(/{{AutoCat}}/ig,'');
+	regex(/{{AutoNav}}/ig,'');
+	regex(/<math>/ig,'$');
+	regex(/</math>/ig,'$');
+	regex(/====/ig,'\subsubsubsection{');
+	regex(/===/ig,'\subsubsection{');
+	regex(/==/ig,'\subsection{');
+
+	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
+}
+
+
 function format_cab() {
 	var antigo = editbox.value;
 
