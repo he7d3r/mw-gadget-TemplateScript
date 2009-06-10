@@ -79,6 +79,13 @@ function wiki2latex() {
 	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}\n$1\n\\end{exer}');
 	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}\n$1\n\\end{obs}');
 
+//	regex(//ig,'\\begin{enumerate}\n');
+//	regex(//ig,'\\begin{itemize}\n');
+//	regex(/* /ig,'\\item ');
+//	regex(/# /ig,'\\item ');
+//	regex(//ig,'\\end{enumerate}\n');
+//	regex(//ig,'\\end{itemize}\n');
+
 	editbox.value =	  '\\newtheorem{teo}{Teorema}[chapter]\n'
 			+ '\\newtheorem{lema}[teo]{Lema}\n'
 			+ '\\newtheorem{prop}[teo]{Proposição}\n'
