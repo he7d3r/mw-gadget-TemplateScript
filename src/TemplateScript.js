@@ -79,7 +79,7 @@ function usando_regex() {
 }
 
 function testando() {
-	var padrao = '/^([*#:]+)\s*/mig';
+	var padrao = /^([*#:]+)\s*/mig;
 	regex(padrao,'$1 ');
 	doaction('diff');
 }
