@@ -39,6 +39,34 @@ function format_geral() {
 }
 
 function wiki2latex() {
+	var preambulo =	'\\documentclass[12pt,a4paper,titlepage]{book}\n' +
+			'\\usepackage[latin1]{inputenc}\n' +
+			'\\usepackage[brazil]{babel}\n' +
+			'\\usepackage{amsthm, amssymb, amsmath}\n' +
+			'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n';
+
+	if (regsearch(/<!--(.|\s)*?-->/)){
+		preambulo += '\n\\usepackage{verbatim}';
+		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
+	}
+
+	preambulo +=	'\\newtheorem{teo}{Teorema}[chapter]\n' +
+			'\\newtheorem{lema}[teo]{Lema}\n' +
+			'\\newtheorem{prop}[teo]{Proposição}\n' +
+			'\\newtheorem{cor}[teo]{Corolário}\n\n' +
+			'\\hypersetup{\n' +
+			'    colorlinks = true,\n' +
+			'    linkcolor = blue,\n' +
+			'    anchorcolor = red,\n' +
+			'    citecolor = blue,\n' +
+			'}\n' +
+			'\\theoremstyle{definition}\n' +
+			'\\newtheorem{defi}[teo]{Definição}\n' +
+			'\\newtheorem{ex}[teo]{Exemplo}\n' +
+			'\\newtheorem{exer}[teo]{Exercício}\n\n' +
+			'\\theoremstyle{remark}\n' +
+			'\\newtheorem{obs}[teo]{Observação}\n\n';
+
 	var url1   = 'http://';
 	var url2   = '.org/wiki/Special:Search/';
 	var w = 'pt.wikipedia';
@@ -81,11 +109,6 @@ function wiki2latex() {
 	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}\n$1\n\\end{exer}');
 	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}\n$1\n\\end{obs}');
 
-	if (regsearch(/<!--(.|\s)*?-->/)){
-		editbox.value = '\\usepackage{verbatim}\n\n' + editbox.value;
-		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
-	}
-
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
 	regex(/\n#\s*/ig,'\n\\item ');
 
@@ -96,22 +119,11 @@ function wiki2latex() {
 //	regex(//ig,'\\end{enumerate}\n');
 //	regex(//ig,'\\end{itemize}\n');
 
-	editbox.value =	  '\\newtheorem{teo}{Teorema}[chapter]\n'
-			+ '\\newtheorem{lema}[teo]{Lema}\n'
-			+ '\\newtheorem{prop}[teo]{Proposição}\n'
-			+ '\\newtheorem{cor}[teo]{Corolário}\n\n'
-
-			+ '\\theoremstyle{definition}\n'
-			+ '\\newtheorem{defi}[teo]{Definição}\n'
-			+ '\\newtheorem{ex}[teo]{Exemplo}\n'
-			+ '\\newtheorem{exer}[teo]{Exercício}\n\n'
-
-			+ '\\theoremstyle{remark}\n'
-			+ '\\newtheorem{obs}[teo]{Observação}\n\n'
-			+ '\\begin{document}\n\n'
-			+ wgTitle + '\n\n'
-			+ editbox.value
-			+ '\n\n\\end{document}';
+	editbox.value =	preambulo +
+			'\\begin{document}\n\n' +
+			wgTitle + '\n\n' +
+			editbox.value +
+			'\n\n\\end{document}';
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
 }
