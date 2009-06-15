@@ -59,6 +59,8 @@ function wiki2latex() {
 			'    linkcolor = blue,\n' +
 			'    anchorcolor = red,\n' +
 			'    citecolor = blue,\n' +
+			'    filecolor = red,\n' +
+			'    urlcolor = red\n' +
 			'}\n' +
 			'\\theoremstyle{definition}\n' +
 			'\\newtheorem{defi}[teo]{Definição}\n' +
