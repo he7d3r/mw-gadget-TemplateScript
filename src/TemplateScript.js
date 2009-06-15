@@ -46,11 +46,11 @@ function wiki2latex() {
 			'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n';
 
 	if (regsearch(/<!--(.|\s)*?-->/)){
-		preambulo += '\n\\usepackage{verbatim}';
+		preambulo += '\\usepackage{verbatim}\n';
 		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
 	}
 
-	preambulo +=	'\\newtheorem{teo}{Teorema}[chapter]\n' +
+	preambulo +=	'\n\\newtheorem{teo}{Teorema}[chapter]\n' +
 			'\\newtheorem{lema}[teo]{Lema}\n' +
 			'\\newtheorem{prop}[teo]{Proposição}\n' +
 			'\\newtheorem{cor}[teo]{Corolário}\n\n' +
