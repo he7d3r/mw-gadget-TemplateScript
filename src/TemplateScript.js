@@ -123,7 +123,7 @@ function wiki2latex() {
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
-			wgTitle + '\n\n' +
+			'\\section{' + wgTitle + '}\n\n' +
 			editbox.value +
 			'\n\n\\end{document}';
 
