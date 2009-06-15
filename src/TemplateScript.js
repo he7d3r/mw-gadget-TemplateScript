@@ -54,6 +54,8 @@ function wiki2latex() {
 //	var m = 'meta.wikimedia';
 
 	regex(/\n*{{Auto(Cat|Nav)}}\n*/ig,'');
+	regex(/<\/?noinclude>/ig,'');
+
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
 
@@ -79,6 +81,10 @@ function wiki2latex() {
 	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}\n$1\n\\end{exer}');
 	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}\n$1\n\\end{obs}');
 
+	if (regsearch(/<!--(.|\s)*?-->/)){
+		editbox.value = '\\usepackage{verbatim}\n\n' + editbox.value;
+		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
+	}
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
 	regex(/\n#\s*/ig,'\n\\item ');
