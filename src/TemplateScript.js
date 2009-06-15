@@ -103,6 +103,7 @@ function wiki2latex() {
 			+ '\\theoremstyle{remark}\n'
 			+ '\\newtheorem{obs}[teo]{Observação}\n\n'
 			+ '\\begin{document}\n\n'
+			+ wgTitle + '\n\n'
 			+ editbox.value
 			+ '\n\n\\end{document}';
 
