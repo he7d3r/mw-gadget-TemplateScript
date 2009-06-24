@@ -195,6 +195,9 @@ function format_links() {
 	padrao = /\[\[([^\|\]]+?)_/ig;
 	regex(padrao,'[[$1 ',5); // troca de underscores por espaços nas ligações
 
+	padrao = /\[\[Wikibooks:/ig; //tradução das ligações internas para o domínio "Project"
+	regex(padrao,'[[Wikilivros:');
+
 	if (editbox.value != antigo) {
 		setreason('simplificando links', 'append');
 	}
