@@ -198,11 +198,16 @@ function format_links() {
 	padrao = /\[\[Wikibooks:/ig; //tradução das ligações internas para o domínio "Project"
 	regex(padrao,'[[Wikilivros:');
 
+	padrao = /\[http:\/\/pt.wikibooks.org\/w\/index.php\?title=Wikibooks:/ig;
+	regex(padrao,'[http://pt.wikibooks.org/w/index.php?title=Wikilivros:');
+
+
 	padrao = /\[\[Image:/ig; //tradução das ligações para imagens 
 	regex(padrao,'[[Imagem:');
 
 	padrao = /\[\[File:/ig; //tradução das ligações para arquivos
 	regex(padrao,'[[Arquivo:');
+
 
 	if (editbox.value != antigo) {
 		setreason('ajustes nos links', 'append');
