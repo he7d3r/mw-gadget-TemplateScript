@@ -127,7 +127,7 @@ function wiki2latex() {
 			editbox.value +
 			'\n\n\\end{document}';
 
-	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
+	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append');
 }
 
 
@@ -205,7 +205,7 @@ function format_links() {
 	regex(padrao,'[[Arquivo:');
 
 	if (editbox.value != antigo) {
-		setreason('simplificando links', 'append');
+		setreason('ajustes nos links', 'append');
 	}
 }
 
