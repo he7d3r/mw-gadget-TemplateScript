@@ -12,6 +12,7 @@ function rmflinks() {
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki → Latex','wiki2latex()');
 
+	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
 	regexTool('Formatar predefinições','format_predef()');
 	regexTool('Formatar categorias','format_cat()');
@@ -130,6 +131,20 @@ function wiki2latex() {
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append');
 }
 
+function cria_autonav() {
+	var lista = editbox.value;
+	regex(/([^\n]+?)\n([^\n+?])\n/ig,'$1=[[$2]]\n$2\n');
+	var posterior = editbox.value;
+
+	editbox.value = lista;
+	regex(/([^\n]+?)\n([^\n]+?)\n/ig,'$1\n$2=[[$1]]\n');
+	var anterior = editbox.value;
+
+	editbox.value = lista + '\n\n'
+			+anterior + '\n\n'
+			+posterior;
+
+}
 
 function format_cab() {
 	var antigo = editbox.value;
