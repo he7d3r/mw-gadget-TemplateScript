@@ -132,13 +132,19 @@ function wiki2latex() {
 }
 
 function cria_autonav() {
-	var lista = editbox.value.split(\n);
-	var anterior = new Array(lista.lenght);
+	var lista = editbox.value.split('\n');
+	var anterior = new Array();
+	var posterior = new Array();
+
 	anterior[0] = lista[0];
-	for (i=1;i<lista.lenght;i++){
-		anterior[i] = lista[i] + '=[[' + lista[i-1] + ']]';
+	posterior[lista.length-1] = lista[lista.length-1];
+
+	for (i=1;i<lista.length-1;i++){
+		anterior[i]  = lista[i] + '=[[' + lista[i-1] + ']]';
+		posterior[i] = lista[i] + '=[[' + lista[i+1] + ']]';
 	}
-	editbox.value = anterior.join("\n");
+
+	editbox.value = lista.join('\n') + '\n\n' + anterior.join('\n') + '\n\n' + posterior.join('\n');
 }
 
 function format_cab() {
