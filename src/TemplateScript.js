@@ -10,7 +10,7 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• Formatação geral','format_geral()');
-	regexTool('• Wiki → Latex','wiki2latex()');
+	regexTool('• Wiki -> Latex','wiki2latex()');
 
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
@@ -193,37 +193,39 @@ function format_list() {
 
 function format_links() {
 	var antigo = editbox.value;
-	var padrao = /\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig;
-	regex(padrao,'[[$1$2$3]]'); // -espaços redundantes
+	var padrao;
+  
+  // -espaços redundantes
+	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig, '[[$1$2$3]]');
 
-	padrao = /\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig;
-	regex(padrao,'[[$1]]'); // [[Texto|Texto]] → [[Texto]]
-
-	padrao = /\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig;
-	regex(padrao,'[[/$1/]]'); // [[/Texto|Texto]] → [[/Texto/]]
+	// [[Texto|Texto]] -> [[Texto]]
+	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig, '[[$1]]');
+  
+  // [[/Texto|Texto]] -> [[/Texto/]]
+	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]');
 
 	if (wgPageName == wgBookName){
 		var nome = wgBookName.replace(/_/g,' '); //remove underscores
 		var padrao = '\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
 		var reg = new RegExp(padrao,'ig');
-		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] → [[/Cap/]]
+		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] -> [[/Cap/]]
 	}
-	padrao = /\[\[([^\|\]]+?)_/ig;
-	regex(padrao,'[[$1 ',5); // troca de underscores por espaços nas ligações
+  
+	// troca de underscores por espaços nas ligações
+	regex(/\[\[([^\|\]]+?)_/ig, '[[$1 ', 5);
 
-	padrao = /\[\[Wikibooks:/ig; //tradução das ligações internas para o domínio "Project"
-	regex(padrao,'[[Wikilivros:');
+	//tradução das ligações internas para o domínio "Wikilivros"
+	regex(/\[\[(?:Wikibooks|Project)( Discussão)?:/ig, '[[Wikilivros$1:');
+  regex(/\[\[(?:Wikibooks|Project) Talk:/ig, '[[Wikilivros Discussão:');
+	regex(/\[http:\/\/pt.wikibooks.org\/w\/index.php\?title=Wikibooks/ig, '[http://pt.wikibooks.org/w/index.php?title=Wikilivros');
 
-	padrao = /\[http:\/\/pt.wikibooks.org\/w\/index.php\?title=Wikibooks/ig;
-	regex(padrao,'[http://pt.wikibooks.org/w/index.php?title=Wikilivros');
-
-
-	padrao = /\[\[Image:/ig; //tradução das ligações para imagens 
-	regex(padrao,'[[Imagem:');
-
-	padrao = /\[\[File:/ig; //tradução das ligações para arquivos
-	regex(padrao,'[[Arquivo:');
-
+	//tradução das ligações para imagens 
+	regex(/\[\[Image( Discussão)?:/ig, '[[Imagem$1:');
+  regex(/\[\[Image Talk:/ig, '[[Imagem Discussão:');
+  
+  //tradução das ligações para arquivos
+	regex(/\[\[File( Discussão)?:/ig,'[[Arquivo$1:');
+  regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
 	if (editbox.value != antigo) {
 		setreason('ajustes nos links', 'append');
