@@ -150,11 +150,11 @@ function cria_autonav() {
 function format_cab() {
 	var antigo = editbox.value;
 
-	var padrao = /\n*^(=+)\s*(.*?)\s*\1\s*/mig;
-	regex(padrao,'\n\n$1 $2 $1\n'); // +quebra de linha antes de =, -espaços entre = e o título da seção
+	// +quebra de linha antes de =, -espaços entre = e o título da seção
+	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig, '\n\n$1 $2 $1\n');
 
-	padrao = /=\n+=/ig;
-	regex(padrao,'=\n='); // -quebras de linha entre cabeçalhos consecutivos
+	// -quebras de linha entre cabeçalhos consecutivos
+	regex(/=\n+=/ig, '=\n=');
 
 	if (editbox.value != antigo) {
 		setreason('format. cabeçalhos', 'append');
@@ -163,8 +163,8 @@ function format_cab() {
 
 function format_predef() {
 	var antigo = editbox.value;
-	var padrao = /{{\s*(?:msg:|template:)?([^}]+)}}/ig;
-	regex(padrao,'{{$1}}');
+	
+	regex(/{{\s*(?:msg:|template:)?([^}]+)}}/ig, '{{$1}}');
 
 	if (editbox.value != antigo) {
 		setreason('format. predefs', 'append');
@@ -173,8 +173,8 @@ function format_predef() {
 
 function format_cat() {
 	var antigo = editbox.value;
-	var padrao = /\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig;
-	regex(padrao,'[[Categoria:$1$2$3]]');
+	
+	regex(/\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
 
 	if (editbox.value != antigo) {
 		setreason('format. categorias', 'append');
@@ -183,8 +183,9 @@ function format_cat() {
 
 function format_list() {
 	var antigo = editbox.value;
-	var padrao = /^([*#:]+)\s*/mig;
-	regex(padrao,'$1 '); //apenas 1 espaço entre *, # ou : e o texto da lista
+	
+  //Deixa apenas 1 espaço entre *, # ou : e o texto da lista
+	regex(/^([*#:]+)\s*/mig, '$1 ');
 
 	if (editbox.value != antigo) {
 		setreason('format. listas', 'append');
@@ -205,7 +206,7 @@ function format_links() {
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]');
 
 	if (wgPageName == wgBookName){
-		var nome = wgBookName.replace(/_/g,' '); //remove underscores
+		var nome = wgBookName.replace(/_/g,' '); //troca underscores por espaços
 		var padrao = '\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
 		var reg = new RegExp(padrao,'ig');
 		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] -> [[/Cap/]]
@@ -234,8 +235,9 @@ function format_links() {
 
 function format_math() {
 	var antigo = editbox.value;
-	var padrao = /<\/math>\s*([\.,;:!\?]) */mig;
-	regex(padrao,'$1</math> '); // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+	
+  // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+	regex(/<\/math>\s*([\.,;:!\?]) */mig, '$1</math> ');
 
 	if (editbox.value != antigo) {
 		setreason('format. <math> e pontuação', 'append');
