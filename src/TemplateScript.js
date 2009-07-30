@@ -4,7 +4,7 @@
 ***	- adds a sidebar menu of user-defined scripts.
 *************/
 importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript');
- 
+
 /* menu links */
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
@@ -23,7 +23,7 @@ function rmflinks() {
 
 	regexTool('• Outro REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 }
- 
+
 /* scripts */
 // Abaixo, defina as funções referenciadas a partir de rmflinks(), logo acima. Estas funções podem usar qualquer JavaScript,
 // mas há um conjunto de ferramentas simplificadas documentadas em
@@ -35,8 +35,8 @@ function format_geral() {
 	format_list();
 	format_links();
 	format_math();
-	format_cab();
-	doaction('diff');
+  usando_regex();
+	format_cab();doaction('diff');
 }
 
 function wiki2latex() {
@@ -156,9 +156,8 @@ function format_cab() {
 	// -quebras de linha entre cabeçalhos consecutivos
 	regex(/=\n+=/ig, '=\n=');
 
-	if (editbox.value != antigo) {
+	if (editbox.value != antigo)
 		setreason('format. cabeçalhos', 'append');
-	}
 }
 
 function format_predef() {
@@ -166,9 +165,8 @@ function format_predef() {
 	
 	regex(/{{\s*(?:msg:|template:)?([^}]+)}}/ig, '{{$1}}');
 
-	if (editbox.value != antigo) {
+	if (editbox.value != antigo)
 		setreason('format. predefs', 'append');
-	}
 }
 
 function format_cat() {
@@ -176,9 +174,8 @@ function format_cat() {
 	
 	regex(/\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
 
-	if (editbox.value != antigo) {
+	if (editbox.value != antigo)
 		setreason('format. categorias', 'append');
-	}
 }
 
 function format_list() {
@@ -187,31 +184,33 @@ function format_list() {
   //Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 	regex(/^([*#:]+)\s*/mig, '$1 ');
 
-	if (editbox.value != antigo) {
+	if (editbox.value != antigo)
 		setreason('format. listas', 'append');
+}
+
+function labs2rel() {
+if (wgPageName == wgBookName){
+    //troca underscores por espaços
+		var nome = wgBookName.replace(/_/g,' ');
+    
+    // [[Livro/Cap|Cap]] -> [[/Cap/]]
+		regex(RegExp('\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]','ig'), '[[/$1/]]');
 	}
 }
 
 function format_links() {
 	var antigo = editbox.value;
 	var padrao;
-  
+
   // -espaços redundantes
 	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig, '[[$1$2$3]]');
 
-	// [[Texto|Texto]] -> [[Texto]]
+	// texto exibido redundante:
+  //* [[Texto|Texto]]  -> [[Texto]]
+  //* [[/Texto|Texto]] -> [[/Texto/]]
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig, '[[$1]]');
-  
-  // [[/Texto|Texto]] -> [[/Texto/]]
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]');
-
-	if (wgPageName == wgBookName){
-		var nome = wgBookName.replace(/_/g,' '); //troca underscores por espaços
-		var padrao = '\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]';
-		var reg = new RegExp(padrao,'ig');
-		editbox.value = editbox.value.replace(reg,'[[/$1/]]'); // [[Livro/Cap|Cap]] -> [[/Cap/]]
-	}
-  
+	
 	// troca de underscores por espaços nas ligações
 	regex(/\[\[([^\|\]]+?)_/ig, '[[$1 ', 5);
 
@@ -220,17 +219,16 @@ function format_links() {
   regex(/\[\[(?:Wikibooks|Project) Talk:/ig, '[[Wikilivros Discussão:');
 	regex(/\[http:\/\/pt.wikibooks.org\/w\/index.php\?title=Wikibooks/ig, '[http://pt.wikibooks.org/w/index.php?title=Wikilivros');
 
-	//tradução das ligações para imagens 
+	//tradução das ligações para imagens
 	regex(/\[\[Image( Discussão)?:/ig, '[[Imagem$1:');
   regex(/\[\[Image Talk:/ig, '[[Imagem Discussão:');
-  
+
   //tradução das ligações para arquivos
 	regex(/\[\[File( Discussão)?:/ig,'[[Arquivo$1:');
   regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
-	if (editbox.value != antigo) {
-		setreason('ajustes nos links', 'append');
-	}
+	if (editbox.value != antigo)
+		setreason('formatação dos links', 'append');
 }
 
 function format_math() {
@@ -239,9 +237,8 @@ function format_math() {
   // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	regex(/<\/math>\s*([\.,;:!\?]) */mig, '$1</math> ');
 
-	if (editbox.value != antigo) {
+	if (editbox.value != antigo)
 		setreason('format. <math> e pontuação', 'append');
-	}
 }
 
 function usando_regex() {
