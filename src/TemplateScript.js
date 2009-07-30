@@ -17,6 +17,7 @@ function rmflinks() {
 	regexTool('Formatar predefinições','format_predef()');
 	regexTool('Formatar categorias','format_cat()');
 	regexTool('Formatar listas','format_list()');
+	regexTool('Usar links relativos','abs2rel()');
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
@@ -33,9 +34,10 @@ function format_geral() {
 	format_predef();
 	format_cat();
 	format_list();
+	abs2rel();
 	format_links();
 	format_math();
-  usando_regex();
+	usando_regex();
 	format_cab();doaction('diff');
 }
 
@@ -56,12 +58,12 @@ function wiki2latex() {
 			'\\newtheorem{prop}[teo]{Proposição}\n' +
 			'\\newtheorem{cor}[teo]{Corolário}\n\n' +
 			'\\hypersetup{\n' +
-			'    colorlinks = true,\n' +
-			'    linkcolor = blue,\n' +
-			'    anchorcolor = red,\n' +
-			'    citecolor = blue,\n' +
-			'    filecolor = red,\n' +
-			'    urlcolor = red\n' +
+			'		colorlinks = true,\n' +
+			'		linkcolor = blue,\n' +
+			'		anchorcolor = red,\n' +
+			'		citecolor = blue,\n' +
+			'		filecolor = red,\n' +
+			'		urlcolor = red\n' +
 			'}\n' +
 			'\\theoremstyle{definition}\n' +
 			'\\newtheorem{defi}[teo]{Definição}\n' +
@@ -70,8 +72,8 @@ function wiki2latex() {
 			'\\theoremstyle{remark}\n' +
 			'\\newtheorem{obs}[teo]{Observação}\n\n';
 
-	var url1   = 'http://';
-	var url2   = '.org/wiki/Special:Search/';
+	var url1	 = 'http://';
+	var url2	 = '.org/wiki/Special:Search/';
 	var w = 'pt.wikipedia';
 //	var wikt = 'pt.wiktionary';
 //	var n = 'pt.wikinews';
@@ -140,7 +142,7 @@ function cria_autonav() {
 	posterior[lista.length-1] = lista[lista.length-1];
 
 	for (i=1;i<lista.length-1;i++){
-		anterior[i]  = lista[i] + '=[[' + lista[i-1] + ']]';
+		anterior[i]	= lista[i] + '=[[' + lista[i-1] + ']]';
 		posterior[i] = lista[i] + '=[[' + lista[i+1] + ']]';
 	}
 
@@ -181,19 +183,19 @@ function format_cat() {
 function format_list() {
 	var antigo = editbox.value;
 	
-  //Deixa apenas 1 espaço entre *, # ou : e o texto da lista
+	//Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 	regex(/^([*#:]+)\s*/mig, '$1 ');
 
 	if (editbox.value != antigo)
 		setreason('format. listas', 'append');
 }
 
-function labs2rel() {
+function abs2rel() {
 if (wgPageName == wgBookName){
-    //troca underscores por espaços
-		var nome = wgBookName.replace(/_/g,' ');
-    
-    // [[Livro/Cap|Cap]] -> [[/Cap/]]
+	//troca underscores por espaços
+	var nome = wgBookName.replace(/_/g,' ');
+		
+	// [[Livro/Cap|Cap]] -> [[/Cap/]]
 		regex(RegExp('\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]','ig'), '[[/$1/]]');
 	}
 }
@@ -202,12 +204,12 @@ function format_links() {
 	var antigo = editbox.value;
 	var padrao;
 
-  // -espaços redundantes
+	// -espaços redundantes
 	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig, '[[$1$2$3]]');
 
 	// texto exibido redundante:
-  //* [[Texto|Texto]]  -> [[Texto]]
-  //* [[/Texto|Texto]] -> [[/Texto/]]
+	//* [[Texto|Texto]]	-> [[Texto]]
+	//* [[/Texto|Texto]] -> [[/Texto/]]
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig, '[[$1]]');
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]');
 	
@@ -216,16 +218,16 @@ function format_links() {
 
 	//tradução das ligações internas para o domínio "Wikilivros"
 	regex(/\[\[(?:Wikibooks|Project)( Discussão)?:/ig, '[[Wikilivros$1:');
-  regex(/\[\[(?:Wikibooks|Project) Talk:/ig, '[[Wikilivros Discussão:');
+	regex(/\[\[(?:Wikibooks|Project) Talk:/ig, '[[Wikilivros Discussão:');
 	regex(/\[http:\/\/pt.wikibooks.org\/w\/index.php\?title=Wikibooks/ig, '[http://pt.wikibooks.org/w/index.php?title=Wikilivros');
 
 	//tradução das ligações para imagens
 	regex(/\[\[Image( Discussão)?:/ig, '[[Imagem$1:');
-  regex(/\[\[Image Talk:/ig, '[[Imagem Discussão:');
+	regex(/\[\[Image Talk:/ig, '[[Imagem Discussão:');
 
-  //tradução das ligações para arquivos
+	//tradução das ligações para arquivos
 	regex(/\[\[File( Discussão)?:/ig,'[[Arquivo$1:');
-  regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
+	regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
 	if (editbox.value != antigo)
 		setreason('formatação dos links', 'append');
@@ -234,7 +236,7 @@ function format_links() {
 function format_math() {
 	var antigo = editbox.value;
 	
-  // coloca a pontuação que vem depois de fórmulas dentro das tags <math>
+	// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	regex(/<\/math>\s*([\.,;:!\?]) */mig, '$1</math> ');
 
 	if (editbox.value != antigo)
