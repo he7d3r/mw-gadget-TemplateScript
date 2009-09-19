@@ -75,11 +75,11 @@ function math_conversion(dir) {
 	var regex = 0, subst = 1, func = 2;
 	var command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
 		[//fórmulas dentro dos parágrafos
-			[/\$\s*([^$]*?)\s*\$/img, '<math>$2</math>', null],
+			[/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>', null],
 			[/<\/?math>/ig, '$', null]
 		],
 		[//fórmulas em parágrafos isolados
-			[/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n: <math>$2</math>\n\n', null],
+			[/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n: <math>$1</math>\n\n', null],
 			[null, null, null]
 		],
 		[//notas de rodapé
