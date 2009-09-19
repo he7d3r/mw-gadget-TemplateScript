@@ -48,17 +48,14 @@ function math_conversion(dir) {
 	//[[w:en:User:Jmath666/latex2wiki.pl]]
 	var text = editbox.value;
 	var regex = 0, subst = 1, func = 2;
-	var command = [
-		//(dir == 0) -> latex2wiki
-		//(dir == 1) -> wiki2latex
-
+	var command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
 		[//marcação de fórmulas
-		[/(\$\$?)\s*([^$]*?)\s*\1/img, '<math>$2</math>', null],
-		[/<\/?math>/ig, '$', null]
+			[/(\$\$?)\s*([^$]*?)\s*\1/img, '<math>$2</math>', null],
+			[/<\/?math>/ig, '$', null]
 		],
 		[//notas de rodapé
-		[/\\footnote{(.*?)}/g, '<ref>$1</ref>', null],
-		[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
+			[/\\footnote{(.*?)}/g, '<ref>$1</ref>', null],
+			[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
 		]
 		];
 	for (i=0; i<command.length; i++){
@@ -69,6 +66,10 @@ function math_conversion(dir) {
 		}
 	}
 	editbox.value = text;
+	if (0 == dir)
+		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append')
+	else
+		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append');
 }
 
 
