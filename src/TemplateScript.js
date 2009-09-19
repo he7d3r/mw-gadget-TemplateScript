@@ -74,9 +74,13 @@ function math_conversion(dir) {
 	var text = editbox.value;
 	var regex = 0, subst = 1, func = 2;
 	var command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
-		[//marcação de fórmulas
-			[/(\$\$?)\s*([^$]*?)\s*\1/img, '<math>$2</math>', null],
+		[//fórmulas dentro dos parágrafos
+			[/\$\s*([^$]*?)\s*\$/img, '<math>$2</math>', null],
 			[/<\/?math>/ig, '$', null]
+		],
+		[//fórmulas em parágrafos isolados
+			[/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n: <math>$2</math>\n\n', null],
+			[null, null, null]
 		],
 		[//notas de rodapé
 			[/\\footnote{(.*?)}/g, '<ref>$1</ref>', null],
