@@ -45,22 +45,16 @@ function format_geral() {
 function latex2wiki() {
 	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	var text = editbox.value;
-	tr_list2 = [
+	lista = [
 		["/\$\$?([^$]*?)\$?\$/im", "<math>\1</math>"],
 		["/\\footnote{(.*?)}/", "<ref>\1</ref>"]
 	];
-	for (regra in tr_list2){
-alert(regra);
-alert(regra[0][0]);
-alert(regra[1][0]);
-alert(regra[0][1]);
-alert(regra[1][1]);
-
-		var p = re.compile(reg);
+	for (i=0; i<lista.length; i++){
+		var p = re.compile(lista[i][0]);
 		if (p.test(text)){
-			if (fun) fun();
+			if (lista[i][2]) lista[i][2]();
 		}
-		text = text.replace(p, sub);
+		text = text.replace(p, lista[i][1]);
 	}
 	editbox.value = text;
 }
