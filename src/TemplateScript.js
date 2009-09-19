@@ -49,15 +49,11 @@ function latex2wiki() {
 		[/\\footnote{(.*?)}/, "<ref>\1</ref>", null]
 	];
 	for ([reg, sub, fun] in tr_list2){
-		p = re.compile(reg);
-		if p.search(text){
+		var p = re.compile(reg);
+		if (p.test(text)){
 			if (fun) fun();
 		}
-		if (sub != None){
-			text = p.sub(sub(), text);
-		}else{
-			text = p.sub(//, text);
-		}
+		text = text.replace(p, sub);
 	}
 }
 
