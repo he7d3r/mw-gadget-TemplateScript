@@ -46,7 +46,9 @@ function math_conversion(dir) {
 	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	//http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
 	//[[w:en:User:Jmath666/latex2wiki.pl]]
-	var list = [
+	var text = editbox.value;
+	var regex = 0, subst = 1, func = 2;
+	var command = [
 		//(dir == 0) -> latex2wiki
 		//(dir == 1) -> wiki2latex
 
@@ -59,12 +61,12 @@ function math_conversion(dir) {
 		[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
 		]
 		];
-	var text = editbox.value;
-	for (i=0; i<list.length; i++){
-		if (list[i][dir][0].test(text)){
-			if (list[i][dir][2]) list[i][dir][2]();
+	for (i=0; i<command.length; i++){
+		if (!command[i][dir][regex]) continue;
+		if (command[i][dir][regex].test(text)){
+			if (command[i][dir][func]) command[i][dir][func]();
+			text = text.replace(command[i][dir][regex], command[i][dir][subst]);
 		}
-		text = text.replace(list[i][dir][0], list[i][dir][1]);
 	}
 	editbox.value = text;
 }
