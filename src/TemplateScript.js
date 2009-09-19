@@ -48,8 +48,8 @@ function latex2wiki() {
 	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	var text = editbox.value;
 	lista = [
-		[/\$\$?([^$]*?)\$?\$/im, "<math>$1</math>", null],
-		[/\\footnote{(.*?)}/, "<ref>$1</ref>", null]
+		[/(\$\$?)\s*([^$]*?)\s*\1/img, "<math>$2</math>", null],
+		[/\\footnote{(.*?)}/g, "<ref>$1</ref>", null]
 		];
 	for (i=0; i<lista.length; i++){
 		if (lista[i][0].test(text)){
