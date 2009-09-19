@@ -41,11 +41,36 @@ function format_geral() {
 	usando_regex();
 	format_cab();doaction('diff');
 }
+
+/** Latex2wiki **
+ * Este script é uma adaptação para JavaScript:
+ * (1) Do código de Marc PoulhiÃ¨s <marc.poulhies@epfl.ch>, que era baseado na
+ * ideia original de Maxime Biais <maxime@biais.org>;
+ * (2) Do código escrito por [[w:en:User:Jmath666]] com a ajuda de
+ * [[User:Oleg Alexandrov]]
+ * 
+ * Scripts originais:
+ * http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
+ * http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
+ * [[w:en:User:Jmath666/latex2wiki.pl]]
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 function math_conversion(dir) {
-	//VER TAMBÉM:
-	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
-	//http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
-	//[[w:en:User:Jmath666/latex2wiki.pl]]
+
 	var text = editbox.value;
 	var regex = 0, subst = 1, func = 2;
 	var command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
@@ -67,7 +92,7 @@ function math_conversion(dir) {
 	}
 	editbox.value = text;
 	if (0 == dir)
-		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append')
+		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append')
 	else
 		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append');
 }
