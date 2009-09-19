@@ -10,7 +10,8 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• Formatação geral','format_geral()');
-	regexTool('• Wiki -> Latex','wiki2latex()');
+	regexTool('• Wiki -> LaTeX','wiki2latex()');
+	regexTool('• LaTeX -> Wiki (TESTE!)','latex2wiki()');
 
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
@@ -39,6 +40,25 @@ function format_geral() {
 	format_math();
 	usando_regex();
 	format_cab();doaction('diff');
+}
+
+function latex2wiki() {
+	var text = editbox.value;
+	tr_list2 = [
+		[/(?im)\$\$?([^$]*?)\$?\$/, "<math>\1</math>", null],
+		[/\\footnote{(.*?)}/, (lambda :"<ref>\1</ref>"), null]
+	];
+	for ([reg, sub, fun] in tr_list2){
+		p = re.compile(reg);
+		if p.search(text){
+			if (fun) fun();
+		}
+		if (sub != None){
+			text = p.sub(sub(), text);
+		}else{
+			text = p.sub(//, text);
+		}
+	}
 }
 
 function wiki2latex() {
