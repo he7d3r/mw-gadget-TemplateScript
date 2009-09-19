@@ -46,14 +46,16 @@ function latex2wiki() {
 	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	var text = editbox.value;
 	tr_list2 = [
-		[/\$\$?([^$]*?)\$?\$/im, "<math>\1</math>", null],
-		[/\\footnote{(.*?)}/, "<ref>\1</ref>", null]
+		["/\$\$?([^$]*?)\$?\$/im", "<math>\1</math>"],
+		["/\\footnote{(.*?)}/", "<ref>\1</ref>"]
 	];
 	for (regra in tr_list2){
 alert(regra);
-alert(regra[0]);
-alert(regra[1]);
-alert(regra[2]);
+alert(regra[0][0]);
+alert(regra[1][0]);
+alert(regra[0][1]);
+alert(regra[1][1]);
+
 		var p = re.compile(reg);
 		if (p.test(text)){
 			if (fun) fun();
