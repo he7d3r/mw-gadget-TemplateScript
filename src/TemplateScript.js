@@ -43,6 +43,8 @@ function format_geral() {
 }
 
 function latex2wiki() {
+	//VER TAMBÉM:
+	//http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
 	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	var text = editbox.value;
 	lista = [
