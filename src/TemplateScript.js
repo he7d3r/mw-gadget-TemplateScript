@@ -11,7 +11,7 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 function rmflinks() {
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
-	regexTool('• LaTeX -> Wiki (TESTE!)','latex2wiki()');
+	regexTool('• LaTeX -> Wiki','math_conversion(0)');
 
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
@@ -41,13 +41,14 @@ function format_geral() {
 	usando_regex();
 	format_cab();doaction('diff');
 }
-function math_conversion(d) {
+function math_conversion(dir) {
 	//VER TAMBÉM:
 	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	//http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
-	list = [
-		//(d == 0) -> latex2wiki
-		//(d == 1) -> wiki2latex
+	//[[w:en:User:Jmath666/latex2wiki.pl]]
+	var list = [
+		//(dir == 0) -> latex2wiki
+		//(dir == 1) -> wiki2latex
 
 		[//marcação de fórmulas
 		[/(\$\$?)\s*([^$]*?)\s*\1/img, '<math>$2</math>', null],
@@ -58,24 +59,16 @@ function math_conversion(d) {
 		[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
 		]
 		];
-}
-
-
-
-function latex2wiki() {
 	var text = editbox.value;
-	lista = [
-		[/(\$\$?)\s*([^$]*?)\s*\1/img, "<math>$2</math>", null],
-		[/\\footnote{(.*?)}/g, "<ref>$1</ref>", null]
-		];
-	for (i=0; i<lista.length; i++){
-		if (lista[i][0].test(text)){
-			if (lista[i][2]) lista[i][2]();
+	for (i=0; i<list.length; i++){
+		if (list[i][dir][0].test(text)){
+			if (list[i][dir][2]) list[i][dir][2]();
 		}
-		text = text.replace(lista[i][0], lista[i][1]);
+		text = text.replace(list[i][dir][0], list[i][dir][1]);
 	}
 	editbox.value = text;
 }
+
 
 function wiki2latex() {
 	var preambulo =	'\\documentclass[12pt,a4paper,titlepage]{book}\n' +
