@@ -55,6 +55,7 @@ function latex2wiki() {
 		}
 		text = text.replace(p, sub);
 	}
+	editbox.value = text;
 }
 
 function wiki2latex() {
