@@ -49,10 +49,11 @@ function latex2wiki() {
 		[/\$\$?([^$]*?)\$?\$/im, "<math>\1</math>", null],
 		[/\\footnote{(.*?)}/, "<ref>\1</ref>", null]
 	];
-	for ([reg, sub, fun] in tr_list2){
-alert(typeof reg);
-alert(typeof sub);
-alert(typeof fun);
+	for (regra in tr_list2){
+alert(typeof regra);
+alert(typeof regra[0]);
+alert(typeof regra[1]);
+alert(typeof regra[2]);
 		var p = re.compile(reg);
 		if (p.test(text)){
 			if (fun) fun();
