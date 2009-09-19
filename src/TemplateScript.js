@@ -46,7 +46,7 @@ function latex2wiki() {
 	var text = editbox.value;
 	tr_list2 = [
 		[/\$\$?([^$]*?)\$?\$/im, "<math>\1</math>", null],
-		[/\\footnote{(.*?)}/, (lambda :"<ref>\1</ref>"), null]
+		[/\\footnote{(.*?)}/, "<ref>\1</ref>", null]
 	];
 	for ([reg, sub, fun] in tr_list2){
 		p = re.compile(reg);
