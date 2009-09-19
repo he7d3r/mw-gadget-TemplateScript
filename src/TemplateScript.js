@@ -48,12 +48,12 @@ function latex2wiki() {
 	lista = [
 		[/\$\$?([^$]*?)\$?\$/im, "<math>\1</math>", null],
 		[/\\footnote{(.*?)}/, "<ref>\1</ref>", null]
-	];
+		];
 	for (i=0; i<lista.length; i++){
 		if (lista[i][0].test(text)){
 			if (lista[i][2]) lista[i][2]();
 		}
-		text = text.replace(p, lista[i][1]);
+		text = text.replace(lista[i][0], lista[i][1]);
 	}
 	editbox.value = text;
 }
