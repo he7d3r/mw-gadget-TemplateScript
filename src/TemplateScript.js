@@ -41,11 +41,28 @@ function format_geral() {
 	usando_regex();
 	format_cab();doaction('diff');
 }
+function math_conversion(d) {
+	//VER TAMBÉM:
+	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
+	//http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
+	list = [
+		//(d == 0) -> latex2wiki
+		//(d == 1) -> wiki2latex
+
+		[//marcação de fórmulas
+		[/(\$\$?)\s*([^$]*?)\s*\1/img, '<math>$2</math>', null],
+		[/<\/?math>/ig, '$', null]
+		],
+		[//notas de rodapé
+		[/\\footnote{(.*?)}/g, '<ref>$1</ref>', null],
+		[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
+		]
+		];
+}
+
+
 
 function latex2wiki() {
-	//VER TAMBÉM:
-	//http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
-	//http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
 	var text = editbox.value;
 	lista = [
 		[/(\$\$?)\s*([^$]*?)\s*\1/img, "<math>$2</math>", null],
