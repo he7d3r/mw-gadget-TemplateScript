@@ -222,7 +222,7 @@ function format_cab() {
 	// Formatação do livro de receitas
 	if ( "Livro_de_receitas" == wgBookName ){
 		regex(/== [^\n]+ - (\d+) ==/ig, '== Receita $1 ==');
-		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
+		regex(/=== '''Ingredientes e Preparo:''' ===/ig, '=== Ingredientes ===');
 		regex(/: '''Preparo:'''\n\n/ig, '=== Preparo ===\n');
 	}
 
