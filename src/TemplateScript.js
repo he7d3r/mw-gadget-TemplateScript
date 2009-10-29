@@ -244,7 +244,7 @@ function format_cat() {
 	var antigo = editbox.value;
 	
 	regex(/\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
-	regex(/\[\[Categoria:([^\|\]]+)\|[a-zA-Z0-9]\]\]/ig, '[[Categoria:$1|{{SUBPAGENAME}}]]');
+	regex(/\[\[Categoria:([^\|\]]+)\|([\* !])[a-zA-Z0-9]\]\]/ig, '[[Categoria:$1|$2{{SUBPAGENAME}}]]');
 
 	if (editbox.value != antigo)
 		setreason('format. categorias', 'append');
