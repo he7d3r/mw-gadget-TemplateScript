@@ -219,6 +219,13 @@ function format_cab() {
 	// -quebras de linha entre cabeçalhos consecutivos
 	regex(/=\n+=/ig, '=\n=');
 
+	// Formatação do livro de receitas
+	if ( "Livro_de_receitas" == wgBookName ){
+		regex(/== [^\n]+ - (\d+) ==/ig, '== Receita $1 ==');
+		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
+		regex(/: '''Preparo:'''\n\n/ig, '=== Preparo ===\n');
+	}
+
 	if (editbox.value != antigo)
 		setreason('format. cabeçalhos', 'append');
 }
