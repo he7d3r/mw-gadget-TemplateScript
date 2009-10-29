@@ -218,6 +218,7 @@ function format_cab() {
 		regex(/==\s*[^\n]+\s+-\s+(\d+)\s*==/ig, '== Receita $1 ==');
 		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
 		regex(/:\s*'''Preparo:'''\n\n/ig, '=== Preparo ===\n');
+		regex(/ --\n/ig, ';\n');
 	}
 
 	// +quebra de linha antes de =, -espaços entre = e o título da seção
@@ -242,7 +243,8 @@ function format_predef() {
 function format_cat() {
 	var antigo = editbox.value;
 	
-	regex(/\[\[\s*(?:category|categoria)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
+	regex(/\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
+	regex(/\[\[Categoria:([^\|\]]+)\|[a-zA-Z0-9]\]\]/ig, '[[Categoria:$1|{{SUBPAGENAME}}]]');
 
 	if (editbox.value != antigo)
 		setreason('format. categorias', 'append');
