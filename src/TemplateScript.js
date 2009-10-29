@@ -213,18 +213,18 @@ function cria_autonav() {
 function format_cab() {
 	var antigo = editbox.value;
 
+	// Formatação do livro de receitas
+	if ( "Livro_de_receitas" == wgBookName ){
+		regex(/==\s*[^\n]+\s+-\s+(\d+)\s*==/ig, '== Receita $1 ==');
+		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
+		regex(/:\s*'''Preparo:'''\n\n/ig, '=== Preparo ===\n');
+	}
+
 	// +quebra de linha antes de =, -espaços entre = e o título da seção
 	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig, '\n\n$1 $2 $1\n');
 
 	// -quebras de linha entre cabeçalhos consecutivos
 	regex(/=\n+=/ig, '=\n=');
-
-	// Formatação do livro de receitas
-	if ( "Livro_de_receitas" == wgBookName ){
-		regex(/== [^\n]+ - (\d+) ==/ig, '== Receita $1 ==');
-		regex(/=== '''Ingredientes e Preparo:''' ===/ig, '=== Ingredientes ===');
-		regex(/: '''Preparo:'''\n\n/ig, '=== Preparo ===\n');
-	}
 
 	if (editbox.value != antigo)
 		setreason('format. cabeçalhos', 'append');
