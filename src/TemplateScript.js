@@ -217,7 +217,7 @@ function format_cab() {
 	if ( "Livro_de_receitas" == wgBookName ){
 		regex(/==\s*[^\n]+\s+-\s+(\d+)\s*==/ig, '== Receita $1 ==');
 		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
-		regex(/:\s*'''(?:Modo\s+de\s+)?Preparo:\s*'''\n\n/ig, '=== Preparo ===\n');
+		regex(/:\s*'''(Modo de )?Preparo:'''\n\n/ig, '=== Preparo ===\n');
 		regex(/ --\n/ig, ';\n');
 	}
 
