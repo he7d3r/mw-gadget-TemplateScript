@@ -1,6 +1,6 @@
 /*************
 *** Regex menu framework
-*** by [[m:user:Pathoschild]] <http://meta.wikimedia.org/wiki/User:Pathoschild/Scripts/Regex_menu_framework>
+*** by [[m:user:Pathoschild]]: [[User:Pathoschild/Scripts/Regex menu framework]]
 ***	- adds a sidebar menu of user-defined scripts.
 *************/
 importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript');
@@ -96,9 +96,9 @@ function math_conversion(dir) {
 	}
 	editbox.value = text;
 	if (0 == dir)
-		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append')
+		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce')
 	else
-		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append');
+		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
 
 
@@ -191,7 +191,7 @@ function wiki2latex() {
 			editbox.value +
 			'\n\n\\end{document}';
 
-	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'append');
+	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
 
 function cria_autonav() {
@@ -229,7 +229,7 @@ function format_cab() {
 	regex(/=\n+=/ig, '=\n=');
 
 	if (editbox.value != antigo)
-		setreason('format. cabeçalhos', 'append');
+		setreason('format. cabeçalhos', 'appendonce');
 }
 
 function format_predef() {
@@ -238,7 +238,7 @@ function format_predef() {
 	regex(/{{\s*(?:msg:|template:)?([^}]+)}}/ig, '{{$1}}');
 
 	if (editbox.value != antigo)
-		setreason('format. predefs', 'append');
+		setreason('format. predefs', 'appendonce');
 }
 
 function format_cat() {
@@ -249,7 +249,7 @@ function format_cat() {
 	regex(/\[\[Categoria:([^\|\]]+)\|([\* !])\]\]/ig, '[[Categoria:$1|$2{{SUBPAGENAME}}]]');
 
 	if (editbox.value != antigo)
-		setreason('format. categorias', 'append');
+		setreason('format. categorias', 'appendonce');
 }
 
 function format_list() {
@@ -259,7 +259,7 @@ function format_list() {
 	regex(/^([*#:]+)\s*/mig, '$1 ');
 
 	if (editbox.value != antigo)
-		setreason('format. listas', 'append');
+		setreason('format. listas', 'appendonce');
 }
 
 function abs2rel() {
@@ -302,7 +302,7 @@ function format_links() {
 	regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
 	if (editbox.value != antigo)
-		setreason('formatação dos links', 'append');
+		setreason('formatação dos links', 'appendonce');
 }
 
 function format_math() {
@@ -312,9 +312,9 @@ function format_math() {
 	regex(/<\/math>\s*([\.,;:!\?]) */mig, '$1</math> ');
 
 	if (editbox.value != antigo)
-		setreason('format. <math> e pontuação', 'append');
+		setreason('format. <math> e pontuação', 'appendonce');
 }
 
 function usando_regex() {
-	setreason('[usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'append');
+	setreason('[usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
 }
