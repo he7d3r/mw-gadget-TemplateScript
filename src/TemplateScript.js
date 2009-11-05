@@ -1,6 +1,6 @@
 /*************
 *** Regex menu framework
-*** by [[m:user:Pathoschild]]: [[User:Pathoschild/Scripts/Regex menu framework]]
+*** by [[m:user:Pathoschild]]: [[meta:User:Pathoschild/Scripts/Regex menu framework]]
 ***	- adds a sidebar menu of user-defined scripts.
 *************/
 importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript');
