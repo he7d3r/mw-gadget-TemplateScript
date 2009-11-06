@@ -310,7 +310,7 @@ function format_math() {
 	
 	// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	regex(/<\/math>\s*([\.,;:!\?]) */mig, '$1</math> ');
-	regex(/\\sin/mig, '\mathrm{sen}\,');
+	regex(/\\sin/mig, '\\mathrm{sen}\,');
 
 
 	if (editbox.value != antigo)
