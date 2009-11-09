@@ -9,6 +9,7 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
+	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
 	regexTool('• LaTeX -> Wiki','math_conversion(0)');
@@ -23,7 +24,13 @@ function rmflinks() {
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
 
-	regexTool('• Outro REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
+	//Formatando links do Regex Framework
+	var r = document.getElementById('p-regex')
+	if (r){
+		r.className += ' portal'
+		var d = r.getElementsByTagName('div')
+		if (d[0]) d[0].className += ' pBody body'
+	}
 }
 
 /* scripts */
