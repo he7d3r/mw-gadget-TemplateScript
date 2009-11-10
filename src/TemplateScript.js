@@ -14,6 +14,8 @@ function rmflinks() {
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
 	regexTool('• LaTeX -> Wiki','math_conversion(0)');
 
+	regexTool('• Afluentes: livro de Java','format_java()');
+
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
 	regexTool('Formatar predefinições','format_predef()');
@@ -48,6 +50,18 @@ function format_geral() {
 	usando_regex();
 	format_cab();doaction('diff');
 }
+
+function format_java() {
+	var antigo = editbox.value;
+	
+	regex(/{{:Java\/p\//g, '{{/');
+
+	if (editbox.value != antigo)
+		setreason('atualizando afluentes das predefinições do livro de [[Java]]', 'appendonce');
+}
+
+
+
 
 /** Latex2wiki **
  * Este script é uma adaptação para JavaScript:
