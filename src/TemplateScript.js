@@ -9,12 +9,12 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
+	regexTool('• Afluentes: livro de Java','format_java()');
+
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
 	regexTool('• LaTeX -> Wiki','math_conversion(0)');
-
-	regexTool('• Afluentes: livro de Java','format_java()');
 
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
@@ -54,10 +54,11 @@ function format_geral() {
 function format_java() {
 	var antigo = editbox.value;
 	
-	regex(/{{:Java\/p\//g, '{{/');
+	regex(/{{:Java\/p\//g, '{{Java/');
 
 	if (editbox.value != antigo)
 		setreason('atualizando afluentes das predefinições do livro de [[Java]]', 'appendonce');
+	doaction('diff');
 }
 
 
