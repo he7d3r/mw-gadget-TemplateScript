@@ -55,7 +55,7 @@ function format_java() {
 	var antigo = editbox.value;
 	
 	regex(/{{:Java\/p\//g, '{{Java/');
-	regex(/[[Java\/p\//g, '[[Predefinição:Java/');
+	regex(/\[\[Java\/p\//g, '[[Predefinição:Java/');
 
 	if (editbox.value != antigo)
 		setreason('atualizando afluentes das predefinições do livro de [[Java]]', 'appendonce');
