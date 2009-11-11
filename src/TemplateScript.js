@@ -57,6 +57,8 @@ function format_java() {
 	regex(/{{:Java\/p\//g, '{{Java/');
 	regex(/\[\[Java\/p\//g, '[[Predefinição:Java/');
 
+	regex(/<noinclude>\[\[Categoria:Java \(Predefinições\)\]\]<\/noinclude>/g, '<noinclude>\n{{Documentação|:Java/Lista de predefinições}}\n[[Categoria:Java (Predefinições)|{{SUBPAGENAME}}]]\n</noinclude>');
+
 	if (editbox.value != antigo)
 		setreason('atualizando afluentes das predefinições do livro de [[Java]]', 'appendonce');
 	doaction('save');
