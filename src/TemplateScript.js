@@ -61,7 +61,7 @@ function format_java() {
 
 	if (editbox.value != antigo)
 		setreason('corrigindo indexador [[Categoria:Java (Predefinições)|da categoria]] e incluindo [[Predefinição:Documentação|predefinição de documentação]]', 'appendonce');
-//	doaction('save');
+	doaction('save');
 }
 
 
