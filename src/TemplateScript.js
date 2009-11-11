@@ -54,14 +54,14 @@ function format_geral() {
 function format_java() {
 	var antigo = editbox.value;
 	
-	regex(/{{:Java\/p\//g, '{{Java/');
-	regex(/\[\[Java\/p\//g, '[[Predefinição:Java/');
+//	regex(/{{:Java\/p\//g, '{{Java/');
+//	regex(/\[\[Java\/p\//g, '[[Predefinição:Java/');
 
 	regex(/<noinclude>\[\[Categoria:Java \(Predefinições\)\]\]<\/noinclude>/g, '<noinclude>\n{{Documentação|:Java/Lista de predefinições}}\n[[Categoria:Java (Predefinições)|{{SUBPAGENAME}}]]\n</noinclude>');
 
 	if (editbox.value != antigo)
-		setreason('atualizando afluentes das predefinições do livro de [[Java]]', 'appendonce');
-	doaction('save');
+		setreason('corrigindo indexador [[Categoria:Java (Predefinições)|da categoria]] e incluindo [[Predefinição:Documentação|predefinição de documentação]]', 'appendonce');
+//	doaction('save');
 }
 
 
