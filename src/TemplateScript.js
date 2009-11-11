@@ -58,7 +58,7 @@ function format_java() {
 
 	if (editbox.value != antigo)
 		setreason('atualizando afluentes das predefinições do livro de [[Java]]', 'appendonce');
-	doaction('diff');
+	doaction('save');
 }
 
 
