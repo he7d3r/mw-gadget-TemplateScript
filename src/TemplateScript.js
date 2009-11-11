@@ -9,8 +9,6 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
-	regexTool('• Afluentes: livro de Java','format_java()');
-
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
@@ -50,22 +48,6 @@ function format_geral() {
 	usando_regex();
 	format_cab();doaction('diff');
 }
-
-function format_java() {
-	var antigo = editbox.value;
-	
-//	regex(/{{:Java\/p\//g, '{{Java/');
-//	regex(/\[\[Java\/p\//g, '[[Predefinição:Java/');
-
-	regex(/<noinclude>\n*\[\[Categoria:Java \(Predefinições\)\]\]\n*<\/noinclude>/g, '<noinclude>\n{{Documentação|:Java/Lista de predefinições}}\n[[Categoria:Java (Predefinições)|{{SUBPAGENAME}}]]\n</noinclude>');
-
-	if (editbox.value != antigo)
-		setreason('corrigindo indexador [[Categoria:Java (Predefinições)|da categoria]] e incluindo [[Predefinição:Documentação|predefinição de documentação]]', 'appendonce');
-	doaction('save');
-}
-
-
-
 
 /** Latex2wiki **
  * Este script é uma adaptação para JavaScript:
