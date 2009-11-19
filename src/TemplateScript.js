@@ -23,6 +23,7 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
+	regexTool('Refs do Google Books','converte_refs()');
 
 	//Formatando links do Regex Framework
 	var r = document.getElementById('p-regex')
@@ -215,6 +216,15 @@ function cria_autonav() {
 	}
 
 	editbox.value = lista.join('\n') + '\n\n' + anterior.join('\n') + '\n\n' + posterior.join('\n');
+}
+
+function converte_refs() {
+	var antigo = editbox.value;
+
+	regex(/Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img, '* {{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}');
+
+	if (editbox.value != antigo)
+		setreason('Referência do Google Books -> [[Predefinição:Referência a livro]]', 'appendonce');
 }
 
 function format_cab() {
