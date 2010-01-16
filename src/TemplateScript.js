@@ -176,10 +176,10 @@ function wiki2latex() {
 
 	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé	
 
-	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n'); //cabeçalhos
-	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
-	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\section{$2}\n\n');
-	regex(/\n*^=\s*(.*?)\s*=\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n\n');
+	regex(/\n*^(====)\s*([^\n]*?)\s*\1\n+/mig,'\n\n\\subsubsection{$2}\n\n'); //cabeçalhos
+	regex(/\n*^(===)\s*([^\n]*?)\s*\1\n+/mig,'\n\n\\subsection{$2}\n\n');
+	regex(/\n*^(==)\s*([^\n]*?)\s*\1\n+/mig,'\n\n\\section{$2}\n\n');
+	regex(/\n*^=\s*([^\n]*?)\s*=\n+/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n\n');
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
