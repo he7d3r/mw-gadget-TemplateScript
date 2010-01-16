@@ -150,7 +150,7 @@ function wiki2latex() {
 			'\\newtheorem{conv}[teo]{Conven\c{c}{\~a}o}\n\n' +
 			'\\makeindex\n\n';
 
-	var url	 = 'http://pt.wikibooks.org/wiki/';
+	var url	 = 'http://pt.wikibooks.org/wiki/Special:Search/';
 	var url1	 = 'http://';
 	var url2	 = '.org/wiki/Special:Search/';
 	var w = 'pt.wikipedia';
@@ -182,9 +182,9 @@ function wiki2latex() {
 	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos
-	regex(/\[\[\s*([a-zA-Z]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url + '$1:Special:Search/$2}{$3}');//[[proj:alvo|texto]]
-	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,     '\\href{' + url + '$1:Special:Search/$2}{$3}');//{{proj|alvo|texto}}
-	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*}}/ig,                      '\\href{' + url + '$1:Special:Search/$2}{$2}');//{{proj|alvo}}
+	regex(/\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url + '$1:$2}{$3}');//[[proj:idioma:alvo|texto]]
+	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,     '\\href{' + url + '$1:$2}{$3}');//{{proj|alvo|texto}}
+	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*}}/ig,                      '\\href{' + url + '$1:$2}{$2}');//{{proj|alvo}}
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
