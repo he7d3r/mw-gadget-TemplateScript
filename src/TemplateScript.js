@@ -179,7 +179,7 @@ function wiki2latex() {
 	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n'); //cabeçalhos
 	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
 	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\section{$2}\n\n');
-	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n\n');
+	regex(/\n*^=\s*(.*?)\s*=\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n\n');
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
@@ -195,23 +195,23 @@ function wiki2latex() {
 	var WikiLink = ''
 	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i
 	while(WikiLink = reWikiLink.exec(editbox.value)){//[[proj:idioma:alvo|texto]]
-		WikiLink[2] = encodeURI(WikiLink[2]).replace(/([%#])/g,'\\$1')
+		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 	}
 	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/i
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo|texto}}
-		WikiLink[2] = encodeURI(WikiLink[2]).replace(/([%#])/g,'\\$1')
+		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 	}
 	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*}}/i
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo}}
-		WikiLink[2] = encodeURI(WikiLink[2]).replace(/([%#])/g,'\\$1')
+		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
 	}
 	
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
-	regex(/\n#\s*/ig,'\n\\item ');
+	regex(/\n\*#|\s*/ig,'\n\\item ');
 
 //	regex(//ig,'\\begin{enumerate}\n');
 //	regex(//ig,'\\begin{itemize}\n');
