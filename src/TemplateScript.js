@@ -179,19 +179,19 @@ function wiki2latex() {
 	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n'); //cabeçalhos
 	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
 	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\section{$2}\n\n');
-	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n');
+	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos	
 	var WikiLink = ''
-	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig
+	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i
 	while(WikiLink = reWikiLink.exec(editbox.value)){//[[proj:idioma:alvo|texto]]
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + encodeURI(WikiLink[2]) + '}{$3}')
 	}
-	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig
+	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/i
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo|texto}}
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + encodeURI(WikiLink[2]) + '}{$3}')
 	}
-	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*}}/ig
+	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*}}/i
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo}}
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + encodeURI(WikiLink[2]) + '}{$2}')
 	}
@@ -221,7 +221,7 @@ function wiki2latex() {
 			'\\frontmatter\n\n' +
 			'\\tableofcontents\n\n' +
 			'\\mainmatter %Depois de índice e prefácio\n\n' +
-			'\\chapter{' + wgTitle + '}\\label{cap:' + wgTitle.toLowerCase() + '}\n\n' +
+			'\\chapter{' + wgTitle + '}\\label{cap:' + wgTitle.toLowerCase() + '}\n\n\n' +
 			editbox.value +
 			'\n\n\\backmatter\n\n' +
 			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat\n' +
