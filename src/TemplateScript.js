@@ -182,7 +182,12 @@ function wiki2latex() {
 	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos
-	regex(/\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url + '$1:$2}{$3}');//[[proj:idioma:alvo|texto]]
+	//regex(/\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url + '$1:$2}{$3}');//[[proj:idioma:alvo|texto]]
+	var WikiLink = ''
+	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig
+	while(WikiLink = reWikiLink.exec(editbox.value)){
+		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + encodeURI(WikiLink[2]) + '}{$3}')
+	}
 	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,     '\\href{' + url + '$1:$2}{$3}');//{{proj|alvo|texto}}
 	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*}}/ig,                      '\\href{' + url + '$1:$2}{$2}');//{{proj|alvo}}
 
