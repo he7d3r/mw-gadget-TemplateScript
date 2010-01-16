@@ -119,7 +119,7 @@ function wiki2latex() {
 
 	if (regsearch(/<!--(.|\s)*?-->/)){
 		preambulo +=	'\\usepackage{verbatim}' +
-				' %permite usar \begin{comment}...\end{comment} para comentar varias linhas\n';
+				' %permite usar \\begin{comment}...\\end{comment} para comentar varias linhas\n';
 		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
 	}
 
@@ -153,36 +153,38 @@ function wiki2latex() {
 	var url1	 = 'http://';
 	var url2	 = '.org/wiki/Special:Search/';
 	var w = 'pt.wikipedia';
-//	var wikt = 'pt.wiktionary';
-//	var n = 'pt.wikinews';
-//	var b = 'pt.wikibooks';
-//	var q = 'pt.wikiquote';
-//	var s = 'pt.wikisource';
-//	var species = 'wikispecies.wikimedia';
-//	var v = 'pt.wikiversity';
-//	var wmf = 'wikimediafoundation';
-//	var commons = 'commons.wikimedia';
-//	var m = 'meta.wikimedia';
+	var wikiprojeto = {
+	'b':	'pt.wikibooks',
+	'n':	'pt.wikinews',
+	'q':	'pt.wikiquote',
+	's':	'pt.wikisource',
+	'v':	'pt.wikiversity',
+	'm':	'meta.wikimedia',
+	'commons':	'commons.wikimedia',
+	'meta':	'meta.wikimedia',
+	'wmf':	'wikimediafoundation',
+	'species':	'wikispecies.wikimedia'	
+	}
 
-	regex(/\n*{{Auto(Cat|Nav)}}\n*/ig,'');
+	regex(/\n*{{Auto(Cat|Nav)}}\n*/ig,''); //Comandos wiki que são descartados
 	regex(/<\/?noinclude>/ig,'');
+	regex(/(?:\n*(?:=+)\s*Notas\s*(?:=+)\n*)?\n*<references\/>\n*/ig,'');
 
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
 
-	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé
-	regex(/(?:\n*(?:=+)\s*Notas\s*(?:=+)\n*)?\n*<references\/>\n*/ig,'');
+	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé	
 
-	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsubsection{$2}\n\n'); //cabeçalhos
-	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n');
-	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
+	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n'); //cabeçalhos
+	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
+	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\section{$2}\n\n');
 
-	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}');
+	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos
 	regex(/\[\[\s*(?:w)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
 	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
 	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$1}');
 
-	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{def}\n$1\n\\end{def}'); //predefinições matemáticas
+	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}\n$1\n\\end{defi}'); //predefinições matemáticas
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}\n$1\n\\end{teo}');
 	regex(/{{\s*(?:Demonstração)\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
 	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}\n$1\n\\end{lema}');
