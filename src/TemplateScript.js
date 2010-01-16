@@ -211,7 +211,7 @@ function wiki2latex() {
 	
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
-	regex(/\n\*|#\s*/ig,'\n\\item ');
+	regex(/\n(:?\*|#)\s*/ig,'\n\\item ');
 
 //	regex(//ig,'\\begin{enumerate}\n');
 //	regex(//ig,'\\begin{itemize}\n');
