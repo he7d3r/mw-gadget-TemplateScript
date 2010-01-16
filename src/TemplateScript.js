@@ -150,6 +150,7 @@ function wiki2latex() {
 			'\\newtheorem{conv}[teo]{Conven\c{c}{\~a}o}\n\n' +
 			'\\makeindex\n\n';
 
+	var url	 = 'http://pt.wikibooks.org/wiki/';
 	var url1	 = 'http://';
 	var url2	 = '.org/wiki/Special:Search/';
 	var w = 'pt.wikipedia';
@@ -160,8 +161,8 @@ function wiki2latex() {
 	's':	'pt.wikisource',
 	'v':	'pt.wikiversity',
 	'm':	'meta.wikimedia',
-	'commons':	'commons.wikimedia',
 	'meta':	'meta.wikimedia',
+	'commons':	'commons.wikimedia',
 	'wmf':	'wikimediafoundation',
 	'species':	'wikispecies.wikimedia'	
 	}
@@ -181,19 +182,19 @@ function wiki2latex() {
 	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos
-	regex(/\[\[\s*(?:w)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url1 + wikiprojeto['w'] + url2 + '$1}{$2}');
-	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,'\\href{' + url1 + wikiprojeto['w'] + url2 + '$1}{$2}');
-	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*}}/ig,'\\href{' + url1 + wikiprojeto['w'] + url2 + '$1}{$1}');
+	regex(/\[\[\s*([a-zA-Z]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url + '$1:Special:Search/$2}{$3}');//[[proj:alvo|texto]]
+	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,     '\\href{' + url + '$1:Special:Search/$2}{$3}');//{{proj|alvo|texto}}
+	regex(/{{\s*([a-zA-Z]+)\s*\|\s*([^\|}]+?)\s*}}/ig,                      '\\href{' + url + '$1:Special:Search/$2}{$2}');//{{proj|alvo}}
 
-	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}\n$1\n\\end{defi}'); //predefinições matemáticas
-	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}\n$1\n\\end{teo}');
+	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
+	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
 	regex(/{{\s*(?:Demonstração)\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
-	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}\n$1\n\\end{lema}');
-	regex(/{{\s*(?:Proposição)\|([^}]+)}}/ig,'\\begin{prop}\n$1\n\\end{prop}');
-	regex(/{{\s*(?:Corolário)\|([^}]+)}}/ig,'\\begin{cor}\n$1\n\\end{cor}');
-	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}\n$1\n\\end{ex}');
-	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}\n$1\n\\end{exer}');
-	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}\n$1\n\\end{obs}');
+	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}%\\label{lema:}\n$1\n\\end{lema}');
+	regex(/{{\s*(?:Proposição)\|([^}]+)}}/ig,'\\begin{prop}%\\label{prop:}\n$1\n\\end{prop}');
+	regex(/{{\s*(?:Corolário)\|([^}]+)}}/ig,'\\begin{cor}%\\label{cor:}\n$1\n\\end{cor}');
+	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
+	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
+	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
 	regex(/\n#\s*/ig,'\n\\item ');
