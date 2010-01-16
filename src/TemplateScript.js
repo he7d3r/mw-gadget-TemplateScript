@@ -178,11 +178,12 @@ function wiki2latex() {
 	regex(/\n*^(====)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsubsection{$2}\n\n'); //cabeçalhos
 	regex(/\n*^(===)\s*(.*?)\s*\1\s*/mig,'\n\n\\subsection{$2}\n\n');
 	regex(/\n*^(==)\s*(.*?)\s*\1\s*/mig,'\n\n\\section{$2}\n\n');
+	regex(/\n*^(=)\s*(.*?)\s*\1\s*/mig,'\n\n\n\\chapter{$2}\\label{cap:$2}\n\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos
-	regex(/\[\[\s*(?:w)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
-	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$2}');
-	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*}}/ig,'\\href{' + url1 + w + url2 + '$1}{$1}');
+	regex(/\[\[\s*(?:w)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/ig,'\\href{' + url1 + wikiprojeto['w'] + url2 + '$1}{$2}');
+	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/ig,'\\href{' + url1 + wikiprojeto['w'] + url2 + '$1}{$2}');
+	regex(/{{\s*(?:w)\s*\|\s*([^\|}]+?)\s*}}/ig,'\\href{' + url1 + wikiprojeto['w'] + url2 + '$1}{$1}');
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}\n$1\n\\end{defi}'); //predefinições matemáticas
 	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}\n$1\n\\end{teo}');
