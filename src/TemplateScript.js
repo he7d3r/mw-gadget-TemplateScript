@@ -112,34 +112,43 @@ function math_conversion(dir) {
 
 function wiki2latex() {
 	var preambulo =	'\\documentclass[12pt,a4paper,titlepage]{book}\n' +
-			'\\usepackage[latin1]{inputenc}\n' +
+			'\\usepackage[utf8]{inputenc}%[latin1]\n' +
 			'\\usepackage[brazil]{babel}\n' +
 			'\\usepackage{amsthm, amssymb, amsmath}\n' +
-			'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n';
+			'\\usepackage{footmisc}';
 
 	if (regsearch(/<!--(.|\s)*?-->/)){
-		preambulo += '\\usepackage{verbatim}\n';
+		preambulo +=	'\\usepackage{verbatim}' +
+				' %permite usar \begin{comment}...\end{comment} para comentar varias linhas\n';
 		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
 	}
 
-	preambulo +=	'\n\\newtheorem{teo}{Teorema}[chapter]\n' +
-			'\\newtheorem{lema}[teo]{Lema}\n' +
-			'\\newtheorem{prop}[teo]{Proposição}\n' +
-			'\\newtheorem{cor}[teo]{Corolário}\n\n' +
-			'\\hypersetup{\n' +
+	preambulo +=	'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n' +
+			'\n\\hypersetup{\n' +
+			'		pdftitle = {' + wgBookName + '},\n' +
+			'		pdfauthor = {Colaboradores do Wikilivros},\n' +
+			'		pdfcreator = {' + wgUserName + '},\n' +
+			'		pdfsubject = {},\n' +
+			'		pdfkeywords = {wiki, livro, wikilivro, Wikilivros},\n' +			
 			'		colorlinks = true,\n' +
 			'		linkcolor = blue,\n' +
 			'		anchorcolor = red,\n' +
 			'		citecolor = blue,\n' +
 			'		filecolor = red,\n' +
-			'		urlcolor = red\n' +
+			'		urlcolor = blue\n' +
 			'}\n' +
+			'\n\\newtheorem{teo}{Teorema}[chapter]\n' +
+			'\\newtheorem{lema}[teo]{Lema}\n' +
+			'\\newtheorem{prop}[teo]{Proposi\c{c}{\~a}o}\n' +
+			'\\newtheorem{cor}[teo]{Corol{\'a}rio}\n\n' +
 			'\\theoremstyle{definition}\n' +
-			'\\newtheorem{defi}[teo]{Definição}\n' +
+			'\\newtheorem{defi}[teo]{Defini\c{c}{\~a}o}\n' +
 			'\\newtheorem{ex}[teo]{Exemplo}\n' +
-			'\\newtheorem{exer}[teo]{Exercício}\n\n' +
+			'\\newtheorem{exer}[teo]{Exerc{\'i}cio}\n\n' +
 			'\\theoremstyle{remark}\n' +
-			'\\newtheorem{obs}[teo]{Observação}\n\n';
+			'\\newtheorem{obs}[teo]{Observa\c{c}{\~a}o}\n'
+			'\\newtheorem{conv}[teo]{Conven\c{c}{\~a}o}\n\n' +
+			'\\makeindex\n\n';
 
 	var url1	 = 'http://';
 	var url2	 = '.org/wiki/Special:Search/';
@@ -195,9 +204,16 @@ function wiki2latex() {
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
-			'\\section{' + wgTitle + '}\n\n' +
+			'\\frontmatter\n\n' +
+			'\\tableofcontents\n\n' +
+			'\\mainmatter %Depois de índice e prefácio\n\n' +
+			'\\chapter{' + wgTitle + '}\\label{cap:' + wgTitle.toLowerCase() + '}\n\n' +
 			editbox.value +
-			'\n\n\\end{document}';
+			'\n\n\\backmatter\n\n' +
+			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat\n' +
+			'\\bibliography{biblio}\\label{cap:biblio}\n' +
+			'\\addcontentsline{toc}{chapter}{Referências Bibliográficas}\n\n' +
+			'\\end{document}';
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
