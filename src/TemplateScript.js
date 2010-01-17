@@ -155,15 +155,15 @@ function wiki2latex() {
 	var url2	 = '.org/wiki/Special:Search/';
 	var w = 'pt.wikipedia';
 	var wikiprojeto = {
-	'b':	'pt.wikibooks',
-	'n':	'pt.wikinews',
-	'q':	'pt.wikiquote',
-	's':	'pt.wikisource',
-	'v':	'pt.wikiversity',
-	'm':	'meta.wikimedia',
-	'meta':	'meta.wikimedia',
+	'b':		'pt.wikibooks',
+	'n':		'pt.wikinews',
+	'q':		'pt.wikiquote',
+	's':		'pt.wikisource',
+	'v':		'pt.wikiversity',
+	'm':		'meta.wikimedia',
+	'meta':		'meta.wikimedia',
 	'commons':	'commons.wikimedia',
-	'wmf':	'wikimediafoundation',
+	'wmf':		'wikimediafoundation',
 	'species':	'wikispecies.wikimedia'	
 	}
 
@@ -212,10 +212,17 @@ function wiki2latex() {
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
 	}
-	
+	regex(/\[\[(?:\.\.\/[^#]+)?#Definição ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[defi:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#Proposição ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[prop:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#Lema ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[lema:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#Teorema ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[teo:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#Corolário ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[cor:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#Exemplo ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[ex:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#Exercício ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[exer:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#(?:Obs.|Observação)? ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[obs:$1]{$2}');
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
-	regex(/\n(:?\*|#)\s*/ig,'\n\\item ');
+	regex(/\n(?:\*|#)\s*/ig,'\n\\item ');
 
 //	regex(//ig,'\\begin{enumerate}\n');
 //	regex(//ig,'\\begin{itemize}\n');
@@ -272,7 +279,7 @@ function format_cab() {
 	if ( "Livro_de_receitas" == wgBookName ){
 		regex(/==\s*[^\n]+\s+[-–]\s+(\d+)\s*==/ig, '== Receita $1 ==');
 		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
-		regex(/\n:?\s*'''(?:Modo\s+de\s+)?(:?Preparo|fazer):?\s*'''\s*\n/ig, '\n=== Preparo ===\n');
+		regex(/\n:?\s*'''(?:Modo\s+de\s+)?(?:Preparo|fazer):?\s*'''\s*\n/ig, '\n=== Preparo ===\n');
 		regex(/\n:?\s*'''\s*([^\n:']+)\s*:?\s*'''\s*\n/ig, '\n=== $1 ===\n');
 		regex(/ --\n/ig, ';\n');
 	}
