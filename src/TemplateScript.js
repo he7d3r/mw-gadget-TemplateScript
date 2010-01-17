@@ -176,7 +176,7 @@ function wiki2latex() {
 	regex(/<\/?math>/ig,'$');
 
 	regex(/<ref.*?(?:name\s*=\s*"([^"]+)*").*?>(.*?)<\/ref.*?>/ig,'\\footnote{$2\\label{nota:$1}}'); //notas de rodapé
-	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$2%\\label{nota:$1}\n}');
+	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1%\\label{nota:}\n}');
 
 	//cabeçalhos
 	regex(/^====([^\n]+)====\s*$/mg,'\n\n\\subsubsection{$1}\n\n');
