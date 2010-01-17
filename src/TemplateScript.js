@@ -176,11 +176,11 @@ function wiki2latex() {
 
 	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé	
 
-	//cabeçalhos (no Parser.php o REGEX é /^$h(.+)$h\\s*$/m )
-	regex(/\n====\s*([^\n=]*?)\s*====\n/mig,'\n\n\\subsubsection{$1}\n\n');
-	regex(/\n===\s*([^\n=]*?)\s*===\n/mig,'\n\n\\subsection{$1}\n\n');
-	regex(/\n==\s*([^\n=]*?)\s*==\n/mig,'\n\n\\section{$1}\n\n');
-	regex(/\n=\s*([^\n=]*?)\s*=\n/mig,'\n\n\n\\chapter{$1}\\label{cap:$1}\n\n\n');
+	//cabeçalhos
+	regex(/^====(.+)====\s*$/mg,'\n\n\\subsubsection{$1}\n\n');
+	regex(/^===(.+)===\s*$/mg,'\n\n\\subsection{$1}\n\n');
+	regex(/^==(.+)==\s*$/mg,'\n\n\\section{$1}\n\n');
+	regex(/^=(.+)=\s*$/mg,'\n\n\n\\chapter{$1}\\label{cap:$1}\n\n\n');
 
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
