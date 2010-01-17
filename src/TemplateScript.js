@@ -177,10 +177,10 @@ function wiki2latex() {
 	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1}'); //notas de rodapé	
 
 	//cabeçalhos
-	regex(/^====(.+)====\s*$/mg,'\n\n\\subsubsection{$1}\n\n');
-	regex(/^===(.+)===\s*$/mg,'\n\n\\subsection{$1}\n\n');
-	regex(/^==(.+)==\s*$/mg,'\n\n\\section{$1}\n\n');
-	regex(/^=(.+)=\s*$/mg,'\n\n\n\\chapter{$1}\\label{cap:$1}\n\n\n');
+	regex(/^====([^\n]+)====\s*$/mg,'\n\n\\subsubsection{$1}\n\n');
+	regex(/^===([^\n]+)===\s*$/mg,'\n\n\\subsection{$1}\n\n');
+	regex(/^==([^\n]+)==\s*$/mg,'\n\n\\section{$1}\n\n');
+	regex(/^=([^\n]+)=\s*$/mg,'\n\n\n\\chapter{$1}\\label{cap:$1}\n\n\n');
 
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
