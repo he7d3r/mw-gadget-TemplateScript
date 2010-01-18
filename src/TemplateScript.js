@@ -169,8 +169,8 @@ function wiki2latex() {
 
 	regex(/{{Auto(Cat|Nav)}}/ig,''); //Comandos wiki que são descartados
 	regex(/<\/?noinclude>/ig,'');
-	regex(/^(=+)\s*(?:Notas|Referências)\s*\1$/ig,'');
-	regex(/^\s*<references(?:\s*group\s*=\s*"[^"]*")?\/>\s*$/ig,'');
+	regex(/^(=+)\s*(?:Notas|Referências)\s*\1$/mig,'');
+	regex(/^\s*<references(?:\s*group\s*=\s*"[^"]*")?\/>\s*$/mig,'');
 
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
