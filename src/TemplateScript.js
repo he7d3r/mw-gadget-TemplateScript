@@ -230,8 +230,8 @@ function wiki2latex() {
 //	regex(/# /ig,'\\item ');
 //	regex(//ig,'\\end{enumerate}\n');
 //	regex(//ig,'\\end{itemize}\n');
-	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n\\$1\n');
-	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n\\$1\n\n');
+	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n\$1\n');
+	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n\$1\n\n');
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
