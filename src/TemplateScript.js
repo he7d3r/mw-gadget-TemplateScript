@@ -175,7 +175,6 @@ function wiki2latex() {
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
 	regex(/\{\{Fórmula\|\$([^$]+)\$\}\}/ig,'$$$1$$');//Fórmulas
-	regex(/"([^"]+)"/ig,"``$1''");//Aspas
 
 	regex(/<ref.*?(?:name\s*=\s*"([^"]+)").*?>(.*?)<\/ref.*?>/ig,'\\footnote{$2\\label{nota:$1}}'); //notas de rodapé
 	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1%\\label{nota:}\n}');
@@ -234,6 +233,7 @@ function wiki2latex() {
 //	regex(//ig,'\\end{itemize}\n');
 	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n\$1\n');
 	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n\$1\n\n');
+	regex(/"([^"]+)"/ig,"``$1''");//Aspas
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
