@@ -219,7 +219,7 @@ function wiki2latex() {
 	regex(/\[\[(?:\.\.\/[^#]+)?#Corolário ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[cor:$1]{$2}');
 	regex(/\[\[(?:\.\.\/[^#]+)?#Exemplo ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[ex:$1]{$2}');
 	regex(/\[\[(?:\.\.\/[^#]+)?#Exercício ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[exer:$1]{$2}');
-	regex(/\[\[(?:\.\.\/[^#]+)?#(?:Obs.|Observação)? ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[obs:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#(?:Obs\.|Observação)? ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[obs:$1]{$2}');
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
 	regex(/\n(?:\*|#)\s*/ig,'\n\\item ');
@@ -232,6 +232,7 @@ function wiki2latex() {
 //	regex(//ig,'\\end{itemize}\n');
 	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n\$1\n');
 	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n\$1\n\n');
+	regex(/"([^"]+)"/ig,"``$1''");//Aspas
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
