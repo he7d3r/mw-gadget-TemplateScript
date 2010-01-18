@@ -115,7 +115,7 @@ function wiki2latex() {
 			'\\usepackage[utf8]{inputenc}%[latin1]\n' +
 			'\\usepackage[brazil]{babel}\n' +
 			'\\usepackage{amsthm, amssymb, amsmath}\n' +
-			'\\usepackage{footmisc}';
+			'\\usepackage{footmisc}\n';
 
 	if (regsearch(/<!--(.|\s)*?-->/)){
 		preambulo +=	'\\usepackage{verbatim}' +
@@ -123,8 +123,8 @@ function wiki2latex() {
 		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
 	}
 
-	preambulo +=	'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n' +
-			'\n\\hypersetup{\n' +
+	preambulo +=	'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n\n' +
+			'\\hypersetup{\n' +
 			'		pdftitle = {' + wgBookName + '},\n' +
 			'		pdfauthor = {Colaboradores do Wikilivros},\n' +
 			'		pdfcreator = {' + wgUserName + '},\n' +
@@ -136,8 +136,8 @@ function wiki2latex() {
 			'		citecolor = blue,\n' +
 			'		filecolor = red,\n' +
 			'		urlcolor = blue\n' +
-			'}\n' +
-			'\n\\newtheorem{teo}{Teorema}[chapter]\n' +
+			'}\n\n' +
+			'\\newtheorem{teo}{Teorema}[chapter]\n' +
 			'\\newtheorem{lema}[teo]{Lema}\n' +
 			'\\newtheorem{prop}[teo]{Proposi\c{c}{\~a}o}\n' +
 			'\\newtheorem{cor}[teo]{Corol{\'a}rio}\n\n' +
@@ -230,6 +230,7 @@ function wiki2latex() {
 //	regex(/# /ig,'\\item ');
 //	regex(//ig,'\\end{enumerate}\n');
 //	regex(//ig,'\\end{itemize}\n');
+//	regex(/\n*\(chapter|(?:sub)*section){([^}]+)}\n*/ig,'\n\n\\$1{$2}\n\n');
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
