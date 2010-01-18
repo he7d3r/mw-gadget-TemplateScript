@@ -169,12 +169,11 @@ function wiki2latex() {
 
 	regex(/{{Auto(Cat|Nav)}}/ig,''); //Comandos wiki que são descartados
 	regex(/<\/?noinclude>/ig,'');
-	regex(/^(=+)\s*(?:Not|Referênci)as\s*\1$/mig,'');
+	regex(/^(=+)\s*(?:Notas|Referências)\s*\1$/mig,'');
 	regex(/^\s*<references(?:\s*group\s*=\s*"[^"]*")?\/>\s*$/mig,'');
 
 	regex(/([\.,;:!\?])<\/math> */mig,'</math>$1 '); // coloca a pontuação que vem depois de fórmulas fora das tags <math>
 	regex(/<\/?math>/ig,'$');
-	regex(/\{\{Fórmula\|\$([^$]+)\$\}\}/ig,'$$$1$$');//Fórmulas
 
 	regex(/<ref.*?(?:name\s*=\s*"([^"]+)").*?>(.*?)<\/ref.*?>/ig,'\\footnote{$2\\label{nota:$1}}'); //notas de rodapé
 	regex(/<ref.*?>(.*?)<\/ref.*?>/ig,'\\footnote{$1%\\label{nota:}\n}');
@@ -187,14 +186,14 @@ function wiki2latex() {
 
 
 	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
-	regex(/{{\s*Teorema\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
-	regex(/{{\s*Demonstração\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
-	regex(/{{\s*Lema)|([^}]+)}}/ig,'\\begin{lema}%\\label{lema:}\n$1\n\\end{lema}');
-	regex(/{{\s*Proposição\|([^}]+)}}/ig,'\\begin{prop}%\\label{prop:}\n$1\n\\end{prop}');
-	regex(/{{\s*Corolário\|([^}]+)}}/ig,'\\begin{cor}%\\label{cor:}\n$1\n\\end{cor}');
-	regex(/{{\s*Exemplo\|([^}]+)}}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
-	regex(/{{\s*Exercício\|([^}]+)}}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
-	regex(/{{\s*Observação\|([^}]+)}}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
+	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
+	regex(/{{\s*(?:Demonstração)\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
+	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}%\\label{lema:}\n$1\n\\end{lema}');
+	regex(/{{\s*(?:Proposição)\|([^}]+)}}/ig,'\\begin{prop}%\\label{prop:}\n$1\n\\end{prop}');
+	regex(/{{\s*(?:Corolário)\|([^}]+)}}/ig,'\\begin{cor}%\\label{cor:}\n$1\n\\end{cor}');
+	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
+	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
+	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos	
 	var WikiLink = ''
@@ -220,7 +219,7 @@ function wiki2latex() {
 	regex(/\[\[(?:\.\.\/[^#]+)?#Corolário ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[cor:$1]{$2}');
 	regex(/\[\[(?:\.\.\/[^#]+)?#Exemplo ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[ex:$1]{$2}');
 	regex(/\[\[(?:\.\.\/[^#]+)?#Exercício ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[exer:$1]{$2}');
-	regex(/\[\[(?:\.\.\/[^#]+)?#Obs(?:.|ervação) ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[obs:$1]{$2}');
+	regex(/\[\[(?:\.\.\/[^#]+)?#(?:Obs.|Observação)? ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[obs:$1]{$2}');
 
 	regex(/:\n+#\s*/ig,':\n\\begin{enumerate}\n\\item ');
 	regex(/\n(?:\*|#)\s*/ig,'\n\\item ');
@@ -233,7 +232,6 @@ function wiki2latex() {
 //	regex(//ig,'\\end{itemize}\n');
 	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n\$1\n');
 	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n\$1\n\n');
-	regex(/"([^"]+)"/ig,"``$1''");//Aspas
 
 	editbox.value =	preambulo +
 			'\\begin{document}\n\n' +
