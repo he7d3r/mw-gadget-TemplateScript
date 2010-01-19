@@ -139,15 +139,15 @@ function wiki2latex() {
 			'}\n\n' +
 			'\\newtheorem{teo}{Teorema}[chapter]\n' +
 			'\\newtheorem{lema}[teo]{Lema}\n' +
-			'\\newtheorem{prop}[teo]{Proposi\c{c}{\~a}o}\n' +
-			'\\newtheorem{cor}[teo]{Corol{\'a}rio}\n\n' +
+			'\\newtheorem{prop}[teo]{Proposi\\c{c}{\\~a}o}\n' +
+			'\\newtheorem{cor}[teo]{Corol{\\'a}rio}\n\n' +
 			'\\theoremstyle{definition}\n' +
-			'\\newtheorem{defi}[teo]{Defini\c{c}{\~a}o}\n' +
+			'\\newtheorem{defi}[teo]{Defini\\c{c}{\\~a}o}\n' +
 			'\\newtheorem{ex}[teo]{Exemplo}\n' +
-			'\\newtheorem{exer}[teo]{Exerc{\'i}cio}\n\n' +
+			'\\newtheorem{exer}[teo]{Exerc{\\'i}cio}\n\n' +
 			'\\theoremstyle{remark}\n' +
-			'\\newtheorem{obs}[teo]{Observa\c{c}{\~a}o}\n'
-			'\\newtheorem{conv}[teo]{Conven\c{c}{\~a}o}\n\n' +
+			'\\newtheorem{obs}[teo]{Observa\\c{c}{\\~a}o}\n'
+			'\\newtheorem{conv}[teo]{Conven\\c{c}{\\~a}o}\n\n' +
 			'\\makeindex\n\n';
 
 	var url	 = 'http://pt.wikibooks.org/wiki/Special:Search/';
@@ -194,8 +194,8 @@ function wiki2latex() {
 	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
 	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
 	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
-	//regex(/\{\{Fórmula\|([^\|]+?)\|([^\n]+?)\}\}/igm,'\\begin{equation}\\label{eq:$1}\n$2\n\\end{equation}');
-	//regex(/\{\{Fórmula\|([^\n]+?)\}\}/igm,'\\begin{equation}\\label{eq:???}\n$1\n\\end{equation}');
+	regex(/\{\{Fórmula\|([^\|]+?)\|([^\n]+?)\}\}\n/igm,'\\begin{equation}\\label{eq:$1}\n$2\n\\end{equation}\n');
+	regex(/\{\{Fórmula\|([^\n]+?)\}\}\n/igm,'\\begin{equation}\\label{eq:???}\n$1\n\\end{equation}\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos	
 	var WikiLink = ''
