@@ -123,32 +123,32 @@ function wiki2latex() {
 		regex(/<!--(.|\s)*?-->/g,'\\begin{comment}\n$1\n\\end{comment}');
 	}
 
-	preambulo +=	'\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n\n' +
-			'\\hypersetup{\n' +
-			'		pdftitle = {' + wgBookName + '},\n' +
-			'		pdfauthor = {Colaboradores do Wikilivros},\n' +
-			'		pdfcreator = {' + wgUserName + '},\n' +
-			'		pdfsubject = {},\n' +
-			'		pdfkeywords = {wiki, livro, wikilivro, Wikilivros},\n' +			
-			'		colorlinks = true,\n' +
-			'		linkcolor = blue,\n' +
-			'		anchorcolor = red,\n' +
-			'		citecolor = blue,\n' +
-			'		filecolor = red,\n' +
-			'		urlcolor = blue\n' +
-			'}\n\n' +
-			'\\newtheorem{teo}{Teorema}[chapter]\n' +
-			'\\newtheorem{lema}[teo]{Lema}\n' +
-			'\\newtheorem{prop}[teo]{Proposi\\c{c}{\\~a}o}\n' +
-			'\\newtheorem{cor}[teo]{Corol{\\'a}rio}\n\n' +
-			'\\theoremstyle{definition}\n' +
-			'\\newtheorem{defi}[teo]{Defini\\c{c}{\\~a}o}\n' +
-			'\\newtheorem{ex}[teo]{Exemplo}\n' +
-			'\\newtheorem{exer}[teo]{Exerc{\\'i}cio}\n\n' +
-			'\\theoremstyle{remark}\n' +
-			'\\newtheorem{obs}[teo]{Observa\\c{c}{\\~a}o}\n'
-			'\\newtheorem{conv}[teo]{Conven\\c{c}{\\~a}o}\n\n' +
-			'\\makeindex\n\n';
+	preambulo +=	"\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n\n" +
+			"\\hypersetup{\n" +
+			"		pdftitle = {" + wgBookName + "},\n" +
+			"		pdfauthor = {Colaboradores do Wikilivros},\n" +
+			"		pdfcreator = {" + wgUserName + "},\n" +
+			"		pdfsubject = {},\n" +
+			"		pdfkeywords = {wiki, livro, wikilivro, Wikilivros},\n" +
+			"		colorlinks = true,\n" +
+			"		linkcolor = blue,\n" +
+			"		anchorcolor = red,\n" +
+			"		citecolor = blue,\n" +
+			"		filecolor = red,\n" +
+			"		urlcolor = blue\n" +
+			"}\n\n" +
+			"\\newtheorem{teo}{Teorema}[chapter]\n" +
+			"\\newtheorem{lema}[teo]{Lema}\n" +
+			"\\newtheorem{prop}[teo]{Proposi\\c{c}{\\~a}o}\n" +
+			"\\newtheorem{cor}[teo]{Corol{\\'a}rio}\n\n" +
+			"\\theoremstyle{definition}\n" +
+			"\\newtheorem{defi}[teo]{Defini\\c{c}{\\~a}o}\n" +
+			"\\newtheorem{ex}[teo]{Exemplo}\n" +
+			"\\newtheorem{exer}[teo]{Exerc{\\'i}cio}\n\n" +
+			"\\theoremstyle{remark}\n" +
+			"\\newtheorem{obs}[teo]{Observa\\c{c}{\\~a}o}\n"
+			"\\newtheorem{conv}[teo]{Conven\\c{c}{\\~a}o}\n\n" +
+			"\\makeindex\n\n";
 
 	var url	 = 'http://pt.wikibooks.org/wiki/Special:Search/';
 	var url1	 = 'http://';
