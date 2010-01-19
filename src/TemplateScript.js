@@ -194,8 +194,8 @@ function wiki2latex() {
 	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
 	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
 	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
-	regex(/\{\{Fórmula\|([^\|]+?)\|([^\n]+?)\}\}\n/igm,'\\begin{equation}\\label{eq:$1}\n$2\n\\end{equation}\n');
-	regex(/\{\{Fórmula\|([^\n]+?)\}\}\n/igm,'\\begin{equation}\\label{eq:???}\n$1\n\\end{equation}\n');
+	regex(/\{\{Fórmula\|([\d.]+)\|([^\n]+)\}\}\n/igm,'\\begin{equation}\\label{eq:$1}\n$2\n\\end{equation}\n');
+	regex(/\{\{Fórmula\|([^\n]+)\}\}\n/igm,'\\begin{equation}\\label{eq:???}\n$1\n\\end{equation}\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos	
 	var WikiLink = ''
