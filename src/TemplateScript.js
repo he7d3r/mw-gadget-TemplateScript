@@ -287,6 +287,9 @@ function format_cab() {
 		regex(/\n:?\s*'''(?:Modo\s+de\s+)?(?:Preparo|fazer):?\s*'''\s*\n/ig, '\n=== Preparo ===\n');
 		regex(/\n:?\s*'''\s*([^\n:']+)\s*:?\s*'''\s*\n/ig, '\n=== $1 ===\n');
 		regex(/ --\n/ig, ';\n');
+		regex(/pó\s+Royal/ig, 'fermento em pó');
+		regex(/Nescau|Toddy/ig, 'achocolatado em pó');
+		regex(/Maisena/ig, 'amido de milho');
 	}
 
 	// +quebra de linha antes de =, -espaços entre = e o título da seção
