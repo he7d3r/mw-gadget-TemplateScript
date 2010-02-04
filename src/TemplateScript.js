@@ -143,7 +143,7 @@ function latex2wiki() {
 	regex(/\n?\\end{(?:enumerate|itemize)}\n?/gm, '\n')
 
 
-	regex(/^\\item\s+/gm, '* ')
+	regex(/^\s*\\item\s+/gm, '* ')
 
 	editbox.value =	cabeçalho + editbox.value + rodapé
 
