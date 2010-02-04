@@ -109,7 +109,24 @@ function math_conversion(dir) {
 		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
 
+function latex2wiki() {
+	var cabeçalho = '{{AutoNav}}\n'
+	var rodapé = 	'\n== Notas ==\n' +
+			'<references group="nota "/>\n' +
+			'\n== Referências ==\n' +
+			'<references/>\n' +
+			'{{AutoCat}}'
 
+	regex(/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>')
+	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{{Fórmula|<math>$1</math>}}\n\n')
+	regex(/\\footnote{([^}]+?)\\label{[^}]+?}}/g, '<ref name="$2">$1</ref>')
+	regex(/\\footnote{(.*?)}/g, '<ref>$1</ref>')
+
+
+	editbox.value =	cabeçalho + editbox.value + rodapé
+
+	setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce')
+}
 function wiki2latex() {
 	var preambulo =	'\\documentclass[12pt,a4paper,titlepage]{book}\n' +
 			'\\usepackage[utf8]{inputenc}%[latin1]\n' +
