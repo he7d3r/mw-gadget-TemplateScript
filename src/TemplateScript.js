@@ -12,7 +12,7 @@ function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
-	regexTool('• LaTeX -> Wiki','latex2wiki');
+	regexTool('• LaTeX -> Wiki','latex2wiki()');
 
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
