@@ -140,10 +140,10 @@ function latex2wiki() {
 	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{{Observação\n|')
 	regex(/\n*\\end{(?:defi|teo|proof|lema|prop|cor|ex|exer|obs)}\s*/gm, '\n}}\n\n')
 
-	regex(/\n?\end{(?:enumerate|itemize)}\n?/gm, '\n')
+	regex(/\n?\\end{(?:enumerate|itemize)}\n?/gm, '\n')
 
 
-	regex(/\n\\item /gm, '\n* ')
+	regex(/\n\\item\s+/gm, '\n* ')
 
 	editbox.value =	cabeçalho + editbox.value + rodapé
 
