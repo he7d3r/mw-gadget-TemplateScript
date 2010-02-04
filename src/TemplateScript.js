@@ -12,7 +12,7 @@ function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Formatação geral','format_geral()');
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
-	regexTool('• LaTeX -> Wiki','math_conversion(0)');
+	regexTool('• LaTeX -> Wiki','latex2wiki');
 
 	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
@@ -119,7 +119,7 @@ function latex2wiki() {
 
 	regex(/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>')
 	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{{Fórmula|<math>$1</math>}}\n\n')
-	regex(/\\footnote{([^}]+?)\\label{[^}]+?}}/g, '<ref name="$2">$1</ref>')
+regex(/\\footnote{([^}]+?)%?\\label{[^}]+?}\s*}/g, '<ref name="$2">$1</ref>')
 	regex(/\\footnote{(.*?)}/g, '<ref>$1</ref>')
 
 
@@ -127,6 +127,8 @@ function latex2wiki() {
 
 	setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce')
 }
+
+
 function wiki2latex() {
 	var preambulo =	'\\documentclass[12pt,a4paper,titlepage]{book}\n' +
 			'\\usepackage[utf8]{inputenc}%[latin1]\n' +
