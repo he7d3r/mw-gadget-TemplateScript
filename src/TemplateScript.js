@@ -138,7 +138,10 @@ function latex2wiki() {
 	regex(/\n*\\begin{ex}%?(?:\\label{ex:[^}]+?})?\s*/gm, '\n{{Exemplo\n|')
 	regex(/\n*\\begin{exer}%?(?:\\label{exer:[^}]+?})?\s*/gm, '\n{{Exercício\n|')
 	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{{Observação\n|')
-	regex(/\n*\\end{(?:defi|obs|teo|proof|lema|prop|cor|ex|exer|obs)}\s*/gm, '\n}}\n')
+	regex(/\n*\\end{(?:defi|teo|proof|lema|prop|cor|ex|exer|obs)}\s*/gm, '\n}}\n\n')
+
+	regex(/\n?\end{(?:enumerate|itemize)}\n?/gm, '\n')
+
 
 	regex(/\n\\item /gm, '\n* ')
 
