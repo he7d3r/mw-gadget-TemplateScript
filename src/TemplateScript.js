@@ -138,9 +138,9 @@ function latex2wiki() {
 	regex(/\n*\\begin{ex}%?(?:\\label{ex:[^}]+?})?\s*/gm, '\n{{Exemplo\n|')
 	regex(/\n*\\begin{exer}%?(?:\\label{exer:[^}]+?})?\s*/gm, '\n{{Exercício\n|')
 	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{{Observação\n|')
+	regex(/\n*\\end{(?:defi|obs|teo|proof|lema|prop|cor|ex|exer|obs)}\s*/gm, '\n}}')
 
 	regex(/\n\\item /gm, '\n* ')
-
 
 	editbox.value =	cabeçalho + editbox.value + rodapé
 
