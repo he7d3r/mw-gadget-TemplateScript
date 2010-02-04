@@ -119,8 +119,27 @@ function latex2wiki() {
 
 	regex(/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>')
 	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{{Fórmula|<math>$1</math>}}\n\n')
-regex(/\\footnote{([^}]+?)%?\\label{[^}]+?}\s*}/g, '<ref name="$2">$1</ref>')
+	regex(/<\/math>([\.,;:!\?]) */mig, '$1</math> ')
+
+	regex(/\\footnote{([^}]+?)%?\\label{[^}]+?}\s*}/g, '<ref name="$2">$1</ref>')
 	regex(/\\footnote{(.*?)}/g, '<ref>$1</ref>')
+
+	regex(/\n*\\chapter{([^}\n]+)}\n*/gm, '\n\n= $1 =\n\n')
+	regex(/\n*\\section{([^}\n]+)}\n*/gm, '\n\n== $1 ==\n\n')
+	regex(/\n*\\subsection{([^}\n]+)}\n*/gm, '\n\n=== $1 ===\n\n')
+	regex(/\n*\\subsubsection{([^}\n]+)}\n*/gm, '\n\n==== $1 ====\n\n')
+
+	regex(/\n*\\begin{defi}%?(?:\\label{defi:[^}]+?})?\s*/gm, '\n{{Definição\n|')
+	regex(/\n*\\begin{teo}%?(?:\\label{teo:[^}]+?})?\s*/gm, '\n{{Teorema\n|')
+	regex(/\n*\\begin{proof}%?(?:\\label{proof:[^}]+?})?\s*/gm, '\n{{Demonstração\n|')
+	regex(/\n*\\begin{lema}%?(?:\\label{lema:[^}]+?})?\s*/gm, '\n{{Lema\n|')
+	regex(/\n*\\begin{prop}%?(?:\\label{prop:[^}]+?})?\s*/gm, '\n{{Proposição\n|')
+	regex(/\n*\\begin{cor}%?(?:\\label{cor:[^}]+?})?\s*/gm, '\n{{Corolário\n|')
+	regex(/\n*\\begin{ex}%?(?:\\label{ex:[^}]+?})?\s*/gm, '\n{{Exemplo\n|')
+	regex(/\n*\\begin{exer}%?(?:\\label{exer:[^}]+?})?\s*/gm, '\n{{Exercício\n|')
+	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{{Observação\n|')
+
+	regex(/\n\\item /gm, '\n* ')
 
 
 	editbox.value =	cabeçalho + editbox.value + rodapé
