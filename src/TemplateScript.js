@@ -188,7 +188,9 @@ function wiki2latex() {
 			"\\newtheorem{exer}[teo]{Exerc{\\'i}cio}\n\n" +
 			"\\theoremstyle{remark}\n" +
 			"\\newtheorem{obs}[teo]{Observa\\c{c}{\\~a}o}\n"
-			"\\newtheorem{conv}[teo]{Conven\\c{c}{\\~a}o}\n\n" +
+			"\\newtheorem*{conv}{Conven\\c{c}{\\~a}o}\n\n" +
+			"\\newtheorem*{res}{Resolu\\c{c}{\\~a}o}" +
+			"\\newtheorem*{tarefa}{Tarefa}" +
 			"\\makeindex\n\n";
 
 	var url	 = 'http://pt.wikibooks.org/wiki/Special:Search/';
