@@ -153,8 +153,9 @@ function latex2wiki() {
 
 function wiki2latex() {
 	var preambulo =	'\\documentclass[12pt,a4paper,titlepage]{book}\n' +
-			'\\usepackage[utf8]{inputenc}%[latin1]\n' +
 			'\\usepackage[brazil]{babel}\n' +
+			'\\usepackage[utf8]{inputenc}%[latin1] no Windows\n' +
+			'\\usepackage[T1]{fontenc}\n' +
 			'\\usepackage{amsthm, amssymb, amsmath}\n' +
 			'\\usepackage{footmisc}\n';
 
@@ -193,10 +194,10 @@ function wiki2latex() {
 			"\\newtheorem*{tarefa}{Tarefa}" +
 			"\\makeindex\n\n";
 
-	var url	 = 'http://pt.wikibooks.org/wiki/Special:Search/';
-	var url1	 = 'http://';
-	var url2	 = '.org/wiki/Special:Search/';
-	var w = 'pt.wikipedia';
+	var url	 = wgServer + '/wiki/Special:Search/';
+	var url1 = 'http://';
+	var url2 = '.org/wiki/Special:Search/';
+/*	var w = 'pt.wikipedia';
 	var wikiprojeto = {
 	'b':		'pt.wikibooks',
 	'n':		'pt.wikinews',
@@ -209,7 +210,7 @@ function wiki2latex() {
 	'wmf':		'wikimediafoundation',
 	'species':	'wikispecies.wikimedia'	
 	}
-
+*/
 	regex(/{{Auto(Cat|Nav)}}/ig,''); //Comandos wiki que são descartados
 	regex(/<\/?noinclude>/ig,'');
 	regex(/^(=+)\s*(?:Notas|Referências)\s*\1$/mig,'');
