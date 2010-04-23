@@ -23,7 +23,7 @@ function rmflinks() {
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
 	regexTool('TEST: Criar AutoNav','cria_autonav()');
-	regexTool('TEST: Listar de capítulos deste índice','lista_cap()');
+	regexTool('TEST: Listar capítulos deste livro','lista_cap()');
 	regexTool('TEST: Refs do Google Books','converte_refs()');
 
 	//Formatando links do Regex Framework
