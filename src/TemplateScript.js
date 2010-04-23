@@ -14,7 +14,6 @@ function rmflinks() {
 	regexTool('• Wiki -> LaTeX','wiki2latex()');
 	regexTool('• LaTeX -> Wiki','latex2wiki()');
 
-	regexTool('Criar AutoNav','cria_autonav()');
 	regexTool('Formatar cabeçalhos','format_cab()');
 	regexTool('Formatar predefinições','format_predef()');
 	regexTool('Formatar categorias','format_cat()');
@@ -23,7 +22,9 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
-	regexTool('Refs do Google Books','converte_refs()');
+	regexTool('TEST: Criar AutoNav','cria_autonav()');
+	regexTool('TEST: Listar de capítulos deste índice','lista_cap()');
+	regexTool('TEST: Refs do Google Books','converte_refs()');
 
 	//Formatando links do Regex Framework
 	var r = document.getElementById('p-regex')
@@ -310,6 +311,22 @@ function cria_autonav() {
 	}
 
 	editbox.value = lista.join('\n') + '\n\n' + anterior.join('\n') + '\n\n' + posterior.join('\n');
+}
+
+function lista_cap() {
+	var t = editbox.value;
+	var separador = "\n";
+	var livro = wgBookName.replace(/_/g,' ')
+	var lista = 'Capítulos do livro "' + livro + '":\n';
+
+	t=t.replace(/\[\[\s*\/([^\|\]]+?)(\/\]\]|\/?\s*\|[^\]]+?\]\])/gi,'[[' + livro + '/' + '$1' + ']]')
+	var reWikiLink = new RegExp('\\[\\[(' + livro + '/[^\\n\\]]+)\\]\\]','gi');
+
+	while(links = reWikiLink.exec(t)){
+		lista += separador + links[1];
+	}
+
+	editbox.value = lista
 }
 
 function converte_refs() {
