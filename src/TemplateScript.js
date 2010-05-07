@@ -315,15 +315,13 @@ function cria_autonav() {
 }
 
 function lista_cap() {
-	var t = editbox.value;
 	var pag = wgPageName.replace(/_/g,' ')
-	t = t.replace(/(?:\n|^)[^[]*\n/g,'\n') //Remove linhas sem links
+	regex(/(?:\n|^)[^[]*\n/g, '\n') //Remove linhas sem links
 	var reLinkCap  = new RegExp('[^\n[]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\n[]*','gi')
-	t = t.replace(reLinkCap, '\n$1$2\n')
-	var reOutrosLinks  = new RegExp('[^\n[]*\\[\\[[^\\]]+?\\]\\]','gi')
-	t = t.replace(reOutrosLinks, '')
-	t = t.replace(/\n+/g,'\n') //Remove linhas extras criadas ao usar reLinkCap
-	editbox.value = t
+	regex(reLinkCap, '\n$1$2\n') //Troca os links para capítulos por seus nomes (sem [[...]])
+	var reOutrosLinks  = new RegExp('[^\n[]*\[\[[^\]]+?\]\]','gi')
+	regex(/[^\n[]*\[\[[^\]]+?\]\]/g, '') //Apaga as imagens e os demais links
+	regex(/\n+/g, '') //Remove linhas extras criadas ao usar reLinkCap
 }
 
 function converte_refs() {
