@@ -22,9 +22,8 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
-
+	regexTool('Gerar Lista de capítulos','gera_lista_cap()');
 	regexTool('TEST: Criar AutoNav','cria_autonav()');
-	regexTool('TEST: Listar capítulos deste livro','lista_cap()');
 	regexTool('TEST: Refs do Google Books','converte_refs()');
 
 	//Formatando links do Regex Framework
@@ -314,7 +313,7 @@ function cria_autonav() {
 	editbox.value = lista.join('\n') + '\n\n' + anterior.join('\n') + '\n\n' + posterior.join('\n');
 }
 
-function lista_cap() {
+function gera_lista_cap() {
 	var pag = wgPageName.replace(/_/g,' ')
 	regex(/(?:\n|^)[^[]*\n/g, '\n') //Remove linhas sem links
 	var reLinkCap  = new RegExp('[^\n[]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\n[]*','gi')
@@ -323,7 +322,11 @@ function lista_cap() {
 	regex(/[^\n\]]*\[\[[^\]]+?\]\][^\n[]*/g, '') //Apaga as imagens e os demais links/interwikilinks
 	regex(/[^\n\]]*\[[^\]]+?\][^\n[]*/g, '') //Apaga os links externos
 
-	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
+	regex(/\n+/g, '\n| ') //Remove linhas extras criadas ao usar reLinkCap; adiciona barras usadas na [[predefinição:lista de capítulos]]
+	editbox.value = '{{Lista de capítulos/{{{1|}}}' + editbox.value + '}}<noinclude>\n'
+			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}'
+			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->'
+			+ '</noinclude>'
 }
 
 function converte_refs() {
