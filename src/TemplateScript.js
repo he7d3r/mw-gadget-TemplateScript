@@ -320,7 +320,7 @@ function lista_cap() {
 	var reLinkCap  = new RegExp('[^\n[]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\n[]*','gi')
 	regex(reLinkCap, '\n$1$2\n') //Troca os links para capítulos por seus nomes (sem [[...]])
 	var reOutrosLinks  = new RegExp('[^\n[]*\[\[[^\]]+?\]\]','gi')
-	regex(/[^\n[]*\[\[[^\]]+?\]\]/g, '') //Apaga as imagens e os demais links
+	regex(/[^\n[]*(\[\[)[^\]]+?\1/g, '') //Apaga as imagens e os demais links
 	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
 }
 
