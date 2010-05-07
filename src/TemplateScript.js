@@ -322,10 +322,10 @@ function gera_lista_cap() {
 	regex(/[^\n\]]*\[\[[^\]]+?\]\][^\n[]*/g, '') //Apaga as imagens e os demais links/interwikilinks
 	regex(/[^\n\]]*\[[^\]]+?\][^\n[]*/g, '') //Apaga os links externos
 
-	regex(/\n+/g, '\n| ') //Remove linhas extras criadas ao usar reLinkCap; adiciona barras usadas na [[predefinição:lista de capítulos]]
-	editbox.value = '{{Lista de capítulos/{{{1|}}}' + editbox.value + '}}<noinclude>\n'
-			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}'
-			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->'
+	regex(/\n+/g, '\n |') //Remove linhas extras criadas ao usar reLinkCap; adiciona barras usadas na [[predefinição:lista de capítulos]]
+	editbox.value = '{{Lista de capítulos/{{{1|}}}' + editbox.value + '\n}}<noinclude>\n'
+			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
+			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
 }
 
