@@ -22,6 +22,7 @@ function rmflinks() {
 	regexTool('Formatar links','format_links()');
 	regexTool('Formatar tags <math>','format_math()');
 	regexTool('Regex no sumário','usando_regex()');
+
 	regexTool('TEST: Criar AutoNav','cria_autonav()');
 	regexTool('TEST: Listar capítulos deste livro','lista_cap()');
 	regexTool('TEST: Refs do Google Books','converte_refs()');
@@ -315,18 +316,14 @@ function cria_autonav() {
 
 function lista_cap() {
 	var t = editbox.value;
-	var separador = "\n";
-	var livro = wgBookName.replace(/_/g,' ')
-	var lista = 'Capítulos do livro "' + livro + '":\n';
-
-	t=t.replace(/\[\[\s*\/([^\|\]]+?)(\/\]\]|\/?\s*\|[^\]]+?\]\])/gi,'[[' + livro + '/' + '$1' + ']]')
-	var reWikiLink = new RegExp('\\[\\[(' + livro + '/[^\\n\\]]+)\\]\\]','gi');
-
-	while(links = reWikiLink.exec(t)){
-		lista += separador + links[1];
-	}
-
-	editbox.value = lista
+	var pag = wgPageName.replace(/_/g,' ')
+	t = t.replace(/(?:\n|^)[^[]*\n/g,'\n') //Remove linhas sem links
+	var reLinkCap  = new RegExp('[^\n[]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\n[]*','gi')
+	t = t.replace(reLinkCap, '\n$1$2\n')
+	var reOutrosLinks  = new RegExp('[^\n[]*\\[\\[[^\\]]+?\\]\\]','gi')
+	t = t.replace(reOutrosLinks, '')
+	t = t.replace(/\n+/g,'\n') //Remove linhas extras criadas ao usar reLinkCap
+	editbox.value = t
 }
 
 function converte_refs() {
