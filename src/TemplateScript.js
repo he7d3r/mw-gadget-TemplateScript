@@ -316,11 +316,13 @@ function cria_autonav() {
 function gera_lista_cap() {
 	var pag = wgPageName.replace(/_/g,' ')
 	regex(/(?:\n|^)[^[]*\n/g, '\n') //Remove linhas sem links
-	var reLinkCap  = new RegExp('[^\n\]]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\n[]*','gi')
+	var reLinkCap  = new RegExp('[^\\n\\][]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\\n[]*','gi')
+alert( reLinkCap)
 	regex(reLinkCap, '\n$1$2\n') //Troca os links para capítulos por seus nomes (sem [[...]])
 	regex(/[^\n\]]*\[\[[^\]]+?\]\][^\n[]*/g, '') //Apaga as imagens e os demais links/interwikilinks
 	regex(/[^\n\]]*\[[^\]]+?\][^\n[]*/g, '') //Apaga os links externos
-	regex(/\n+/g, '\n |') //Remove linhas extras criadas ao usar reLinkCap; adiciona barras usadas na [[predefinição:lista de capítulos]]
+	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
+	regex(/\n+/g, '\n |') //Adiciona barras usadas na [[predefinição:lista de capítulos]]
 	editbox.value = '{{Lista de capítulos/{{{1|}}}' + editbox.value + '\n}}<noinclude>\n'
 			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
