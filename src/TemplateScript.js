@@ -317,7 +317,6 @@ function gera_lista_cap() {
 	var pag = wgPageName.replace(/_/g,' ')
 	regex(/(?:\n|^)[^[]*\n/g, '\n') //Remove linhas sem links
 	var reLinkCap  = new RegExp('[^\\n\\][]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\\n[]*','gi')
-alert( reLinkCap)
 	regex(reLinkCap, '\n$1$2\n') //Troca os links para capítulos por seus nomes (sem [[...]])
 	regex(/[^\n\]]*\[\[[^\]]+?\]\][^\n[]*/g, '') //Apaga as imagens e os demais links/interwikilinks
 	regex(/[^\n\]]*\[[^\]]+?\][^\n[]*/g, '') //Apaga os links externos
