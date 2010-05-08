@@ -322,7 +322,7 @@ function gera_lista_cap() {
 	regex(/[^\n\]]*\[[^\]]+?\][^\n[]*/g, '') //Apaga os links externos
 	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
 	regex(/\n+/g, '\n |') //Adiciona barras usadas na [[predefinição:lista de capítulos]]
-	editbox.value = '{{Lista de capítulos/{{{1|}}}' + editbox.value + '\n}}<noinclude>\n'
+	editbox.value = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>' + editbox.value + '\n<includeonly>}}</includeonly><noinclude>\n'
 			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
