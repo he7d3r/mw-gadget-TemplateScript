@@ -10,22 +10,23 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
-	regexTool('• Formatação geral','format_geral()');
-	regexTool('• Wiki -> LaTeX','wiki2latex()');
-	regexTool('• LaTeX -> Wiki','latex2wiki()');
 
-	regexTool('Formatar cabeçalhos','format_cab()');
-	regexTool('Formatar predefinições','format_predef()');
-	regexTool('Formatar categorias','format_cat()');
-	regexTool('Formatar listas','format_list()');
-	regexTool('Usar links relativos','abs2rel()');
-	regexTool('Formatar links','format_links()');
-	regexTool('Formatar tags <math>','format_math()');
-	regexTool('Regex no sumário','usando_regex()');
-	regexTool('Gerar Lista de capítulos','gera_lista_cap()');
-	regexTool('TEST: Criar AutoNav','cria_autonav()');
-	regexTool('TEST: Refs do Google Books','converte_refs()');
-
+	if ('http://pt.wikibooks.org' == wgServer) {
+		regexTool('• Formatação geral','format_geral()');
+		regexTool('• Wiki -> LaTeX','wiki2latex()');
+		regexTool('• LaTeX -> Wiki','latex2wiki()');
+		regexTool('Formatar cabeçalhos','format_cab()');
+		regexTool('Formatar predefinições','format_predef()');
+		regexTool('Formatar categorias','format_cat()');
+		regexTool('Formatar listas','format_list()');
+		regexTool('Usar links relativos','abs2rel()');
+		regexTool('Formatar links','format_links()');
+		regexTool('Formatar tags <math>','format_math()');
+		regexTool('Regex no sumário','usando_regex()');
+		regexTool('Gerar Lista de capítulos','gera_lista_cap()');
+		regexTool('TEST: Criar AutoNav','cria_autonav()');
+		regexTool('TEST: Refs do Google Books','converte_refs()');
+	}
 	//Formatando links do Regex Framework
 	var r = document.getElementById('p-regex')
 	if (r){
