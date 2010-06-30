@@ -10,6 +10,7 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
+	regexTool('Editar Regexes','function opennew(url) { window.open(url); }; opennew(wgServer + wgScript + "?title=User:" + wgUserName + "/" + skin + ".js&action=edit");');
 
 	if ('http://pt.wikibooks.org' == wgServer) {
 		regexTool('• Formatação geral','format_geral()');
