@@ -333,9 +333,10 @@ function gera_lista_cap() {
 }
 
 function grava_lista_cap() {
-	var pagina = 'Template:Lista_de_capítulos/' + wgPageName;
+	var pagina = 'Predefinição:Lista_de_capítulos/' + wgPageName;
 	var texto = editbox.value;
-	editar(pagina, texto);
+	var r=confirm("Antes de criar a lista de capítulos é preciso conferir se a lista gerada pelo script está correta.\n\nDeseja que a lista seja criada com o texto atual?");
+	if (r==true) editar(pagina, texto);
 }
 
 //Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
@@ -376,7 +377,7 @@ function editar(pagina, texto) {
 		function alert_result() {
 			if(api.readyState==4) {
 				if(api.status==200) {
-					alert('A página ' + pagina + ' foi editada!');
+					alert('A página "' + pagina + '" foi editada!');
 				}
 				else {
 					alert('Houve um erro.');
