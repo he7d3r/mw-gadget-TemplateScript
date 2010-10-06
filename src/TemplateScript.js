@@ -16,6 +16,7 @@ function rmflinks() {
 		regexTool('• Formatação geral','format_geral()');
 		regexTool('• Wiki -> LaTeX','wiki2latex()');
 		regexTool('• LaTeX -> Wiki','latex2wiki()');
+		regexTool('• Remover linhas duplicadas','dedupe_list()');
 		regexTool('Formatar cabeçalhos','format_cab()');
 		regexTool('Formatar predefinições','format_predef()');
 		regexTool('Formatar categorias','format_cat()');
@@ -298,6 +299,34 @@ function wiki2latex() {
 			'\\end{document}';
 
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
+}
+
+//Script created by Paul Galloway (http://www.synergyx.com)
+function dedupe_list()
+{
+	var count = 0;
+	var mainlist = editbox.value;
+	mainlist = mainlist.replace(/\r/gi, "\n");
+	mainlist = mainlist.replace(/\n+/gi, "\n");
+	
+	var listvalues = new Array();
+	var newlist = new Array();
+	
+	listvalues = mainlist.split("\n");
+	
+	var hash = new Object();
+	
+	for (var i=0; i<listvalues.length; i++)
+	{
+		if (hash[listvalues[i].toLowerCase()] != 1)
+		{
+			newlist = newlist.concat(listvalues[i]);
+			hash[listvalues[i].toLowerCase()] = 1
+		}
+		else { count++; }
+	}
+	document.form1.mainlist.value = newlist.join("\r\n");
+	alert('Foram removidas ' + count + ' linhas duplicadas duplicatas');
 }
 
 function cria_autonav() {
