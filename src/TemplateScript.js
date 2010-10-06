@@ -325,7 +325,7 @@ function dedupe_list()
 		}
 		else { count++; }
 	}
-	document.form1.mainlist.value = newlist.join("\r\n");
+	editbox.value = newlist.join("\r\n");
 	alert('Foram removidas ' + count + ' linhas duplicadas duplicatas');
 }
 
