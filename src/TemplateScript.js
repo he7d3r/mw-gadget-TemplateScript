@@ -24,7 +24,8 @@ function rmflinks() {
 		regexTool('Formatar links','format_links()');
 		regexTool('Formatar tags <math>','format_math()');
 		regexTool('Regex no sumário','usando_regex()');
-		regexTool('Gerar lista de capítulos (CUIDADO!)','gera_lista_cap()');
+		regexTool('Gerar lista de capítulos','gera_lista_cap()');
+		regexTool('Gravar lista de capítulos (CUIDADO!)','grava_lista_cap()');
 		regexTool('TEST: Criar AutoNav','cria_autonav()');
 		regexTool('TEST: Refs do Google Books','converte_refs()');
 	}
@@ -325,14 +326,17 @@ function gera_lista_cap() {
 	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
 	regex(/\n+/g, '\n |') //Adiciona barras usadas na [[predefinição:lista de capítulos]]
 	regex(/\n \|$/g, '') //Remove linha sem capítulo criada desnecessariamente no processo
-	var texto = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>' + editbox.value + '\n<includeonly>}}</includeonly><noinclude>\n'
+	var editbox.value = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>' + editbox.value + '\n<includeonly>}}</includeonly><noinclude>\n'
 			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
-	var pagina = 'Template:Lista_de_capítulos/' + wgPageName;
-	editar(pagina, texto);
 }
 
+function grava_lista_cap() {
+	var pagina = 'Template:Lista_de_capítulos/' + wgPageName;
+	var texto = editbox.value;
+	editar(pagina, texto);
+}
 
 //Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
 /************
