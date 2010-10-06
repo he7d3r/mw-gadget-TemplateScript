@@ -359,6 +359,7 @@ function gera_lista_cap() {
 			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
+	dedupe_list()
 }
 
 function grava_lista_cap() {
