@@ -406,7 +406,7 @@ function editar(pagina, texto) {
 		function alert_result() {
 			if(api.readyState==4) {
 				if(api.status==200) {
-					alert('A página "' + pagina + '" foi editada!');
+					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada!');
 				}
 				else {
 					alert('Houve um erro.');
