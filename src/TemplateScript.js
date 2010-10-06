@@ -325,11 +325,62 @@ function gera_lista_cap() {
 	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
 	regex(/\n+/g, '\n |') //Adiciona barras usadas na [[predefinição:lista de capítulos]]
 	regex(/\n \|$/g, '') //Remove linha sem capítulo criada desnecessariamente no processo
-	editbox.value = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>' + editbox.value + '\n<includeonly>}}</includeonly><noinclude>\n'
+	var texto = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>' + editbox.value + '\n<includeonly>}}</includeonly><noinclude>\n'
 			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
+	var pagina = 'Template:Lista_de_capítulos/' + wgPageName;
+	editar(pagina, texto);
 }
+
+
+//Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
+/************
+* MediaWiki ajax.js
+************/
+function editar(pagina, texto) {
+	// fetch token
+	var api = sajax_init_object();
+	api.open('GET', wgServer + wgScriptPath + '/api.php?format=json&action=query&prop=info&indexpageids=1&intoken=edit&titles=Whatever', true);
+	api.onreadystatechange = extract_token;
+	api.send(null);
+
+	function extract_token() {
+		if(api.readyState==4) {
+			if(api.status==200) {
+				var response = eval('(' + api.responseText + ')');
+				var token = response['query']['pages'][response['query']['pageids'][0]]['edittoken'];
+				edit_page(token);
+			}
+			else {
+				alert('Houve um erro ao solicitar um token.');
+			}
+		}
+	}
+ 
+	// edit page (must be done through POST)
+	function edit_page(_token) {
+		var parameters = 'action=edit&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token);
+		api.open('POST', wgServer + wgScriptPath + '/api.php', true); // just reuse the same query object
+		api.onreadystatechange = alert_result;
+		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		api.setRequestHeader('Connection', 'keep-alive');
+		api.setRequestHeader('Content-length', parameters.length);
+		api.send(parameters);
+ 
+		// process response
+		function alert_result() {
+			if(api.readyState==4) {
+				if(api.status==200) {
+					alert('A página ' + pagina + ' foi editada!');
+				}
+				else {
+					alert('Houve um erro.');
+				}
+			}
+		}
+	}
+}//editar
 
 function converte_refs() {
 	var antigo = editbox.value;
