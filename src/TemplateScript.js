@@ -326,7 +326,8 @@ function dedupe_list()
 		else { count++; }
 	}
 	editbox.value = newlist.join("\r\n");
-	alert('Foram removidas ' + count + ' linhas duplicadas duplicatas');
+	if(count>0) alert('Foram removidas ' + count + ' linhas duplicadas');
+	else alert('Não havia linhas duplicadas');
 }
 
 function cria_autonav() {
