@@ -24,7 +24,7 @@ function rmflinks() {
 		regexTool('Formatar links','format_links()');
 		regexTool('Formatar tags <math>','format_math()');
 		regexTool('Regex no sumário','usando_regex()');
-		regexTool('Gerar Lista de capítulos','gera_lista_cap()');
+		regexTool('Gerar lista de capítulos (CUIDADO!)','gera_lista_cap()');
 		regexTool('TEST: Criar AutoNav','cria_autonav()');
 		regexTool('TEST: Refs do Google Books','converte_refs()');
 	}
