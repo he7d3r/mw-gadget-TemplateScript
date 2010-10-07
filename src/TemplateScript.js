@@ -408,7 +408,8 @@ function editar(pagina, texto) {
 		function alert_result() {
 			if(api.readyState==4) {
 				if(api.status==200) {
-					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada!');
+					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
+					location.href = wgArticlePath.replace('$1', pagina)
 				}
 				else {
 					alert('Houve um erro.');
