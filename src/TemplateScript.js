@@ -396,7 +396,7 @@ function editar(pagina, texto) {
  
 	// edit page (must be done through POST)
 	function edit_page(_token) {
-		var parameters = 'action=edit&bot=1&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token) + '&summary=' + encodeURIComponent('Criando índice com base no índice do livro (usando regex)');
+		var parameters = 'action=edit&bot=1&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token) + '&summary=' + encodeURIComponent('Criando lista com base no [[' + wgBookName + '|índice do livro]] (usando regex)');
 		api.open('POST', wgServer + wgScriptPath + '/api.php', true); // just reuse the same query object
 		api.onreadystatechange = alert_result;
 		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
