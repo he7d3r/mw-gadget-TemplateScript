@@ -11,6 +11,7 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew(wgServer + wgScript + "?title=User:" + wgUserName + "/" + skin + ".js&action=edit");');
+	regexTool('• Corrige assinatura','corrige_assinatura()');
 
 	if ('http://pt.wikibooks.org' == wgServer) {
 		regexTool('• Formatação geral','format_geral()');
@@ -37,6 +38,12 @@ function rmflinks() {
 		var d = r.getElementsByTagName('div')
 		if (d[0]) d[0].className += ' pBody body'
 	}
+}
+function corrige_assinatura() {
+	var proj = (wgServer.indexOf("wikibooks")) ? '' : 'b:';
+	var lang = ("pt" == wgContentLanguage) ? '' : 'pt:';
+	regex(window.reOldSign, '[[' + proj + lang + 'User:Helder.wiki|Helder]]');
+	setreason('Corrigindo afluentes [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
 }
 
 /* scripts */
