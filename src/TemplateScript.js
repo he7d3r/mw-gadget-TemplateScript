@@ -40,7 +40,7 @@ function rmflinks() {
 	}
 }
 function corrige_assinatura() {
-	var proj = (wgServer.indexOf("wikibooks")) ? '' : 'b:';
+	var proj = (wgServer.indexOf("wikibooks") > -1) ? '' : 'b:';
 	var lang = ("pt" == wgContentLanguage) ? '' : 'pt:';
 	regex(window.reOldSign, '[[' + proj + lang + 'User:Helder.wiki|Helder]]');
 	setreason('Corrigindo afluentes [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
