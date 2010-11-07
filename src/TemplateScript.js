@@ -44,6 +44,8 @@ function corrige_assinatura() {
 	var lang = ("pt" == wgContentLanguage) ? '' : 'pt:';
 	regex(window.reOldSign, '[[' + proj + lang + 'User:Helder.wiki|Helder]]');
 	setreason('Corrigindo afluentes [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+	setoptions(minor='true');
+	doaction('diff');
 }
 
 /* scripts */
