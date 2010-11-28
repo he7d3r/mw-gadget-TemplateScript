@@ -356,6 +356,9 @@ function cria_autonav() {
 }
 
 function gera_lista_cap() {
+	//TODO: É mais simples e confiável usar a API para obter a lista dos links no índice e em seguida descartar os que não começam com o nome do livro.
+	//Ex.: http://pt.wikibooks.org/w/api.php?action=query&prop=links&titles=Matem%C3%A1tica%20elementar&pllimit=500
+
 	var pag = wgPageName.replace(/_/g,' ')
 	regex(/(?:\n|^)[^[]*\n/g, '\n') //Remove linhas sem links
 	var reLinkCap  = new RegExp('[^\\n\\][]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\\n[]*','gi')
