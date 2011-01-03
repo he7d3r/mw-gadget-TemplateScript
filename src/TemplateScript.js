@@ -338,7 +338,11 @@ function dedupe_list( lista ) {
 	} else {
 		alert( 'Não havia linhas duplicadas' );
 	}
-	return newlist.join( '\r\n' );
+	if( typeof lista == 'string' ) {
+		return newlist.join( '\r\n' );
+	} else if( typeof lista == 'object' ) {
+		return newlist
+	}
 }
 
 function cria_autonav() {
