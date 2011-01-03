@@ -26,7 +26,9 @@ function rmflinks() {
 		regexTool('Formatar links','format_links()');
 		regexTool('Formatar tags <math>','format_math()');
 		regexTool('Regex no sumário','usando_regex()');
-		regexTool('Gerar lista de capítulos','gera_lista_cap()');
+		regexTool('Gerar lista de capítulos','geraPredef()');
+		regexTool('Gerar coleção','geraCol()');
+		regexTool('Gerar versão para impressão','geraImpr()');
 		regexTool('Gravar lista de capítulos (CUIDADO!)','grava_lista_cap()');
 		regexTool('TEST: Criar AutoNav','cria_autonav()');
 		regexTool('TEST: Refs do Google Books','converte_refs()');
@@ -355,26 +357,53 @@ function cria_autonav() {
 	editbox.value = lista.join('\n') + '\n\n' + anterior.join('\n') + '\n\n' + posterior.join('\n');
 }
 
-function gera_lista_cap() {
-	//TODO: É mais simples e confiável usar a API para obter a lista dos links no índice e em seguida descartar os que não começam com o nome do livro.
-	//Ex.: http://pt.wikibooks.org/w/api.php?action=query&prop=links&titles=Matem%C3%A1tica%20elementar&pllimit=500
-
-	var pag = wgPageName.replace(/_/g,' ')
-	regex(/(?:\n|^)[^[]*\n/g, '\n') //Remove linhas sem links
-	var reLinkCap  = new RegExp('[^\\n\\][]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + pag + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\\n[]*','gi')
-	regex(reLinkCap, '\n$1$2\n') //Troca os links para capítulos por seus nomes (sem [[...]])
-	regex(/[^\n\]]*\[\[[^\]]+?\]\][^\n[]*/g, '') //Apaga as imagens e os demais links/interwikilinks
-	regex(/[^\n\]]*\[[^\]]+?\][^\n[]*/g, '') //Apaga os links externos
-	regex(/\n+/g, '\n') //Remove linhas extras criadas ao usar reLinkCap
-	regex(/\n+/g, '\n |') //Adiciona barras usadas na [[predefinição:lista de capítulos]]
-	regex(/\n \|$/g, '') //Remove linha sem capítulo criada desnecessariamente no processo
-	editbox.value = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>' + editbox.value + '\n<includeonly>}}</includeonly><noinclude>\n'
+//As funções interpretaLinha e geraLista foram baseadas nas funções loadCollection e parseCollectionLine da extensão collection
+//http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/Collection/Collection.body.php?view=markup
+var nomeLivro = wgPageName.replace(/_/g,' ');
+function interpretaLinha( linha ) {
+	var reLinkCap  = new RegExp( '[^\\[]*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + nomeLivro + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\][^\\]]*', 'gi' );
+	linha = ( reLinkCap.test( linha ) ) ? linha.replace( reLinkCap, '$1$2' ).replace(/^\s+|\s+$/g,"") : '';
+	return( linha );
+}
+function geraLista() {
+	var linhas = $('#wpTextbox1').text().split(/[\r\n]+/);
+	linhas = linhas.slice( 1, linhas.length - 1 );
+	var lista = [];
+	for ( var i = 0; i < linhas.length; i++) {
+		var cap = interpretaLinha( linhas[ i ] );
+		if ( cap !== '' ) lista.push( cap );
+	}
+	return lista;
+}
+function geraPredef() {
+	var lista = geraLista();
+	var predef = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>\n |'
+			+ lista.join( '\n |' )
+			+ '\n<includeonly>}}</includeonly><noinclude>\n'
 			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
-	dedupe_list()
+	editbox.value = predef;
+	dedupe_list();
 }
-
+function geraCol() {
+	var lista = geraLista();
+	var col = '{{livro_gravado}}\n\n== ' + nomeLivro + ' ==\n';
+	for ( var i = 0; i < lista.length; i++) {
+		col += ':[[' + nomeLivro + '/' + lista[ i ] + '|' + lista[ i ].replace( /^.+\//g, '' ) + ']]\n';
+	}
+	col += '\n[[Categoria:Livros|{{SUBPAGENAME}}]]';
+	editbox.value = col;
+}
+function geraImpr() {
+	var lista = geraLista();
+	var imp = '{{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
+	for ( var i = 0; i < lista.length; i++) {
+		imp += '=' + lista[ i ] + '=\n{{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
+	}
+	imp += '\n{{AutoCat}}';
+	editbox.value = imp;
+}
 function grava_lista_cap() {
 	var pagina = 'Predefinição:Lista_de_capítulos/' + wgPageName;
 	var texto = editbox.value;
