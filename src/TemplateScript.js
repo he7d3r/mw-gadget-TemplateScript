@@ -312,33 +312,33 @@ function wiki2latex() {
 	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
 
-//Script created by Paul Galloway (http://www.synergyx.com)
-function dedupe_list()
-{
+//Adaptação de um script de Paul Galloway (http://www.synergyx.com)
+function dedupe_list( lista ) {
+	if( typeof lista == 'string' ) {
+		var mainlist = editbox.value;
+		mainlist = mainlist.replace( /\r|\n+/gi, '\n' );
+		var listvalues = mainlist.split( '\n' );
+	} else if( typeof lista == 'object' ) {
+		var listvalues = lista;
+	}
 	var count = 0;
-	var mainlist = editbox.value;
-	mainlist = mainlist.replace(/\r/gi, "\n");
-	mainlist = mainlist.replace(/\n+/gi, "\n");
-	
-	var listvalues = new Array();
 	var newlist = new Array();
-	
-	listvalues = mainlist.split("\n");
-	
 	var hash = new Object();
 	
-	for (var i=0; i<listvalues.length; i++)
-	{
-		if (hash[listvalues[i].toLowerCase()] != 1)
-		{
-			newlist = newlist.concat(listvalues[i]);
-			hash[listvalues[i].toLowerCase()] = 1
+	for ( var i = 0; i<listvalues.length; i++ )	{
+		if ( hash[listvalues[ i ].toLowerCase()] != 1 )	{
+			newlist = newlist.concat( listvalues[ i ] );
+			hash[ listvalues[ i ].toLowerCase() ] = 1
+		} else {
+			count++;
 		}
-		else { count++; }
 	}
-	editbox.value = newlist.join("\r\n");
-	if(count>0) alert('Foram removidas ' + count + ' linhas duplicadas');
-	else alert('Não havia linhas duplicadas');
+	if( count > 0 ) {
+		alert( 'Foram removidas ' + count + ' linhas duplicadas' );
+	} else {
+		alert( 'Não havia linhas duplicadas' );
+	}
+	return newlist.join( '\r\n' );
 }
 
 function cria_autonav() {
@@ -376,7 +376,7 @@ function geraLista() {
 	return lista;
 }
 function geraPredef() {
-	var lista = geraLista();
+	var lista = dedupe_list( geraLista() );
 	var predef = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>\n |'
 			+ lista.join( '\n |' )
 			+ '\n<includeonly>}}</includeonly><noinclude>\n'
@@ -384,10 +384,9 @@ function geraPredef() {
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
 	editbox.value = predef;
-	dedupe_list();
 }
 function geraCol() {
-	var lista = geraLista();
+	var lista = dedupe_list( geraLista() );
 	var col = '{{livro_gravado}}\n\n== ' + nomeLivro + ' ==\n';
 	for ( var i = 0; i < lista.length; i++) {
 		col += ':[[' + nomeLivro + '/' + lista[ i ] + '|' + lista[ i ].replace( /^.+\//g, '' ) + ']]\n';
@@ -396,7 +395,7 @@ function geraCol() {
 	editbox.value = col;
 }
 function geraImpr() {
-	var lista = geraLista();
+	var lista = dedupe_list( geraLista() );
 	var imp = '{{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( var i = 0; i < lista.length; i++) {
 		imp += '=' + lista[ i ] + '=\n{{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
