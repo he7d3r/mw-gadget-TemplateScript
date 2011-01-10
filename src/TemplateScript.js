@@ -42,10 +42,13 @@ function rmflinks() {
 	}
 }
 function corrige_assinatura() {
-	var proj = (wgServer.indexOf("wikibooks") > -1) ? '' : 'b:';
-	var lang = ("pt" == wgContentLanguage) ? '' : 'pt:';
-	regex(window.reOldSign, '[[' + proj + lang + 'User:Helder.wiki|Helder]]');
-	setreason('Corrigindo afluentes [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+	var proj = ( wgServer.indexOf("wikibooks") > -1) ? '' : 'b:';
+	var lang = ( "pt" === wgContentLanguage ) ? '' : 'pt:';
+	if ( !proj && lang ) proj = ':';
+	var reOldSign = window.reOldSign;
+	var newSign = '[[' + proj + lang + 'User:Helder.wiki|Helder]]';
+	regex( reOldSign, newSign );
+	setreason('Fixing links (my user account was renamed)', 'appendonce');
 	setoptions(minor='true');
 	doaction('diff');
 }
