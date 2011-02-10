@@ -230,7 +230,7 @@ function wiki2latex() {
 	'species':	'wikispecies.wikimedia'	
 	}
 */
-	regex(/{{Auto(Cat|Nav)}}/ig,''); //Comandos wiki que são descartados
+	regex(/\{\{Auto(Cat|Nav)\}\}/ig,''); //Comandos wiki que são descartados
 	regex(/<\/?noinclude>/ig,'');
 	regex(/^(=+)\s*(?:Notas|Referências)\s*\1$/mig,'');
 	regex(/^\s*<references(?:\s*group\s*=\s*"[^"]*")?\/>\s*$/mig,'');
