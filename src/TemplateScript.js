@@ -129,15 +129,15 @@ function math_conversion(dir) {
 }
 
 function latex2wiki() {
-	var cabeçalho = '{{AutoNav}}\n'
+	var cabeçalho = '{' + '{AutoNav}' + '}\n'
 	var rodapé = 	'\n== Notas ==\n' +
 			'<references group="nota "/>\n' +
 			'\n== Referências ==\n' +
 			'<references/>\n' +
-			'{{AutoCat}}'
+			'{' + '{AutoCat}' + '}'
 
 	regex(/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>')
-	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{{Fórmula|<math>$1</math>}}\n\n')
+	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{' + '{Fórmula|<math>$1</math>}' + '}\n\n')
 	regex(/<\/math>([\.,;:!\?]) */mig, '$1</math> ')
 
 	regex(/\\footnote{([^}]+?)%?\\label{[^}]+?}\s*}/g, '<ref name="$2">$1</ref>')
@@ -148,15 +148,15 @@ function latex2wiki() {
 	regex(/\n*\\subsection{([^}\n]+)}\n*/gm, '\n\n=== $1 ===\n\n')
 	regex(/\n*\\subsubsection{([^}\n]+)}\n*/gm, '\n\n==== $1 ====\n\n')
 
-	regex(/\n*\\begin{defi}%?(?:\\label{defi:[^}]+?})?\s*/gm, '\n{{Definição\n|')
-	regex(/\n*\\begin{teo}%?(?:\\label{teo:[^}]+?})?\s*/gm, '\n{{Teorema\n|')
-	regex(/\n*\\begin{proof}%?(?:\\label{proof:[^}]+?})?\s*/gm, '\n{{Demonstração\n|')
-	regex(/\n*\\begin{lema}%?(?:\\label{lema:[^}]+?})?\s*/gm, '\n{{Lema\n|')
-	regex(/\n*\\begin{prop}%?(?:\\label{prop:[^}]+?})?\s*/gm, '\n{{Proposição\n|')
-	regex(/\n*\\begin{cor}%?(?:\\label{cor:[^}]+?})?\s*/gm, '\n{{Corolário\n|')
-	regex(/\n*\\begin{ex}%?(?:\\label{ex:[^}]+?})?\s*/gm, '\n{{Exemplo\n|')
-	regex(/\n*\\begin{exer}%?(?:\\label{exer:[^}]+?})?\s*/gm, '\n{{Exercício\n|')
-	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{{Observação\n|')
+	regex(/\n*\\begin{defi}%?(?:\\label{defi:[^}]+?})?\s*/gm, '\n{'+'{Definição\n|')
+	regex(/\n*\\begin{teo}%?(?:\\label{teo:[^}]+?})?\s*/gm, '\n{'+'{Teorema\n|')
+	regex(/\n*\\begin{proof}%?(?:\\label{proof:[^}]+?})?\s*/gm, '\n{'+'{Demonstração\n|')
+	regex(/\n*\\begin{lema}%?(?:\\label{lema:[^}]+?})?\s*/gm, '\n{'+'{Lema\n|')
+	regex(/\n*\\begin{prop}%?(?:\\label{prop:[^}]+?})?\s*/gm, '\n{'+'{Proposição\n|')
+	regex(/\n*\\begin{cor}%?(?:\\label{cor:[^}]+?})?\s*/gm, '\n{'+'{Corolário\n|')
+	regex(/\n*\\begin{ex}%?(?:\\label{ex:[^}]+?})?\s*/gm, '\n{'+'{Exemplo\n|')
+	regex(/\n*\\begin{exer}%?(?:\\label{exer:[^}]+?})?\s*/gm, '\n{'+'{Exercício\n|')
+	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{'+'{Observação\n|')
 	regex(/\n*\\end{(?:defi|teo|proof|lema|prop|cor|ex|exer|obs)}\s*/gm, '\n}}\n\n')
 
 	regex(/\n?\\end{(?:enumerate|itemize)}\n?/gm, '\n')
@@ -384,30 +384,30 @@ function geraLista() {
 }
 function geraPredef() {
 	var lista = dedupe_list( geraLista() );
-	var predef = '<includeonly>{{Lista de capítulos/{{{1|}}}</includeonly>\n |'
+	var predef = '<includeonly>{'+'{Lista de capítulos/{{{1|}}}</includeonly>\n |'
 			+ lista.join( '\n |' )
 			+ '\n<includeonly>}}</includeonly><noinclude>\n'
-			+ '{{Documentação|Predefinição:Lista de capítulos/doc}}\n'
+			+ '{'+'{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>'
 	editbox.value = predef;
 }
 function geraCol() {
 	var lista = dedupe_list( geraLista() );
-	var col = '{{livro_gravado}}\n\n== ' + nomeLivro + ' ==\n';
+	var col = '{'+'{livro_gravado}}\n\n== ' + nomeLivro + ' ==\n';
 	for ( var i = 0; i < lista.length; i++) {
 		col += ':[[' + nomeLivro + '/' + lista[ i ] + '|' + lista[ i ].replace( /^.+\//g, '' ) + ']]\n';
 	}
-	col += '\n[[Categoria:Livros|{{SUBPAGENAME}}]]';
+	col += '\n['+'[Categoria:Livros|{{SUBPAGENAME}}]]';
 	editbox.value = col;
 }
 function geraImpr() {
 	var lista = dedupe_list( geraLista() );
-	var imp = '{{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
+	var imp = '{'+'{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( var i = 0; i < lista.length; i++) {
-		imp += '=' + lista[ i ] + '=\n{{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
+		imp += '=' + lista[ i ] + '=\n{'+'{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
 	}
-	imp += '\n{{AutoCat}}';
+	imp += '\n{' + '{AutoCat}' + '}';
 	editbox.value = imp;
 }
 function grava_lista_cap() {
@@ -469,7 +469,7 @@ function editar(pagina, texto) {
 function converte_refs() {
 	var antigo = editbox.value;
 
-	regex(/Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img, '* {{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}');
+	regex(/Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img, '* {'+'{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}');
 
 	if (editbox.value != antigo)
 		setreason('Referência do Google Books -> [[Predefinição:Referência a livro]]', 'appendonce');
