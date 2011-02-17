@@ -10,10 +10,10 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
-	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew(wgServer + wgScript + "?title=User:" + wgUserName + "/" + skin + ".js&action=edit");');
+	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( "User:" + mw.user.name() + "/" + skin + ".js?action=edit");');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
 
-	if ('http://pt.wikibooks.org' == wgServer) {
+	if ('http://pt.wikibooks.org' == mw.config.get( 'wgServer' )) {
 		regexTool('• Formatação geral','format_geral()');
 		regexTool('• Wiki -> LaTeX','wiki2latex()');
 		regexTool('• LaTeX -> Wiki','latex2wiki()');
@@ -42,8 +42,8 @@ function rmflinks() {
 	}
 }
 function corrige_assinatura() {
-	var proj = ( wgServer.indexOf("wikibooks") > -1) ? '' : 'b:';
-	var lang = ( "pt" === wgContentLanguage ) ? '' : 'pt:';
+	var proj = ( mw.config.get( 'wgServer' ).indexOf("wikibooks") > -1) ? '' : 'b:';
+	var lang = ( "pt" === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:';
 	if ( !proj && lang ) proj = ':';
 	var reOldSign = window.reOldSign;
 	var newSign = '[[' + proj + lang + 'User:Helder.wiki|Helder]]';
@@ -188,7 +188,7 @@ function wiki2latex() {
 			"\\hypersetup{\n" +
 			"		pdftitle = {" + wgBookName + "},\n" +
 			"		pdfauthor = {Colaboradores do Wikilivros},\n" +
-			"		pdfcreator = {" + wgUserName + "},\n" +
+			"		pdfcreator = {" + mw.user.name() + "},\n" +
 			"		pdfsubject = {},\n" +
 			"		pdfkeywords = {wiki, livro, wikilivro, Wikilivros},\n" +
 			"		colorlinks = true,\n" +
@@ -207,13 +207,13 @@ function wiki2latex() {
 			"\\newtheorem{ex}[teo]{Exemplo}\n" +
 			"\\newtheorem{exer}[teo]{Exerc{\\'i}cio}\n\n" +
 			"\\theoremstyle{remark}\n" +
-			"\\newtheorem{obs}[teo]{Observa\\c{c}{\\~a}o}\n"
+			"\\newtheorem{obs}[teo]{Observa\\c{c}{\\~a}o}\n" +
 			"\\newtheorem*{conv}{Conven\\c{c}{\\~a}o}\n\n" +
 			"\\newtheorem*{res}{Resolu\\c{c}{\\~a}o}" +
 			"\\newtheorem*{tarefa}{Tarefa}" +
 			"\\makeindex\n\n";
 
-	var url	 = wgServer + '/wiki/Special:Search/';
+	var url	 = mw.config.get( 'wgServer' ) + '/wiki/Special:Search/';
 	var url1 = 'http://';
 	var url2 = '.org/wiki/Special:Search/';
 /*	var w = 'pt.wikipedia';
@@ -261,21 +261,21 @@ function wiki2latex() {
 	regex(/\{\{Fórmula\|([^\n]+)\}\}\n/igm,'\\begin{equation}\\label{eq:???}\n$1\n\\end{equation}\n');
 
 	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos	
-	var WikiLink = ''
-	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i
+	var WikiLink = '';
+	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
 	while(WikiLink = reWikiLink.exec(editbox.value)){//[[proj:idioma:alvo|texto]]
-		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
-		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
+		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}');
 	}
-	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/i
+	reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/i;
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo|texto}}
-		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
-		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
+		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}');
 	}
-	var reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*}}/i
+	reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*}}/i;
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo}}
-		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1')
-		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
+		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
+		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}');
 	}
 	regex(/\[\[(?:\.\.\/[^#]+)?#Definição ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[defi:$1]{$2}');
 	regex(/\[\[(?:\.\.\/[^#]+)?#Proposição ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[prop:$1]{$2}');
@@ -304,7 +304,7 @@ function wiki2latex() {
 			'\\frontmatter\n\n' +
 			'\\tableofcontents\n\n' +
 			'\\mainmatter %Depois de índice e prefácio\n\n' +
-			'\\chapter{' + wgTitle + '}\\label{cap:' + wgTitle.toLowerCase() + '}\n\n\n' +
+			'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:' + mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n\n' +
 			editbox.value +
 			'\n\n\\backmatter\n\n' +
 			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat\n' +
@@ -366,7 +366,7 @@ function cria_autonav() {
 
 //As funções interpretaLinha e geraLista foram baseadas nas funções loadCollection e parseCollectionLine da extensão collection
 //http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/Collection/Collection.body.php?view=markup
-var nomeLivro = wgPageName.replace(/_/g,' ');
+var nomeLivro = mw.config.get( 'wgPageName' ).replace(/_/g,' ');
 function interpretaLinha( linha ) {
 	var reLinkCap  = new RegExp( '.*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + nomeLivro + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\].*', 'gi' );
 	linha = ( reLinkCap.test( linha ) ) ? linha.replace( reLinkCap, '$1$2' ).replace(/^\s+|\s+$/g,"") : '';
@@ -411,7 +411,7 @@ function geraImpr() {
 	editbox.value = imp;
 }
 function grava_lista_cap() {
-	var pagina = 'Predefinição:Lista_de_capítulos/' + wgPageName;
+	var pagina = 'Predefinição:Lista_de_capítulos/' + mw.config.get( 'wgPageName' );
 	var texto = editbox.value;
 	var r=confirm("Antes de criar a lista de capítulos é preciso conferir se a lista gerada pelo script está correta.\n\nDeseja que a lista seja criada com o texto atual?");
 	if (r==true) editar(pagina, texto);
@@ -424,7 +424,7 @@ function grava_lista_cap() {
 function editar(pagina, texto) {
 	// fetch token
 	var api = sajax_init_object();
-	api.open('GET', wgServer + wgScriptPath + '/api.php?format=json&action=query&prop=info&indexpageids=1&intoken=edit&titles=Whatever', true);
+	api.open('GET', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?format=json&action=query&prop=info&indexpageids=1&intoken=edit&titles=Whatever', true);
 	api.onreadystatechange = extract_token;
 	api.send(null);
 
@@ -444,7 +444,7 @@ function editar(pagina, texto) {
 	// edit page (must be done through POST)
 	function edit_page(_token) {
 		var parameters = 'action=edit&bot=1&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token) + '&summary=' + encodeURIComponent('Criando lista com base no [[' + wgBookName + '|índice do livro]] (usando regex)');
-		api.open('POST', wgServer + wgScriptPath + '/api.php', true); // just reuse the same query object
+		api.open('POST', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php', true); // just reuse the same query object
 		api.onreadystatechange = alert_result;
 		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		api.setRequestHeader('Connection', 'keep-alive');
@@ -456,7 +456,7 @@ function editar(pagina, texto) {
 			if(api.readyState==4) {
 				if(api.status==200) {
 					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
-					location.href = wgArticlePath.replace('$1', pagina)
+					location.href = mw.util.wikiGetlink( pagina )
 				}
 				else {
 					alert('Houve um erro.');
@@ -479,7 +479,7 @@ function format_cab() {
 	var antigo = editbox.value;
 
 	// Formatação do livro de receitas
-	if ( "Livro_de_receitas" == wgBookName ){
+	if ( "Livro_de_receitas" === wgBookName ){
 		regex(/==\s*[^\n]+\s+[-–]\s+(\d+)\s*==/ig, '== Receita $1 ==');
 		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
 		regex(/\n:?\s*'''(?:Modo\s+de\s+)?(?:Preparo|fazer):?\s*'''\s*\n/ig, '\n=== Preparo ===\n');
@@ -531,7 +531,7 @@ function format_list() {
 }
 
 function abs2rel() {
-if (wgPageName == wgBookName){
+if (mw.config.get( 'wgPageName' ) === wgBookName ){
 	//troca underscores por espaços
 	var nome = wgBookName.replace(/_/g,' ');
 		
