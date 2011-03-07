@@ -10,10 +10,10 @@ importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Sc
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
-	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( "User:" + mw.user.name() + "/" + skin + ".js?action=edit");');
+	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( \'User:\' + mw.user.name() + \'/\' + mw.config.get( \'skin\' ) + \'.js?action=edit\');');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
 
-	if ('http://pt.wikibooks.org' == mw.config.get( 'wgServer' )) {
+	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
 		regexTool('• Formatação geral','format_geral()');
 		regexTool('• Wiki -> LaTeX','wiki2latex()');
 		regexTool('• LaTeX -> Wiki','latex2wiki()');
@@ -34,17 +34,17 @@ function rmflinks() {
 		regexTool('TEST: Refs do Google Books','converte_refs()');
 	}
 	//Formatando links do Regex Framework
-	var r = document.getElementById('p-regex')
+	var r = document.getElementById('p-regex');
 	if (r){
-		r.className += ' portal'
-		var d = r.getElementsByTagName('div')
-		if (d[0]) d[0].className += ' pBody body'
+		r.className += ' portal';
+		var d = r.getElementsByTagName('div');
+		if (d[0]) { d[0].className += ' pBody body'; }
 	}
 }
 function corrige_assinatura() {
-	var proj = ( mw.config.get( 'wgServer' ).indexOf("wikibooks") > -1) ? '' : 'b:';
-	var lang = ( "pt" === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:';
-	if ( !proj && lang ) proj = ':';
+	var proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:';
+	var lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:';
+	if ( !proj && lang ) { proj = ':'; }
 	var reOldSign = window.reOldSign;
 	var newSign = '[[' + proj + lang + 'User:Helder.wiki|Helder]]';
 	regex( reOldSign, newSign );
@@ -53,29 +53,13 @@ function corrige_assinatura() {
 	doaction('diff');
 }
 
-/* scripts */
-// Abaixo, defina as funções referenciadas a partir de rmflinks(), logo acima. Estas funções podem usar qualquer JavaScript,
-// mas há um conjunto de ferramentas simplificadas documentadas em
-// http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
-function format_geral() {
-	format_cab();
-	format_predef();
-	format_cat();
-	format_list();
-	abs2rel();
-	format_links();
-	format_math();
-	usando_regex();
-	format_cab();doaction('diff');
-}
-
 /** Latex2wiki **
  * Este script é uma adaptação para JavaScript:
  * (1) Do código de Marc PoulhiÃ¨s <marc.poulhies@epfl.ch>, que era baseado na
  * ideia original de Maxime Biais <maxime@biais.org>;
  * (2) Do código escrito por [[w:en:User:Jmath666]] com a ajuda de
  * [[User:Oleg Alexandrov]]
- * 
+ *
  * Scripts originais:
  * http://code.google.com/p/latex2wiki/source/browse/trunk/latex2wiki.py
  * http://www-math.cudenver.edu/~jmandel/latex2wiki/latex2wiki.pl
@@ -110,63 +94,64 @@ function math_conversion(dir) {
 			[null, null, null]
 		],
 		[//notas de rodapé
-			[/\\footnote{(.*?)}/g, '<ref>$1</ref>', null],
+			[/\\footnote\{(.*?)\}/g, '<ref>$1</ref>', null],
 			[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
 		]
 		];
-	for (i=0; i<command.length; i++){
-		if (!command[i][dir][regex]) continue;
+	for (var i=0; i<command.length; i++){
+		if (!command[i][dir][regex]) { continue; }
 		if (command[i][dir][regex].test(text)){
-			if (command[i][dir][func]) command[i][dir][func]();
+			if (command[i][dir][func]) {command[i][dir][func]();}
 			text = text.replace(command[i][dir][regex], command[i][dir][subst]);
 		}
 	}
 	editbox.value = text;
-	if (0 == dir)
-		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce')
-	else
+	if (0 === dir) {
+		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+	} else {
 		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
+	}
 }
 
 function latex2wiki() {
-	var cabeçalho = '{' + '{AutoNav}' + '}\n'
-	var rodapé = 	'\n== Notas ==\n' +
+	var top = '{' + '{AutoNav}' + '}\n';
+	var bottom =	'\n== Notas ==\n' +
 			'<references group="nota "/>\n' +
 			'\n== Referências ==\n' +
 			'<references/>\n' +
-			'{' + '{AutoCat}' + '}'
+			'{' + '{AutoCat}' + '}';
 
-	regex(/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>')
-	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{' + '{Fórmula|<math>$1</math>}' + '}\n\n')
-	regex(/<\/math>([\.,;:!\?]) */mig, '$1</math> ')
+	regex(/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>');
+	regex(/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n{' + '{Fórmula|<math>$1</math>}' + '}\n\n');
+	regex(/<\/math>([\.,;:!\?]) */mig, '$1</math> ');
 
-	regex(/\\footnote{([^}]+?)%?\\label{[^}]+?}\s*}/g, '<ref name="$2">$1</ref>')
-	regex(/\\footnote{(.*?)}/g, '<ref>$1</ref>')
+	regex(/\\footnote\{([^}]+?)%?\\label\{[^}]+?\}\s*\}/g, '<ref name="$2">$1</ref>');
+	regex(/\\footnote\{(.*?)\}/g, '<ref>$1</ref>');
 
-	regex(/\n*\\chapter{([^}\n]+)}\n*/gm, '\n\n= $1 =\n\n')
-	regex(/\n*\\section{([^}\n]+)}\n*/gm, '\n\n== $1 ==\n\n')
-	regex(/\n*\\subsection{([^}\n]+)}\n*/gm, '\n\n=== $1 ===\n\n')
-	regex(/\n*\\subsubsection{([^}\n]+)}\n*/gm, '\n\n==== $1 ====\n\n')
+	regex(/\n*\\chapter\{([^}\n]+)\}\n*/gm, '\n\n= $1 =\n\n');
+	regex(/\n*\\section\{([^}\n]+)\}\n*/gm, '\n\n== $1 ==\n\n');
+	regex(/\n*\\subsection\{([^}\n]+)\}\n*/gm, '\n\n=== $1 ===\n\n');
+	regex(/\n*\\subsubsection\{([^}\n]+)\}\n*/gm, '\n\n==== $1 ====\n\n');
 
-	regex(/\n*\\begin{defi}%?(?:\\label{defi:[^}]+?})?\s*/gm, '\n{'+'{Definição\n|')
-	regex(/\n*\\begin{teo}%?(?:\\label{teo:[^}]+?})?\s*/gm, '\n{'+'{Teorema\n|')
-	regex(/\n*\\begin{proof}%?(?:\\label{proof:[^}]+?})?\s*/gm, '\n{'+'{Demonstração\n|')
-	regex(/\n*\\begin{lema}%?(?:\\label{lema:[^}]+?})?\s*/gm, '\n{'+'{Lema\n|')
-	regex(/\n*\\begin{prop}%?(?:\\label{prop:[^}]+?})?\s*/gm, '\n{'+'{Proposição\n|')
-	regex(/\n*\\begin{cor}%?(?:\\label{cor:[^}]+?})?\s*/gm, '\n{'+'{Corolário\n|')
-	regex(/\n*\\begin{ex}%?(?:\\label{ex:[^}]+?})?\s*/gm, '\n{'+'{Exemplo\n|')
-	regex(/\n*\\begin{exer}%?(?:\\label{exer:[^}]+?})?\s*/gm, '\n{'+'{Exercício\n|')
-	regex(/\n*\\begin{obs}%?(?:\\label{obs:[^}]+?})?\s*/gm, '\n{'+'{Observação\n|')
-	regex(/\n*\\end{(?:defi|teo|proof|lema|prop|cor|ex|exer|obs)}\s*/gm, '\n}}\n\n')
+	regex(/\n*\\begin\{defi\}%?(?:\\label\{defi:[^}]+?\})?\s*/gm, '\n{'+'{Definição\n|');
+	regex(/\n*\\begin\{teo\}%?(?:\\label\{teo:[^}]+?\})?\s*/gm, '\n{'+'{Teorema\n|');
+	regex(/\n*\\begin\{proof\}%?(?:\\label\{proof:[^}]+?\})?\s*/gm, '\n{'+'{Demonstração\n|');
+	regex(/\n*\\begin\{lema\}%?(?:\\label\{lema:[^}]+?\})?\s*/gm, '\n{'+'{Lema\n|');
+	regex(/\n*\\begin\{prop\}%?(?:\\label\{prop:[^}]+?\})?\s*/gm, '\n{'+'{Proposição\n|');
+	regex(/\n*\\begin\{cor\}%?(?:\\label\{cor:[^}]+?\})?\s*/gm, '\n{'+'{Corolário\n|');
+	regex(/\n*\\begin\{ex\}%?(?:\\label\{ex:[^}]+?\})?\s*/gm, '\n{'+'{Exemplo\n|');
+	regex(/\n*\\begin\{exer\}%?(?:\\label\{exer:[^}]+?\})?\s*/gm, '\n{'+'{Exercício\n|');
+	regex(/\n*\\begin\{obs\}%?(?:\\label\{obs:[^}]+?\})?\s*/gm, '\n{'+'{Observação\n|');
+	regex(/\n*\\end\{(?:defi|teo|proof|lema|prop|cor|ex|exer|obs)\}\s*/gm, '\n}}\n\n');
 
-	regex(/\n?\\end{(?:enumerate|itemize)}\n?/gm, '\n')
+	regex(/\n?\\end\{(?:enumerate|itemize)\}\n?/gm, '\n');
 
 
-	regex(/^\s*\\item\s+/gm, '* ')
+	regex(/^\s*\\item\s+/gm, '* ');
 
-	editbox.value =	cabeçalho + editbox.value + rodapé
+	editbox.value =	top + editbox.value + bottom;
 
-	setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce')
+	setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
 }
 
 
@@ -186,7 +171,7 @@ function wiki2latex() {
 
 	preambulo +=	"\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n\n" +
 			"\\hypersetup{\n" +
-			"		pdftitle = {" + wgBookName + "},\n" +
+			"		pdftitle = {" + mw.config.get( 'wgBookName' ) + "},\n" +
 			"		pdfauthor = {Colaboradores do Wikilivros},\n" +
 			"		pdfcreator = {" + mw.user.name() + "},\n" +
 			"		pdfsubject = {},\n" +
@@ -227,7 +212,7 @@ function wiki2latex() {
 	'meta':		'meta.wikimedia',
 	'commons':	'commons.wikimedia',
 	'wmf':		'wikimediafoundation',
-	'species':	'wikispecies.wikimedia'	
+	'species':	'wikispecies.wikimedia'
 	}
 */
 	regex(/\{\{Auto(Cat|Nav)\}\}/ig,''); //Comandos wiki que são descartados
@@ -248,31 +233,31 @@ function wiki2latex() {
 	regex(/^=([^\n]+)=\s*$/mg,'\n\n\n\\chapter{$1}\\label{cap:$1}\n\n\n');
 
 
-	regex(/{{\s*(?:Definição)\|([^}]+)}}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
-	regex(/{{\s*(?:Teorema)\|([^}]+)}}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
-	regex(/{{\s*(?:Demonstração)\|([^}]+)}}/ig,'\\begin{proof}\n$1\n\\end{proof}');
-	regex(/{{\s*(?:Lema)\|([^}]+)}}/ig,'\\begin{lema}%\\label{lema:}\n$1\n\\end{lema}');
-	regex(/{{\s*(?:Proposição)\|([^}]+)}}/ig,'\\begin{prop}%\\label{prop:}\n$1\n\\end{prop}');
-	regex(/{{\s*(?:Corolário)\|([^}]+)}}/ig,'\\begin{cor}%\\label{cor:}\n$1\n\\end{cor}');
-	regex(/{{\s*(?:Exemplo)\|([^}]+)}}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
-	regex(/{{\s*(?:Exercício)\|([^}]+)}}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
-	regex(/{{\s*(?:Observação)\|([^}]+)}}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
+	regex(/\{\{\s*(?:Definição)\|([^}]+)\}\}/ig,'\\begin{defi}%\\label{defi:}\n$1\n\\end{defi}'); //predefinições matemáticas
+	regex(/\{\{\s*(?:Teorema)\|([^}]+)\}\}/ig,'\\begin{teo}%\\label{teo:}\n$1\n\\end{teo}');
+	regex(/\{\{\s*(?:Demonstração)\|([^}]+)\}\}/ig,'\\begin{proof}\n$1\n\\end{proof}');
+	regex(/\{\{\s*(?:Lema)\|([^}]+)\}\}/ig,'\\begin{lema}%\\label{lema:}\n$1\n\\end{lema}');
+	regex(/\{\{\s*(?:Proposição)\|([^}]+)\}\}/ig,'\\begin{prop}%\\label{prop:}\n$1\n\\end{prop}');
+	regex(/\{\{\s*(?:Corolário)\|([^}]+)\}\}/ig,'\\begin{cor}%\\label{cor:}\n$1\n\\end{cor}');
+	regex(/\{\{\s*(?:Exemplo)\|([^}]+)\}\}/ig,'\\begin{ex}%\\label{ex:}\n$1\n\\end{ex}');
+	regex(/\{\{\s*(?:Exercício)\|([^}]+)\}\}/ig,'\\begin{exer}%\\label{exer:}\n$1\n\\end{exer}');
+	regex(/\{\{\s*(?:Observação)\|([^}]+)\}\}/ig,'\\begin{obs}%\\label{obs:}\n$1\n\\end{obs}');
 	regex(/\{\{Fórmula\|([\d.]+)\|([^\n]+)\}\}\n/igm,'\\begin{equation}\\label{eq:$1}\n$2\n\\end{equation}\n');
 	regex(/\{\{Fórmula\|([^\n]+)\}\}\n/igm,'\\begin{equation}\\label{eq:???}\n$1\n\\end{equation}\n');
 
-	regex(/{{\s*(?:Âncoras?)\|([^}]+)}}/ig,'\\label{$1}'); //links internos e externos	
+	regex(/\{\{\s*(?:Âncoras?)\|([^}]+)\}\}/ig,'\\label{$1}'); //links internos e externos
 	var WikiLink = '';
 	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
 	while(WikiLink = reWikiLink.exec(editbox.value)){//[[proj:idioma:alvo|texto]]
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}');
 	}
-	reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*}}/i;
+	reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*\}\}/i;
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo|texto}}
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}');
 	}
-	reWikiLink = /{{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*}}/i;
+	reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*\}\}/i;
 	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo}}
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}');
@@ -295,8 +280,8 @@ function wiki2latex() {
 //	regex(/# /ig,'\\item ');
 //	regex(//ig,'\\end{enumerate}\n');
 //	regex(//ig,'\\end{itemize}\n');
-	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n\$1\n');
-	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n\$1\n\n');
+	regex(/\n*(\\(?:sub){0,2}section[^\n]+)\n*/ig,'\n\n$1\n');
+	regex(/\n*(\\chapter[^\n]+)\n*/ig,'\n\n\n$1\n\n');
 	regex(/"([^"]+)"/ig,"``$1''");//Aspas
 
 	editbox.value =	preambulo +
@@ -317,21 +302,22 @@ function wiki2latex() {
 
 //Adaptação de um script de Paul Galloway (http://www.synergyx.com)
 function dedupe_list( lista ) {
-	if( typeof lista == 'string' ) {
+	var listvalues;
+	if( typeof lista === 'string' ) {
 		var mainlist = editbox.value;
 		mainlist = mainlist.replace( /\r|\n+/gi, '\n' );
-		var listvalues = mainlist.split( '\n' );
-	} else if( typeof lista == 'object' ) {
-		var listvalues = lista;
+		listvalues = mainlist.split( '\n' );
+	} else if( typeof lista === 'object' ) {
+		listvalues = lista;
 	}
 	var count = 0;
-	var newlist = new Array();
-	var hash = new Object();
-	
+	var newlist = [];
+	var hash = {};
+
 	for ( var i = 0; i<listvalues.length; i++ )	{
-		if ( hash[listvalues[ i ].toLowerCase()] != 1 )	{
+		if ( hash[listvalues[ i ].toLowerCase()] !== 1 )	{
 			newlist = newlist.concat( listvalues[ i ] );
-			hash[ listvalues[ i ].toLowerCase() ] = 1
+			hash[ listvalues[ i ].toLowerCase() ] = 1;
 		} else {
 			count++;
 		}
@@ -341,22 +327,22 @@ function dedupe_list( lista ) {
 	} else {
 		alert( 'Não havia linhas duplicadas' );
 	}
-	if( typeof lista == 'string' ) {
+	if( typeof lista === 'string' ) {
 		return newlist.join( '\r\n' );
-	} else if( typeof lista == 'object' ) {
-		return newlist
+	} else if( typeof lista === 'object' ) {
+		return newlist;
 	}
 }
 
 function cria_autonav() {
 	var lista = editbox.value.split('\n');
-	var anterior = new Array();
-	var posterior = new Array();
+	var anterior = [];
+	var posterior = [];
 
 	anterior[0] = lista[0];
 	posterior[lista.length-1] = lista[lista.length-1];
 
-	for (i=1;i<lista.length-1;i++){
+	for (var i=1;i<lista.length-1;i++){
 		anterior[i]	= lista[i] + '=[[' + lista[i-1] + ']]';
 		posterior[i] = lista[i] + '=[[' + lista[i+1] + ']]';
 	}
@@ -378,7 +364,7 @@ function geraLista() {
 	var lista = [];
 	for ( var i = 0; i < linhas.length; i++) {
 		var cap = interpretaLinha( linhas[ i ] );
-		if ( cap !== '' ) lista.push( cap );
+		if ( cap !== '' ) { lista.push( cap ); }
 	}
 	return lista;
 }
@@ -389,9 +375,58 @@ function geraPredef() {
 			+ '\n<includeonly>}}</includeonly><noinclude>\n'
 			+ '{'+'{Documentação|Predefinição:Lista de capítulos/doc}}\n'
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
-			+ '</noinclude>'
+			+ '</noinclude>';
 	editbox.value = predef;
 }
+
+//Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
+/************
+* MediaWiki ajax.js
+************/
+function editar(pagina, texto) {
+	// fetch token
+	var api = sajax_init_object();
+
+	function extract_token() {
+		if(api.readyState===4) {
+			if(api.status===200) {
+				var response = eval('(' + api.responseText + ')');
+				var token = response.query.pages[response.query.pageids[0]].edittoken;
+				edit_page(token);
+			}
+			else {
+				alert('Houve um erro ao solicitar um token.');
+			}
+		}
+	}
+	api.open('GET', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?format=json&action=query&prop=info&indexpageids=1&intoken=edit&titles=Whatever', true);
+	api.onreadystatechange = extract_token;
+	api.send(null);
+
+	// edit page (must be done through POST)
+	function edit_page(_token) {
+		var parameters = 'action=edit&bot=1&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token) + '&summary=' + encodeURIComponent('Criando lista com base no [[' + mw.config.get( 'wgBookName' ) + '|índice do livro]] (usando regex)');
+
+		// process response
+		function alert_result() {
+			if(api.readyState===4) {
+				if(api.status===200) {
+					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
+					location.href = mw.util.wikiGetlink( pagina );
+				}
+				else {
+					alert('Houve um erro.');
+				}
+			}
+		}
+		api.open('POST', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php', true); // just reuse the same query object
+		api.onreadystatechange = alert_result;
+		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		api.setRequestHeader('Connection', 'keep-alive');
+		api.setRequestHeader('Content-length', parameters.length);
+		api.send(parameters);
+	}
+}//editar
 function geraCol() {
 	var lista = dedupe_list( geraLista() );
 	var col = '{'+'{livro_gravado}}\n\n== ' + nomeLivro + ' ==\n';
@@ -414,74 +449,26 @@ function grava_lista_cap() {
 	var pagina = 'Predefinição:Lista_de_capítulos/' + mw.config.get( 'wgPageName' );
 	var texto = editbox.value;
 	var r=confirm("Antes de criar a lista de capítulos é preciso conferir se a lista gerada pelo script está correta.\n\nDeseja que a lista seja criada com o texto atual?");
-	if (r==true) editar(pagina, texto);
+	if (r===true) { editar(pagina, texto); }
 }
-
-//Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
-/************
-* MediaWiki ajax.js
-************/
-function editar(pagina, texto) {
-	// fetch token
-	var api = sajax_init_object();
-	api.open('GET', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?format=json&action=query&prop=info&indexpageids=1&intoken=edit&titles=Whatever', true);
-	api.onreadystatechange = extract_token;
-	api.send(null);
-
-	function extract_token() {
-		if(api.readyState==4) {
-			if(api.status==200) {
-				var response = eval('(' + api.responseText + ')');
-				var token = response['query']['pages'][response['query']['pageids'][0]]['edittoken'];
-				edit_page(token);
-			}
-			else {
-				alert('Houve um erro ao solicitar um token.');
-			}
-		}
-	}
- 
-	// edit page (must be done through POST)
-	function edit_page(_token) {
-		var parameters = 'action=edit&bot=1&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token) + '&summary=' + encodeURIComponent('Criando lista com base no [[' + wgBookName + '|índice do livro]] (usando regex)');
-		api.open('POST', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php', true); // just reuse the same query object
-		api.onreadystatechange = alert_result;
-		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		api.setRequestHeader('Connection', 'keep-alive');
-		api.setRequestHeader('Content-length', parameters.length);
-		api.send(parameters);
- 
-		// process response
-		function alert_result() {
-			if(api.readyState==4) {
-				if(api.status==200) {
-					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
-					location.href = mw.util.wikiGetlink( pagina )
-				}
-				else {
-					alert('Houve um erro.');
-				}
-			}
-		}
-	}
-}//editar
 
 function converte_refs() {
 	var antigo = editbox.value;
 
 	regex(/Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img, '* {'+'{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}');
 
-	if (editbox.value != antigo)
+	if (editbox.value !== antigo) {
 		setreason('Referência do Google Books -> [[Predefinição:Referência a livro]]', 'appendonce');
+	}
 }
 
 function format_cab() {
 	var antigo = editbox.value;
 
 	// Formatação do livro de receitas
-	if ( "Livro_de_receitas" === wgBookName ){
-		regex(/==\s*[^\n]+\s+[-–]\s+(\d+)\s*==/ig, '== Receita $1 ==');
-		regex(/==='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
+	if ( 'Livro_de_receitas' === mw.config.get( 'wgBookName' ) ){
+		regex(/\==\s*[^\n]+\s+[\-–]\s+(\d+)\s*==/ig, '== Receita $1 ==');
+		regex(/\=='''Ingredientes e Preparo:'''===/ig, '=== Ingredientes ===');
 		regex(/\n:?\s*'''(?:Modo\s+de\s+)?(?:Preparo|fazer):?\s*'''\s*\n/ig, '\n=== Preparo ===\n');
 		regex(/\n:?\s*'''\s*([^\n:']+)\s*:?\s*'''\s*\n/ig, '\n=== $1 ===\n');
 		regex(/ --\n/ig, ';\n');
@@ -494,47 +481,47 @@ function format_cab() {
 	regex(/\n*^(=+)\s*(.*?)\s*\1\s*/mig, '\n\n$1 $2 $1\n');
 
 	// -quebras de linha entre cabeçalhos consecutivos
-	regex(/=\n+=/ig, '=\n=');
+	regex(/\=\n+=/ig, '=\n=');
 
-	if (editbox.value != antigo)
+	if (editbox.value !== antigo)
 		setreason('format. cabeçalhos', 'appendonce');
 }
 
 function format_predef() {
 	var antigo = editbox.value;
-	
-	regex(/{{\s*(?:msg:|template:)?([^}]+)}}/ig, '{{$1}}');
 
-	if (editbox.value != antigo)
+	regex(/\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig, '{{$1}}');
+
+	if (editbox.value !== antigo)
 		setreason('format. predefs', 'appendonce');
 }
 
 function format_cat() {
 	var antigo = editbox.value;
-	
+
 	regex(/\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
 	regex(/\[\[Categoria:([^\|\]]+)\|[a-zA-Z0-9]\]\]/ig, '[[Categoria:$1|{{SUBPAGENAME}}]]');
 	regex(/\[\[Categoria:([^\|\]]+)\|([\* !])\]\]/ig, '[[Categoria:$1|$2{{SUBPAGENAME}}]]');
 
-	if (editbox.value != antigo)
+	if (editbox.value !== antigo)
 		setreason('format. categorias', 'appendonce');
 }
 
 function format_list() {
 	var antigo = editbox.value;
-	
+
 	//Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 	regex(/^([*#:]+)\s*/mig, '$1 ');
 
-	if (editbox.value != antigo)
+	if (editbox.value !== antigo)
 		setreason('format. listas', 'appendonce');
 }
 
 function abs2rel() {
-if (mw.config.get( 'wgPageName' ) === wgBookName ){
+if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ){
 	//troca underscores por espaços
-	var nome = wgBookName.replace(/_/g,' ');
-		
+	var nome = mw.config.get( 'wgBookName' ).replace(/_/g,' ');
+
 	// [[Livro/Cap|Cap]] -> [[/Cap/]]
 		regex(RegExp('\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]','ig'), '[[/$1/]]');
 	}
@@ -552,7 +539,7 @@ function format_links() {
 	//* [[/Texto|Texto]] -> [[/Texto/]]
 	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig, '[[$1]]');
 	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]');
-	
+
 	// troca de underscores por espaços nas ligações
 	regex(/\[\[([^\|\]]+?)_/ig, '[[$1 ', 5);
 
@@ -569,22 +556,38 @@ function format_links() {
 	regex(/\[\[File( Discussão)?:/ig,'[[Arquivo$1:');
 	regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
-	if (editbox.value != antigo)
+	if (editbox.value !== antigo)
 		setreason('formatação dos links', 'appendonce');
 }
 
 function format_math() {
 	var antigo = editbox.value;
-	
+
 	// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	regex(/<\/math> *([\.,;:!\?]) */ig, '$1</math> ');
 	regex(/\\sin/mig, '\\mathrm{sen}\\,');
 
 
-	if (editbox.value != antigo)
+	if (editbox.value !== antigo)
 		setreason('format. <math> e pontuação', 'appendonce');
 }
 
 function usando_regex() {
 	setreason('[usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+}
+
+/* scripts */
+// Abaixo, defina as funções referenciadas a partir de rmflinks(), logo acima. Estas funções podem usar qualquer JavaScript,
+// mas há um conjunto de ferramentas simplificadas documentadas em
+// http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
+function format_geral() {
+	format_cab();
+	format_predef();
+	format_cat();
+	format_list();
+	abs2rel();
+	format_links();
+	format_math();
+	usando_regex();
+	format_cab();doaction('diff');
 }
