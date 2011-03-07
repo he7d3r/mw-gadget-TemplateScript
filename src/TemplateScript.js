@@ -354,7 +354,7 @@ function cria_autonav() {
 //http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/Collection/Collection.body.php?view=markup
 var nomeLivro = mw.config.get( 'wgPageName' ).replace(/_/g,' ');
 function interpretaLinha( linha ) {
-	var reLinkCap  = new RegExp( '.*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + nomeLivro + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\].*', 'gi' );
+	var reLinkCap  = new RegExp( '.*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + $escapeRE( nomeLivro ) + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\].*', 'gi' );
 	linha = ( reLinkCap.test( linha ) ) ? linha.replace( reLinkCap, '$1$2' ).replace(/^\s+|\s+$/g,"") : '';
 	return( linha );
 }
