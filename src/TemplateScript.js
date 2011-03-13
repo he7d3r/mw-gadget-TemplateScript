@@ -442,7 +442,7 @@ function geraImpr() {
 	var lista = dedupe_list( geraLista() );
 	var imp = '{'+'{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( var i = 0; i < lista.length; i++) {
-		imp += '=' + lista[ i ] + '=\n{'+'{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
+		imp += '=' + lista[ i ].replace( /^.+\//g, '' ) + '=\n{'+'{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
 	}
 	imp += '\n{' + '{AutoCat}' + '}';
 	editbox.value = imp;
