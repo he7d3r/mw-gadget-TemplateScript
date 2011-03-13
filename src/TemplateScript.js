@@ -1,9 +1,11 @@
-/*************
-*** Regex menu framework
-*** by [[m:user:Pathoschild]]: [[meta:User:Pathoschild/Scripts/Regex menu framework]]
-***	- adds a sidebar menu of user-defined scripts.
-*************/
-importScriptURI('http://meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript');
+/**
+ * Regex menu framework
+ * Adds a sidebar menu of user-defined scripts
+ * @author: [[m:user:Pathoschild]]: [[meta:User:Pathoschild/Scripts/Regex menu framework]]
+ */
+mw.loader.load( ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ? 'https://secure.wikimedia.org/wikipedia/meta' : 'http://meta.wikimedia.org' )
+	+ '/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript'
+);
 
 /* menu links */
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
@@ -359,7 +361,7 @@ function interpretaLinha( linha ) {
 	return( linha );
 }
 function geraLista() {
-	var linhas = $('#wpTextbox1').text().split(/[\r\n]+/);
+	var linhas = $('#wpTextbox1').val().split(/[\r\n]+/);
 	linhas = linhas.slice( 1, linhas.length - 1 );
 	var lista = [];
 	for ( var i = 0; i < linhas.length; i++) {
