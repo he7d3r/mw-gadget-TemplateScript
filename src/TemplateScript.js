@@ -372,7 +372,7 @@ function geraLista() {
 }
 function geraPredef() {
 	var lista = dedupe_list( geraLista() );
-	var predef = '<includeonly>{'+'{Lista de capítulos/{{{1|}}}</includeonly>\n |'
+	var predef = '<includeonly>{'+'{{{{|safesubst:}}}Lista de capítulos/{{{1|}}}</includeonly>\n |'
 			+ lista.join( '\n |' )
 			+ '\n<includeonly>}}</includeonly><noinclude>\n'
 			+ '{'+'{Documentação|Predefinição:Lista de capítulos/doc}}\n'
