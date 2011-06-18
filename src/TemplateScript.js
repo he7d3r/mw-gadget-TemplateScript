@@ -4,7 +4,7 @@
  * @author: [[m:user:Pathoschild]]: [[meta:User:Pathoschild/Scripts/Regex menu framework]]
  */
 mw.loader.load( ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ? 'https://secure.wikimedia.org/wikipedia/meta' : 'http://meta.wikimedia.org' )
-	+ '/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript'
+    + '/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript'
 );
 
 /* menu links */
@@ -291,7 +291,8 @@ function wiki2latex() {
 			'\\frontmatter\n\n' +
 			'\\tableofcontents\n\n' +
 			'\\mainmatter %Depois de índice e prefácio\n\n' +
-			'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:' + mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n\n' +
+			'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:'
+				+ mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n\n' +
 			editbox.value +
 			'\n\n\\backmatter\n\n' +
 			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat\n' +
@@ -299,7 +300,9 @@ function wiki2latex() {
 			'\\addcontentsline{toc}{chapter}{Referências Bibliográficas}\n\n' +
 			'\\end{document}';
 
-	setreason('criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
+	setreason('Versão em LaTeX [produzida com'
+		+' [[meta:User:Pathoschild/Scripts/Regex menu framework|expressões regulares]]]'
+		+'(não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
 
 //Adaptação de um script de Paul Galloway (http://www.synergyx.com)
@@ -421,7 +424,8 @@ function editar(pagina, texto) {
 				}
 			}
 		}
-		api.open('POST', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php', true); // just reuse the same query object
+		// just reuse the same query object
+		api.open('POST', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php', true);
 		api.onreadystatechange = alert_result;
 		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		api.setRequestHeader('Connection', 'keep-alive');
@@ -431,18 +435,21 @@ function editar(pagina, texto) {
 }//editar
 function geraCol() {
 	var lista = dedupe_list( geraLista() );
-	var col = '{'+'{livro_gravado}}\n\n== ' + nomeLivro + ' ==\n';
+	var col = '{'+'{Livro gravado\n |título={'
+		+'{subst:SUBPAGENAME}}\n |subtítulo=\n |imagem da capa=\n'
+		+' |cor da capa=\n}}\n\n== ' + nomeLivro + ' ==\n';
 	for ( var i = 0; i < lista.length; i++) {
-		col += ':[[' + nomeLivro + '/' + lista[ i ] + '|' + lista[ i ].replace( /^.+\//g, '' ) + ']]\n';
+		col += ':[[' + nomeLivro + '/' + lista[ i ] + '|'
+			+ lista[ i ].replace( /^.+\//g, '' ) + ']]\n';
 	}
-	col += '\n['+'[Categoria:Livros|{{SUBPAGENAME}}]]';
 	editbox.value = col;
 }
 function geraImpr() {
 	var lista = dedupe_list( geraLista() );
 	var imp = '{'+'{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( var i = 0; i < lista.length; i++) {
-		imp += '=' + lista[ i ].replace( /^.+\//g, '' ) + '=\n{'+'{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
+		imp += '=' + lista[ i ].replace( /^.+\//g, '' )
+			+ '=\n{'+'{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
 	}
 	imp += '\n{' + '{AutoCat}' + '}';
 	editbox.value = imp;
@@ -450,7 +457,9 @@ function geraImpr() {
 function grava_lista_cap() {
 	var pagina = 'Predefinição:Lista_de_capítulos/' + mw.config.get( 'wgPageName' );
 	var texto = editbox.value;
-	var r=confirm("Antes de criar a lista de capítulos é preciso conferir se a lista gerada pelo script está correta.\n\nDeseja que a lista seja criada com o texto atual?");
+	var r=confirm('Antes de criar a lista de capítulos é preciso conferir'
+		+' se a lista gerada pelo script está correta.\n\nDeseja'
+		+' que a lista seja criada com o texto atual?');
 	if (r===true) { editar(pagina, texto); }
 }
 
