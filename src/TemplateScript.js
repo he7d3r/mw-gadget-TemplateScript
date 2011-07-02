@@ -14,6 +14,7 @@ function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( \'User:\' + mw.user.name() + \'/\' + mw.config.get( \'skin\' ) + \'.js?action=edit\');');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
+    regexTool('Regex no sumário','usando_regex()');
 
 	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
 		regexTool('• Formatação geral','format_geral()');
@@ -27,7 +28,6 @@ function rmflinks() {
 		regexTool('Usar links relativos','abs2rel()');
 		regexTool('Formatar links','format_links()');
 		regexTool('Formatar tags <math>','format_math()');
-		regexTool('Regex no sumário','usando_regex()');
 		regexTool('Gerar lista de capítulos','geraPredef()');
 		regexTool('Gerar coleção','geraCol()');
 		regexTool('Gerar versão para impressão','geraImpr()');
@@ -584,7 +584,11 @@ function format_math() {
 }
 
 function usando_regex() {
-	setreason('[usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+    if ( mw.config.get( 'wgContentLanguage' ).substr( 0, 2 ) === 'pt' ) {
+        setreason('[usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+    } else {
+        setreason('[using [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+    }	
 }
 
 /* scripts */
