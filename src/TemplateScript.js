@@ -14,7 +14,7 @@ function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( \'User:\' + mw.user.name() + \'/\' + mw.config.get( \'skin\' ) + \'.js?action=edit\');');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
-    regexTool('Regex no sumário','usando_regex()');
+	regexTool('Regex no sumário','usando_regex()');
 
 	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
 		regexTool('• Formatação geral','format_geral()');
@@ -34,13 +34,6 @@ function rmflinks() {
 		regexTool('Gravar lista de capítulos (CUIDADO!)','grava_lista_cap()');
 		regexTool('TEST: Criar AutoNav','cria_autonav()');
 		regexTool('TEST: Refs do Google Books','converte_refs()');
-	}
-	//Formatando links do Regex Framework
-	var r = document.getElementById('p-regex');
-	if (r){
-		r.className += ' portal';
-		var d = r.getElementsByTagName('div');
-		if (d[0]) { d[0].className += ' pBody body'; }
 	}
 }
 function corrige_assinatura() {
