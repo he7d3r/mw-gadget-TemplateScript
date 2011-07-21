@@ -11,6 +11,7 @@ mw.loader.load( ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ? 'https://se
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
+	$('#p-regex').toggleClass( 'expanded' ).toggleClass( 'collapsed' ).find( 'div.body' ).slideToggle( 'fast' );
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( \'User:\' + mw.user.name() + \'/\' + mw.config.get( \'skin\' ) + \'.js?action=edit\');');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
