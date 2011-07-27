@@ -11,7 +11,7 @@ mw.loader.load( ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ? 'https://se
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
-	$('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
+    $('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( \'User:\' + mw.user.name() + \'/\' + mw.config.get( \'skin\' ) + \'.js?action=edit\');');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
@@ -244,19 +244,25 @@ function wiki2latex() {
 	regex(/\{\{\s*(?:Âncoras?)\|([^}]+)\}\}/ig,'\\label{$1}'); //links internos e externos
 	var WikiLink = '';
 	var reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
-	while(WikiLink = reWikiLink.exec(editbox.value)){//[[proj:idioma:alvo|texto]]
+	WikiLink = reWikiLink.exec(editbox.value);
+	while( WikiLink ){//[[proj:idioma:alvo|texto]]
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}');
+		WikiLink = reWikiLink.exec(editbox.value);
 	}
 	reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*\}\}/i;
-	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo|texto}}
+	WikiLink = reWikiLink.exec(editbox.value);
+	while( WikiLink ){//{{proj|alvo|texto}}
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}');
+		WikiLink = reWikiLink.exec(editbox.value);
 	}
 	reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*\}\}/i;
-	while(WikiLink = reWikiLink.exec(editbox.value)){//{{proj|alvo}}
+	WikiLink = reWikiLink.exec(editbox.value);
+	while( WikiLink ){//{{proj|alvo}}
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		editbox.value=editbox.value.replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}');
+		WikiLink = reWikiLink.exec(editbox.value);
 	}
 	regex(/\[\[(?:\.\.\/[^#]+)?#Definição ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[defi:$1]{$2}');
 	regex(/\[\[(?:\.\.\/[^#]+)?#Proposição ([^\]]+)\|([^\]]+)\]\]/ig,'\\hyperref[prop:$1]{$2}');
@@ -281,18 +287,18 @@ function wiki2latex() {
 	regex(/"([^"]+)"/ig,"``$1''");//Aspas
 
 	editbox.value =	preambulo +
-			'\\begin{document}\n\n' +
-			'\\frontmatter\n\n' +
-			'\\tableofcontents\n\n' +
-			'\\mainmatter %Depois de índice e prefácio\n\n' +
-			'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:'
-				+ mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n\n' +
-			editbox.value +
-			'\n\n\\backmatter\n\n' +
-			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat\n' +
-			'\\bibliography{biblio}\\label{cap:biblio}\n' +
-			'\\addcontentsline{toc}{chapter}{Referências Bibliográficas}\n\n' +
-			'\\end{document}';
+		'\\begin{document}\n\n' +
+		'\\frontmatter\n\n' +
+		'\\tableofcontents\n\n' +
+		'\\mainmatter %Depois de índice e prefácio\n\n' +
+		'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:'
+			+ mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n\n' +
+		editbox.value +
+		'\n\n\\backmatter\n\n' +
+		'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat\n' +
+		'\\bibliography{biblio}\\label{cap:biblio}\n' +
+		'\\addcontentsline{toc}{chapter}{Referências Bibliográficas}\n\n' +
+		'\\end{document}';
 
 	setreason('Versão em LaTeX [produzida com'
 		+' [[meta:User:Pathoschild/Scripts/Regex menu framework|expressões regulares]]]'
@@ -370,63 +376,66 @@ function geraLista() {
 function geraPredef() {
 	var lista = dedupe_list( geraLista() );
 	var predef = '<includeonly>{'+'{{{{|safesubst:}}}Lista de capítulos/{{{1|}}}</includeonly>\n |'
-			+ lista.join( '\n |' )
-			+ '\n<includeonly>}}</includeonly><noinclude>\n'
-			+ '{'+'{Documentação|Predefinição:Lista de capítulos/doc}}\n'
-			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
-			+ '</noinclude>';
+		+ lista.join( '\n |' )
+		+ '\n<includeonly>}}</includeonly><noinclude>\n'
+		+ '{'+'{Documentação|Predefinição:Lista de capítulos/doc}}\n'
+		+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
+		+ '</noinclude>';
 	editbox.value = predef;
 }
 
 //Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
-/************
-* MediaWiki ajax.js
-************/
 function editar(pagina, texto) {
-	// fetch token
-	var api = sajax_init_object();
+	// Edit page (must be done through POST)
+	function editPage( token ) {
+		var	nomedolivro = $( '#titleInput' ).val(),
+			$caps = $( '#collectionList' ).find( 'strong' ),
+			list = [];
 
-	function extract_token() {
-		if(api.readyState===4) {
-			if(api.status===200) {
-				var response = eval('(' + api.responseText + ')');
-				var token = response.query.pages[response.query.pageids[0]].edittoken;
-				edit_page(token);
-			}
-			else {
-				alert('Houve um erro ao solicitar um token.');
-			}
+		if ( !$caps.length ) {
+			alert( 'É preciso definir os nomes dos capítulos!' );
+			return;
 		}
-	}
-	api.open('GET', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?format=json&action=query&prop=info&indexpageids=1&intoken=edit&titles=Whatever', true);
-	api.onreadystatechange = extract_token;
-	api.send(null);
-
-	// edit page (must be done through POST)
-	function edit_page(_token) {
-		var parameters = 'action=edit&bot=1&title=' + encodeURIComponent(pagina) + '&text=' + texto + '&token=' + encodeURIComponent(_token) + '&summary=' + encodeURIComponent('Criando lista com base no [[' + mw.config.get( 'wgBookName' ) + '|índice do livro]] (usando regex)');
-
-		// process response
-		function alert_result() {
-			if(api.readyState===4) {
-				if(api.status===200) {
-					alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
-					location.href = mw.util.wikiGetlink( pagina );
-				}
-				else {
-					alert('Houve um erro.');
-				}
+		$caps.each( function( ){
+			list.push( $( this ).text() );
+		} );
+		$.post(
+			mw.util.wikiScript( 'api' ), {
+				action: 'edit',
+				bot: '1',
+				title: pagina,
+				text: texto,
+				summary: 'Criação da lista com base no [[' + mw.config.get( 'wgBookName' ) +
+					'|índice do livro]] (usando regex)',
+				token: token
+			},
+			function() {
+				alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
+				location.href = mw.util.wikiGetlink( pagina );
 			}
-		}
-		// just reuse the same query object
-		api.open('POST', mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php', true);
-		api.onreadystatechange = alert_result;
-		api.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		api.setRequestHeader('Connection', 'keep-alive');
-		api.setRequestHeader('Content-length', parameters.length);
-		api.send(parameters);
+		).error(function() {
+			alert( 'Não foi possível editar a página. =(' );
+		});
 	}
+	// Get a token and then edit the page
+	$.getJSON(
+		mw.util.wikiScript( 'api' ), {
+			format: 'json',
+			action: 'query',
+			prop: 'info',
+			indexpageids: '1',
+			intoken: 'edit',
+			titles: 'Whatever'
+		},
+		function( data ) {
+			var token = data.query.pages[ data.query.pageids[0] ].edittoken;
+			editPage( token );
+		}
+	).error(function() {
+		alert( 'Houve um erro ao solicitar um token. =(' );
+	});
 }//editar
+
 function geraCol() {
 	var lista = dedupe_list( geraLista() );
 	var col = '{'+'{Livro gravado\n |título={'
@@ -454,7 +463,9 @@ function grava_lista_cap() {
 	var r=confirm('Antes de criar a lista de capítulos é preciso conferir'
 		+' se a lista gerada pelo script está correta.\n\nDeseja'
 		+' que a lista seja criada com o texto atual?');
-	if (r===true) { editar(pagina, texto); }
+	if (r===true) {
+		editar(pagina, texto);
+	}
 }
 
 function converte_refs() {
@@ -488,8 +499,9 @@ function format_cab() {
 	// -quebras de linha entre cabeçalhos consecutivos
 	regex(/\=\n+=/ig, '=\n=');
 
-	if (editbox.value !== antigo)
+	if (editbox.value !== antigo) {
 		setreason('format. cabeçalhos', 'appendonce');
+	}
 }
 
 function format_predef() {
@@ -497,8 +509,9 @@ function format_predef() {
 
 	regex(/\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig, '{{$1}}');
 
-	if (editbox.value !== antigo)
+	if (editbox.value !== antigo) {
 		setreason('format. predefs', 'appendonce');
+	}
 }
 
 function format_cat() {
@@ -508,8 +521,9 @@ function format_cat() {
 	regex(/\[\[Categoria:([^\|\]]+)\|[a-zA-Z0-9]\]\]/ig, '[[Categoria:$1|{{SUBPAGENAME}}]]');
 	regex(/\[\[Categoria:([^\|\]]+)\|([\* !])\]\]/ig, '[[Categoria:$1|$2{{SUBPAGENAME}}]]');
 
-	if (editbox.value !== antigo)
+	if (editbox.value !== antigo) {
 		setreason('format. categorias', 'appendonce');
+	}
 }
 
 function format_list() {
@@ -518,8 +532,9 @@ function format_list() {
 	//Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 	regex(/^([*#:]+)\s*/mig, '$1 ');
 
-	if (editbox.value !== antigo)
+	if (editbox.value !== antigo) {
 		setreason('format. listas', 'appendonce');
+	}
 }
 
 function abs2rel() {
@@ -561,8 +576,9 @@ function format_links() {
 	regex(/\[\[File( Discussão)?:/ig,'[[Arquivo$1:');
 	regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
-	if (editbox.value !== antigo)
+	if (editbox.value !== antigo) {
 		setreason('formatação dos links', 'appendonce');
+	}
 }
 
 function format_math() {
@@ -573,8 +589,9 @@ function format_math() {
 	regex(/\\sin/mig, '\\mathrm{sen}\\,');
 
 
-	if (editbox.value !== antigo)
+	if (editbox.value !== antigo) {
 		setreason('format. <math> e pontuação', 'appendonce');
+	}
 }
 
 function usando_regex() {
