@@ -388,17 +388,6 @@ function geraPredef() {
 function editar(pagina, texto) {
 	// Edit page (must be done through POST)
 	function editPage( token ) {
-		var	nomedolivro = $( '#titleInput' ).val(),
-			$caps = $( '#collectionList' ).find( 'strong' ),
-			list = [];
-
-		if ( !$caps.length ) {
-			alert( 'É preciso definir os nomes dos capítulos!' );
-			return;
-		}
-		$caps.each( function( ){
-			list.push( $( this ).text() );
-		} );
 		$.post(
 			mw.util.wikiScript( 'api' ), {
 				action: 'edit',
