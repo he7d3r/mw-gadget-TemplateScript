@@ -3,15 +3,13 @@
  * Adds a sidebar menu of user-defined scripts
  * @author: [[m:user:Pathoschild]]: [[meta:User:Pathoschild/Scripts/Regex menu framework]]
  */
-mw.loader.load( ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ? 'https://secure.wikimedia.org/wikipedia/meta' : 'http://meta.wikimedia.org' )
-    + '/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript'
-);
+mw.loader.load( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript' );
 
 /* menu links */
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
-    $('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
+	$('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','editRegexes()');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
@@ -43,9 +41,12 @@ function editRegexes() {
 }
 function fixHTTPLinks() {
 	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
-	var reOldLink = /\[http:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/gi;
+	var reOldLink = /\[http:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/g;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
+	regex( /https:\/\/secure\.wikimedia\.org\/(wikipedia|wikibooks)\/(pt|en|fr|de|meta)/g, 'https://$2.$1.org' );
+	// Black List:
+	regex( /\[\/\/svn\.wikimedia/g, '[http://svn.wikimedia' );
 	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https [convertido usando [[m:User:Pathoschild/Scripts/Regex_menu_framework.js|regex]]]', 'appendonce');
 	setoptions(minor='true');
 	doaction('diff');
