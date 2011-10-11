@@ -47,7 +47,7 @@ function fixHTTPLinks() {
 	regex( /https:\/\/secure\.wikimedia\.org\/(wikipedia|wikibooks)\/(pt|en|fr|de|meta)/g, 'https://$2.$1.org' );
 	// Black List:
 	regex( /\[\/\/svn\.wikimedia/g, '[http://svn.wikimedia' );
-	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https [convertido usando [[m:User:Pathoschild/Scripts/Regex_menu_framework.js|regex]]]', 'appendonce');
+	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https [convertido usando [[expressões regulares]] [[m:User:Pathoschild/Scripts/Regex_menu_framework.js|neste script]]]', 'appendonce');
 	setoptions(minor='true');
 	doaction('diff');
 }
