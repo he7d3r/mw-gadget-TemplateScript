@@ -42,7 +42,7 @@ function editRegexes() {
 	window.open( mw.util.wikiGetlink ( 'User:' + mw.user.name() + '/' + mw.config.get( 'skin' ) + '.js?action=edit'));
 }
 function fixHTTPLinks() {
-	var reOldLink = /\[http:(\/\/[a-z\-]{1,5}\.wik(?:ipedia|ibooks|tionary|inews|isource|iversity).+?)\]/gi;
+	var reOldLink = /\[http:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/gi;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
 	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https', 'appendonce');
