@@ -45,7 +45,7 @@ function fixHTTPLinks() {
 	var reOldLink = /\[http:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/gi;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
-	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https', 'appendonce');
+	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https [convertido usando [[m:User:Pathoschild/Scripts/Regex_menu_framework.js|regex]]]', 'appendonce');
 	setoptions(minor='true');
 	doaction('diff');
 }
