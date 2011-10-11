@@ -43,7 +43,7 @@ function editRegexes() {
 }
 function fixHTTPLinks() {
 	var reOldLink = /\[http:(\/\/[a-z\-]{1,5}\.wik(?:ipedia|ibooks|tionary|inews|isource|iversity).+?)\]/gi;
-	var relativeLink = '$1';
+	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
 	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https', 'appendonce');
 	setoptions(minor='true');
