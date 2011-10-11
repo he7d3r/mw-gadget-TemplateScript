@@ -13,8 +13,9 @@ mw.loader.load( ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ? 'https://se
 function rmflinks() {
     $('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
-	regexTool('• Editar Regexes','function opennew(url) { window.open(url); }; opennew( mw.util.wikiGetlink ( \'User:\' + mw.user.name() + \'/\' + mw.config.get( \'skin\' ) + \'.js?action=edit\');');
+	regexTool('• Editar Regexes','editRegexes()');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
+	regexTool('• Corrige links HTTP','fixHTTPLinks()');
 	regexTool('Regex no sumário','usando_regex()');
 
 	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
@@ -36,6 +37,17 @@ function rmflinks() {
 		regexTool('TEST: Criar AutoNav','cria_autonav()');
 		regexTool('TEST: Refs do Google Books','converte_refs()');
 	}
+}
+function editRegexes() {
+	window.open( mw.util.wikiGetlink ( 'User:' + mw.user.name() + '/' + mw.config.get( 'skin' ) + '.js?action=edit'));
+}
+function fixHTTPLinks() {
+	var reOldLink = /\[http:(\/\/[a-z\-]{1,5}\.wik(?:ipedia|ibooks|tionary|inews|isource|iversity).+?)\]/gi;
+	var relativeLink = '$1';
+	regex( reOldLink, relativeLink );
+	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https', 'appendonce');
+	setoptions(minor='true');
+	doaction('diff');
 }
 function corrige_assinatura() {
 	var proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:';
