@@ -42,6 +42,7 @@ function editRegexes() {
 	window.open( mw.util.wikiGetlink ( 'User:' + mw.user.name() + '/' + mw.config.get( 'skin' ) + '.js?action=edit'));
 }
 function fixHTTPLinks() {
+	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 	var reOldLink = /\[http:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/gi;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
