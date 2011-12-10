@@ -14,6 +14,7 @@ function rmflinks() {
 	regexTool('• Editar Regexes','editRegexes()');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
 	regexTool('• Corrige links HTTP','fixHTTPLinks()');
+	regexTool('• Corrige [[Ficheiro','fixImageLinks()');
 	regexTool('Regex no sumário','usando_regex()');
 
 	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
@@ -38,6 +39,11 @@ function rmflinks() {
 }
 function editRegexes() {
 	window.open( mw.util.wikiGetlink ( 'User:' + mw.user.name() + '/' + mw.config.get( 'skin' ) + '.js?action=edit'));
+}
+function fixImageLinks(){
+	var reOtherNames = /\[\[\s*(?:Image|File|Arquivo|Ficheiro)\s*:\s*([^|\]]+\.(?:png|gif|jpg|jpeg|svg|tiff|tif))\s*(\||\]\])/g;
+	regex( reOtherNames, '[[Imagem:$1$2' );
+	setreason('Uso de "[Imagem:" ([[w:Project:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]]', 'appendonce');
 }
 function fixHTTPLinks() {
 	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
