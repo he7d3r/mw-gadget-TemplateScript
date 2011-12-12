@@ -14,7 +14,9 @@ function rmflinks() {
 	regexTool('• Editar Regexes','editRegexes()');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
 	regexTool('• Corrige links HTTP','fixHTTPLinks()');
-	regexTool('• Corrige [[Ficheiro','fixImageLinks()');
+	if( 'pt' === mw.config.get( 'wgContentLanguage' ) ) {
+		regexTool('• Corrige [[Ficheiro','fixImageLinks()');
+	}
 	regexTool('Regex no sumário','usando_regex()');
 
 	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
