@@ -43,7 +43,7 @@ function editRegexes() {
 	window.open( mw.util.wikiGetlink ( 'User:' + mw.user.name() + '/' + mw.config.get( 'skin' ) + '.js?action=edit'));
 }
 function fixImageLinks(){
-	var reOtherNames = /\[\[\s*(?:Image|File|Arquivo|Ficheiro)\s*:\s*([^|\]]+\.(?:png|gif|jpg|jpeg|svg|tiff|tif))\s*(\||\]\])/g;
+	var reOtherNames = /\[\[\s*(?:[Ii]mage|[Aa]rquivo|[Ff]i(?:cheiro|le))\s*:\s*([^|\]]+\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\s*(\||\]\])/g;
 	regex( reOtherNames, '[[Imagem:$1$2' );
 	setreason('Uso de "[Imagem:" ([[w:Project:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]]', 'appendonce');
 }
