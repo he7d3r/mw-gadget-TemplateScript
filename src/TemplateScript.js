@@ -49,10 +49,10 @@ function fixImageLinks(){
 }
 function fixHTTPLinks() {
 	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
-	var reOldLink = /\[http:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/g;
+	var reOldLink = /\[https?:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/g;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
-	regex( /https:\/\/secure\.wikimedia\.org\/(wikipedia|wikibooks)\/(pt|en|fr|de|meta)/g, 'https://$2.$1.org' );
+	regex( /https:\/\/secure\.wikimedia\.org\/(wikipedia|wikibooks)\/(pt|en|fr|de|meta)/g, '//$2.$1.org' );
 	// Black List:
 	regex( /\[\/\/svn\.wikimedia/g, '[http://svn.wikimedia' );
 	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https [convertido usando [[expressões regulares]] [[m:User:Pathoschild/Scripts/Regex_menu_framework.js|neste script]]]', 'appendonce');
