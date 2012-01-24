@@ -49,7 +49,8 @@ function fixImageLinks(){
 }
 function fixHTTPLinks() {
 	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
-	var reOldLink = /\[https?:(\/\/(?:toolserver||[a-z\-]{1,6}\.wik(?:i[mp]edia|ibooks|tionary|inews|isource|iversity).+?))\]/g;
+	// Ver também: [[Special:SiteMatrix]]
+	var reOldLink = /\[https?:(\/\/(?:(?:commons|meta|toolserver|outreach|species|strategy|wikimania\d{4}|[a-z\-]{2,3})\.wikimedia|wiki\.toolserver|www\.mediawiki|wikimediafoundation|wikisource|(?:[a-z\-]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary).+?))\]/g;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
 	regex( /https:\/\/secure\.wikimedia\.org\/(wikipedia|wikibooks)\/(pt|en|fr|de|meta)/g, '//$2.$1.org' );
