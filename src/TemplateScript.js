@@ -59,8 +59,8 @@ function fixHTTPLinks() {
 	doaction('diff');
 }
 function corrige_assinatura() {
-	var proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:';
-	var lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:';
+	var	proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:',
+		lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:';
 	if ( !proj && lang ) { proj = ':'; }
 	var reOldSign = window.reOldSign;
 	var newSign = '[[' + proj + lang + 'User:Helder.wiki|Helder]]';
@@ -99,8 +99,8 @@ function corrige_assinatura() {
 
 function math_conversion(dir) {
 
-	var text = editbox.value;
-	var regex = 0, subst = 1, func = 2;
+	var	text = editbox.value,
+		regex = 0, subst = 1, func = 2;
 	var command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
 		[//fórmulas dentro dos parágrafos
 			[/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>', null],
@@ -131,8 +131,8 @@ function math_conversion(dir) {
 }
 
 function latex2wiki() {
-	var top = '{' + '{AutoNav}' + '}\n';
-	var bottom =	'\n== Notas ==\n' +
+	var	top = '{' + '{AutoNav}' + '}\n',
+		bottom =	'\n== Notas ==\n' +
 			'<references group="nota "/>\n' +
 			'\n== Referências ==\n' +
 			'<references/>\n' +
@@ -215,9 +215,9 @@ function wiki2latex() {
 			"\\newtheorem*{tarefa}{Tarefa}" +
 			"\\makeindex\n\n";
 
-	var url	 = mw.config.get( 'wgServer' ) + '/wiki/Special:Search/';
-	var url1 = 'http://';
-	var url2 = '.org/wiki/Special:Search/';
+	var	url = mw.config.get( 'wgServer' ) + '/wiki/Special:Search/',
+		url1 = 'http://',
+		url2 = '.org/wiki/Special:Search/';
 /*	var w = 'pt.wikipedia';
 	var wikiprojeto = {
 	'b':		'pt.wikibooks',
@@ -336,9 +336,9 @@ function dedupe_list( lista ) {
 	} else if( typeof lista === 'object' ) {
 		listvalues = lista;
 	}
-	var count = 0;
-	var newlist = [];
-	var hash = {};
+	var	count = 0,
+		newlist = [],
+		hash = {};
 
 	for ( var i = 0; i<listvalues.length; i++ )	{
 		if ( hash[listvalues[ i ].toLowerCase()] !== 1 )	{
@@ -361,9 +361,9 @@ function dedupe_list( lista ) {
 }
 
 function cria_autonav() {
-	var lista = editbox.value.split('\n');
-	var anterior = [];
-	var posterior = [];
+	var	lista = editbox.value.split('\n'),
+		anterior = [],
+		posterior = [];
 
 	anterior[0] = lista[0];
 	posterior[lista.length-1] = lista[lista.length-1];
@@ -385,9 +385,9 @@ function interpretaLinha( linha ) {
 	return( linha );
 }
 function geraLista() {
-	var linhas = $('#wpTextbox1').val().split(/[\r\n]+/);
+	var	linhas = $('#wpTextbox1').val().split(/[\r\n]+/),
+		lista = [];
 	linhas = linhas.slice( 1, linhas.length - 1 );
-	var lista = [];
 	for ( var i = 0; i < linhas.length; i++) {
 		var cap = interpretaLinha( linhas[ i ] );
 		if ( cap !== '' ) { lista.push( cap ); }
@@ -408,41 +408,22 @@ function geraPredef() {
 //Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
 function editar(pagina, texto) {
 	// Edit page (must be done through POST)
-	function editPage( token ) {
-		$.post(
-			mw.util.wikiScript( 'api' ), {
-				action: 'edit',
-				bot: '1',
-				title: pagina,
-				text: texto,
-				summary: 'Criação da lista com base no [[' + mw.config.get( 'wgBookName' ) +
-					'|índice do livro]] (usando regex)',
-				token: token
-			},
-			function() {
-				alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
-				location.href = mw.util.wikiGetlink( pagina );
-			}
-		).error(function() {
-			alert( 'Não foi possível editar a página. =(' );
-		});
-	}
-	// Get a token and then edit the page
-	$.getJSON(
+	$.post(
 		mw.util.wikiScript( 'api' ), {
-			format: 'json',
-			action: 'query',
-			prop: 'info',
-			indexpageids: '1',
-			intoken: 'edit',
-			titles: 'Whatever'
+			action: 'edit',
+			bot: '1',
+			title: pagina,
+			text: texto,
+			summary: 'Criação da lista com base no [[' + mw.config.get( 'wgBookName' ) +
+				'|índice do livro]] (usando regex)',
+			token: mw.user.tokens.get( 'editToken' )
 		},
-		function( data ) {
-			var token = data.query.pages[ data.query.pageids[0] ].edittoken;
-			editPage( token );
+		function() {
+			alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
+			location.href = mw.util.wikiGetlink( pagina );
 		}
 	).error(function() {
-		alert( 'Houve um erro ao solicitar um token. =(' );
+		alert( 'Não foi possível editar a página. =(' );
 	});
 }//editar
 
@@ -468,11 +449,11 @@ function geraImpr() {
 	editbox.value = imp;
 }
 function grava_lista_cap() {
-	var pagina = 'Predefinição:Lista_de_capítulos/' + mw.config.get( 'wgPageName' );
-	var texto = editbox.value;
-	var r=confirm('Antes de criar a lista de capítulos é preciso conferir'
-		+' se a lista gerada pelo script está correta.\n\nDeseja'
-		+' que a lista seja criada com o texto atual?');
+	var	pagina = 'Predefinição:Lista_de_capítulos/' + mw.config.get( 'wgPageName' ),
+		texto = editbox.value;
+	var r = confirm('Antes de criar a lista de capítulos é preciso conferir' +
+		' se a lista gerada pelo script está correta.\n\nDeseja' +
+		' que a lista seja criada com o texto atual?');
 	if (r===true) {
 		editar(pagina, texto);
 	}
@@ -558,8 +539,8 @@ if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ){
 }
 
 function format_links() {
-	var antigo = editbox.value;
-	var padrao;
+	var	antigo = editbox.value,
+		padrao;
 
 	// -espaços redundantes
 	regex(/\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig, '[[$1$2$3]]');
@@ -609,7 +590,7 @@ function usando_regex() {
         setreason('[usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
     } else {
         setreason('[using [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
-    }	
+    }
 }
 
 /* scripts */
