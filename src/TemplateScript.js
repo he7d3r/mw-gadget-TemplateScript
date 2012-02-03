@@ -54,7 +54,7 @@ function fixHTTPLinks() {
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
 	regex( /https:\/\/secure\.wikimedia\.org\/(wiki(?:pedia|books|news|quote|source|versity)|wiktionary)\/([a-z]{2,3}|meta)/g, '//$2.$1.org' );
-	setreason('Links relativos ao protocolo, pois todas as wikis podem ser acessadas via https [convertido usando [[expressões regulares]] [[m:User:Pathoschild/Scripts/Regex_menu_framework.js|neste script]]]', 'appendonce');
+	setreason('[[wmfblog:2011/10/03/native-https-support-enabled-for-all-wikimedia-foundation-wikis|Links relativos ao protocolo]], pois todas as wikis podem ser acessadas via https', 'appendonce');
 	setoptions(minor='true');
 	doaction('diff');
 }
