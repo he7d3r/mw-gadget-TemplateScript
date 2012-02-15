@@ -688,7 +688,7 @@ function corrigir_ocr() {
 	};
 
 	//Aplica cada uma das regras da tabela
-	$.each( pages, function(id, palavra){
+	$.each( tabela, function(id, palavra){
 		var regex1 = new RegExp('\\b' + palavra + '\\b', 'g');
 		regex(regex1, palavra, 5);
 		//Converte também a palavra correspondente com a primeira letra maiúscula
@@ -708,7 +708,7 @@ function corrigir_ocr() {
 		'ê': '$1é$2'
 	};
 
-	$.each( pages, function(find, rep){
+	$.each( tabela, function(find, rep){
 		re = new RegExp('([^' + LETRA + '])' + find + '([^' + LETRA + '])', 'g');
 		regex(re, rep, 5);
 	});
@@ -734,7 +734,7 @@ function corrigir_ocr() {
 		'qne': 'que'
 	};
 
-	$.each( pages, function(find, rep){
+	$.each( tabela, function(find, rep){
 		re = new RegExp(find, 'g');
 		regex(re, rep, 5);
 		//Converte também a palavra correspondente com a primeira letra maiúscula
