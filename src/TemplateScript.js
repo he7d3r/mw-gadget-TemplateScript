@@ -1,3 +1,5 @@
+/*jshint laxbreak:true, */
+
 /**
  * Regex menu framework
  * Adds a sidebar menu of user-defined scripts
@@ -14,6 +16,9 @@ function rmflinks() {
 	regexTool('• Editar Regexes','editRegexes()');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
 	regexTool('• Corrige links HTTP','fixHTTPLinks()');
+	if ('ptwikisource' === mw.config.get( 'wgDBname' )) {
+		regexTool('• Corrigir OCR', 'corrigir_ocr()');
+	}
 	if( 'pt' === mw.config.get( 'wgContentLanguage' ) ) {
 		regexTool('• Corrige [[Ficheiro','fixImageLinks()');
 	}
@@ -607,4 +612,159 @@ function format_geral() {
 	format_math();
 	usando_regex();
 	format_cab();doaction('diff');
+}
+
+
+
+//Maiúsculas e minúsculas usadas em português
+var LETRA = 'A-Za-zÁÀÂÃÇÉÊÍÓÒÔÕÚáàâãçéêíóòôõú';
+var dictionaries = 'Wikisource:Modernização/Dicionário/pt-PT|Wikisource:Modernização/Dicionário/pt-BR';
+
+function remove_modernizacao_ocr_callback(res) {
+	var	wsdict = {},
+		pages = res.query.pages,
+		pagenames = dictionaries.split('|'),
+		sortable = [],
+		wsolddict = [],
+		i, j, str, match2;
+	$.each( pages, function(id, page){
+		if (!page.pageid) {
+			alert('Erro na função remove_modernizacao_ocr_callback usada na correção de OCR!');
+			return true;
+		}
+		sortable.push([
+			page.revisions[0]['*'], //Wiki code of dictionary page
+			pagenames.indexOf(page.title) //Order of page
+			//, page.title //Title of page
+		]);
+	});
+	sortable.sort(function (a, b) {
+		return a[1] - b[1];
+	}); // Sort dictionaries in the given order
+	for (i = 0; i < sortable.length; i++) {
+		str = sortable[i][0];
+		lines = str.split('\n');
+		for (j=0; j< lines.length; j++) {
+			// Current syntax: * old word : new word //Some comment
+			match2 = /^\*\s*(\S[^:]*?)\s*:\s*([\S].*?)\s*(?:\/\/.*?)?$/.exec(lines[j]);
+			if (match2) {
+				wsolddict[match2[2]] = match2[1]; //"atual" => "antiga"
+				continue;
+			}
+		}
+	}
+	// lc.conv_text_from_dic() está em [[User:Helder.wiki/Scripts/LanguageConverter.js]]
+	editbox.value = lc.conv_text_from_dic(editbox.value, wsolddict, false, null, false);
+}
+
+function corrigir_ocr() {
+	var	old = editbox.value,
+		tabela, palavra, re;
+	if (106 == mw.config.get('wgNamespaceNumber')) {
+		//lang e dictionary_page estão no script de modernização do Wikisource
+		url = mw.config.get('wgServer') + mw.config.get('wgScriptPath') + '/api.php?action=query&format=json&prop=revisions&titles=' + dictionaries + '&rvprop=content&callback=remove_modernizacao_ocr_callback';
+		mw.loader.load(url);
+	}
+
+	//Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
+	//Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
+	tabela = {
+		'aããição': 'addição',
+		'arithmetiea': 'arithmetica',
+		'aeceito': 'acceito',
+		'cólumna': 'columna',
+		'deeompõe': 'decompõe',
+		'eífeito': 'effeito',
+
+		'minuenão': 'minuendo',
+		'mbtrahenão': 'subtrahendo',
+		'mulliplicam': 'multiplicam',
+		'orãe(m|ns)?': 'orde$1',
+		'pôde': 'póde',
+		'proãucto(s?)': 'producto$1',
+		'soramar': 'sommar',
+		'somraando': 'sommando',
+		'subtraliir': 'subtrahir'
+	};
+
+	//Aplica cada uma das regras da tabela
+	$.each( pages, function(id, palavra){
+		var regex1 = new RegExp('\\b' + palavra + '\\b', 'g');
+		regex(regex1, palavra, 5);
+		//Converte também a palavra correspondente com a primeira letra maiúscula
+		regex1 = new RegExp('\\b' + primeira_maiuscula(palavra) + '\\b', 'g');
+		regex(regex1, primeira_maiuscula(palavra), 5);
+	});
+
+
+	//Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
+	//Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
+	//OSB:	1) Estas expressões precisam de tratamento especial pois o \b se confunde com letras acentuadas e cedilha
+	//	2) São usados dois grupos extras nestas regras: um para o 1º caractere anterior e outro para o 1º posterior à palavra;
+	tabela = {
+		'ã([eo])': '$1d$2$3',
+		//A letra "d" em itálico parece um "ã" (por causa da serifa no topo do "d")
+		'ão(u)?s': '$1do$2s$3',
+		'ê': '$1é$2'
+	};
+
+	$.each( pages, function(find, rep){
+		re = new RegExp('([^' + LETRA + '])' + find + '([^' + LETRA + '])', 'g');
+		regex(re, rep, 5);
+	});
+
+
+	//Estas expressões SÃO convertidas mesmo se estiverem contidas em outras
+	//Se for preciso impedir a conversão nestes casos, basta mover a regra para a primeira tabela (acima)
+	tabela = {
+		' +([.,;:!?]) +': '$1 ',
+		//Remoção do espaçamento antes de pontuação
+		'([a-zA-Z])-\\n([a-zA-Z])': '$1$2',
+		//Remoção de hifens em quebras de linha
+		' *— *': ' — ',
+		//Ajuste no espaçamento em torno de um traço —
+		'\\n(\\d+)\\. ([^\\n]+)': '\n{{âncora|Item $1}}$1. $2',
+		//Inclusão de âncoras no início de cada item
+		'-,': ';',
+		'(\\d+)(?:\\?|o|"\\.) ([Cc]asos?|[Ee]xemplos?|[Pp]rincipios?)': '$1º $2',
+		'[Ii]o ([Cc]asos?|[Ee]xemplos?|[Pp]rincipios?)': '1º $1',
+		'(\\d+)\\.[\\t ]': '$1. ',
+		//Correção da numeração manual
+		'ãa': 'da',
+		'qne': 'que'
+	};
+
+	$.each( pages, function(find, rep){
+		re = new RegExp(find, 'g');
+		regex(re, rep, 5);
+		//Converte também a palavra correspondente com a primeira letra maiúscula
+		re = new RegExp('\\b' + primeira_maiuscula(find), 'g');
+		regex(re, primeira_maiuscula(rep), 5);
+	});
+
+	//Sequências de caracteres, contendo dígitos e operadores, iniciada e terminada por números possívelmente são fórmulas
+	regex(/(\d+[xX+-\/=<>][xX+-\/=0-9<>]+\d+)/g, '♪$1♫');
+
+	//Espaçamento entre os operadores de algumas fórmulas
+	regex(/♪([^♪]*[^ ♪])([xX+-\/=<>])([^ ♫][^♫]*)♫/g, '♪$1 $2 $3♫', 10);
+
+	//Sinal de vezes em LaTeX
+	regex(/♪([^♪]*\d+)\s*[xX]\s*(\d+[^♫]*)♫/g, '♪$1 \\times $2♫', 10);
+
+	//Remoção de tags duplicadas no processo
+	regex(/(?:♪|<math>)+/g, '<math>');
+	regex(/(?:♫|<\/math>)+/g, '</math>');
+
+	if (editbox.value != old) {
+		editreason = document.getElementById('wpSummary');
+		setreason('Correção de OCR', 'appendonce');
+		if (regsearch(/\{\{âncora/)) {
+			setreason('Adição de {{âncora}}', 'appendonce');
+		}
+		doaction('diff');
+	}
+}
+
+function primeira_maiuscula(p) {
+	return p.charAt(0).toUpperCase() + p.substr(1);
 }
