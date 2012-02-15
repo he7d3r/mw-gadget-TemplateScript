@@ -40,7 +40,7 @@ function rmflinks() {
 	}
 }
 function editRegexes() {
-	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Scripts/Regex_menu_framework.js?action=edit' );
+	window.open( mw.util.wikiGetlink( 'User:Helder.wiki/Tools/Regex menu framework.js' ) + '?action=edit' );
 }
 function fixImageLinks(){
 	var reOtherNames = /\[\[\s*(?:[Ii]mage|[Aa]rquivo|[Ff]i(?:cheiro|le))\s*:\s*([^|\]]+\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\s*(\||\]\])/g;
@@ -124,9 +124,9 @@ function math_conversion(dir) {
 	}
 	editbox.value = text;
 	if (0 === dir) {
-		setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+		setreason('Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
 	} else {
-		setreason('Criando versão latex [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
+		setreason('Criando versão latex [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 	}
 }
 
@@ -168,7 +168,7 @@ function latex2wiki() {
 
 	editbox.value =	top + editbox.value + bottom;
 
-	setreason('Convertendo de LaTeX para Wiki, [usando [[meta:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+	setreason('Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
 }
 
 
@@ -322,7 +322,7 @@ function wiki2latex() {
 		'\\end{document}';
 
 	setreason('Versão em LaTeX [produzida com'
-		+' [[meta:User:Pathoschild/Scripts/Regex menu framework|expressões regulares]]]'
+		+' [[m:User:Pathoschild/Scripts/Regex menu framework|expressões regulares]]]'
 		+'(não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 }
 
