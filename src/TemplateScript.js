@@ -3,7 +3,7 @@
  * Adds a sidebar menu of user-defined scripts
  * @author: [[m:user:Pathoschild]]: [[meta:User:Pathoschild/Scripts/Regex menu framework]]
  */
-mw.loader.load( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript' );
+mw.loader.load( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400' );
 
 /* menu links */
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
