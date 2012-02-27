@@ -15,6 +15,7 @@ function rmflinks() {
 	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('• Editar Regexes','editRegexes()');
 	regexTool('• Corrige assinatura','corrige_assinatura()');
+	regexTool('• Remover "\\,\\!" das fórmulas','removeMathHack()');
 	regexTool('• Corrige links HTTP','fixHTTPLinks()');
 	if ('ptwikisource' === mw.config.get( 'wgDBname' )) {
 		regexTool('• Corrigir OCR', 'corrigir_ocr()');
@@ -47,11 +48,24 @@ function rmflinks() {
 function editRegexes() {
 	window.open( mw.util.wikiGetlink( 'User:Helder.wiki/Tools/Regex menu framework.js' ) + '?action=edit' );
 }
+
+function removeMathHack(){
+	var reHack, reason;
+	reHack = /\\,\\!\s*<\/math>/g;
+	reason = {
+		'pt': 'hack obsoleto: [[mw:MediaWiki 1.19|as fórmulas já aparecem em PNG]] e [[rev:104498|não há mais como exibi-las em HTML nem MathML]] (futuramente [[bugzilla:31406|teremos MathJax]])',
+		'en': 'obsolete hack: [[mw:MediaWiki 1.19|formulae are rendered as PNG by default]] and [[rev:104498|HTML or MathML options were removed]] (in the future [[bugzilla:31406|there will be MathJax]])'
+	};
+	regex( reHack, '</math>' );
+	setreason( reason[mw.config.get('wgContentLanguage')] || reason.en, 'appendonce');
+}
+
 function fixImageLinks(){
 	var reOtherNames = /\[\[\s*(?:[Ii]mage|[Aa]rquivo|[Ff]i(?:cheiro|le))\s*:\s*([^|\]]+\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\s*(\||\]\])/g;
 	regex( reOtherNames, '[[Imagem:$1$2' );
 	setreason('Uso de "[Imagem:" ([[w:Project:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]])', 'appendonce');
 }
+
 function fixHTTPLinks() {
 	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 	// Ver também: [[Special:SiteMatrix]], [[meta:User:Nemo bis/HTTPS]]
