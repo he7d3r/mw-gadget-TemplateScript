@@ -58,6 +58,7 @@ function removeMathHack(){
 	};
 	regex( reHack, '</math>' );
 	setreason( reason[mw.config.get('wgContentLanguage')] || reason.en, 'appendonce');
+	doaction('diff');
 }
 
 function fixImageLinks(){
