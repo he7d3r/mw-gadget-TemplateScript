@@ -20,7 +20,7 @@ function rmflinks() {
 	regexTool('Corrige def\'s (;:)','fixDefList()');
 	switch( mw.config.get( 'wgDBname' ) ) {
 	case 'ptwiki':
-		regexTool('Remove {' + '{Ver também}}, ...','fixObsoleteTemplates()');
+		regexTool('Usar "Ver também,..."','fixObsoleteTemplates()');
 		break;
 	case 'ptwikisource':
 		regexTool('Corrigir OCR', 'corrigir_ocr()');
@@ -58,13 +58,13 @@ function editRegexes() {
 }
 function fixObsoleteTemplates(){
 	//[[w:Especial:Páginas afluentes/Predefinição:Ver também]]
-	regex( /\n==\s*\{\{(?:V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s)\}\}\s*==/gi, '== Ver também ==' );
+	regex( /\n==\s*\{\{(?:V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s)\}\}\s*==/gi, '\n== Ver também ==' );
 
 	//[[w:Especial:Páginas afluentes/Predefinição:Bibliografia]]
-	regex( /\n==\s*\{\{Bibliografia\}\}\s*==/gi, '== Bibliografia ==' );
+	regex( /\n==\s*\{\{Bibliografia\}\}\s*==/gi, '\n== Bibliografia ==' );
 
 	//[[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
-	regex( /\n==\s*\{\{(?:(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)?|(?:Ligaç(?:ão|ões)|Links||)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?)\}\}\s*==/gi, '== Ligações externas ==' );
+	regex( /\n==\s*\{\{(?:(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)?|(?:Ligaç(?:ão|ões)|Links||)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?)\}\}\s*==/gi, '\n== Ligações externas ==' );
 
 	setreason( '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]', 'appendonce');
 	doaction('diff');
