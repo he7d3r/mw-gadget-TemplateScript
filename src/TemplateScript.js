@@ -12,24 +12,24 @@ mw.loader.load( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
 function rmflinks() {
 	$('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
-	regexTool('• REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
-	regexTool('• Editar Regexes','editRegexes()');
-	regexTool('• Corrige assinatura','corrige_assinatura()');
-	regexTool('• Remover "\\,\\!" das fórmulas','removeMathHack()');
-	regexTool('• Corrige links HTTP','fixHTTPLinks()');
-	if ('ptwikisource' === mw.config.get( 'wgDBname' )) {
-		regexTool('• Corrigir OCR', 'corrigir_ocr()');
-	}
-	if( 'pt' === mw.config.get( 'wgContentLanguage' ) ) {
-		regexTool('• Corrige [[Ficheiro','fixImageLinks()');
-	}
-	regexTool('Regex no sumário','usando_regex()');
-
-	if ('ptwikibooks' === mw.config.get( 'wgDBname' )) {
-		regexTool('• Formatação geral','format_geral()');
-		regexTool('• Wiki -> LaTeX','wiki2latex()');
-		regexTool('• LaTeX -> Wiki','latex2wiki()');
-		regexTool('• Remover linhas duplicadas','dedupe_list()');
+	regexTool('REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
+	regexTool('Editar Regexes','editRegexes()');
+	regexTool('Corrige assinatura','corrige_assinatura()');
+	regexTool('Remover "\\,\\!" das fórmulas','removeMathHack()');
+	regexTool('Corrige links HTTP','fixHTTPLinks()');
+	regexTool('Corrige def\'s (;:)','fixDefList()');
+	switch( mw.config.get( 'wgDBname' ) ) {
+	case 'ptwiki':
+		regexTool('Remove {' + '{Ver também}}, ...','fixObsoleteTemplates()');
+		break;
+	case 'ptwikisource':
+		regexTool('Corrigir OCR', 'corrigir_ocr()');
+		break;
+	case 'ptwikibooks':
+		regexTool('Formatação geral','format_geral()');
+		regexTool('Wiki -> LaTeX','wiki2latex()');
+		regexTool('LaTeX -> Wiki','latex2wiki()');
+		regexTool('Remover linhas duplicadas','dedupe_list()');
 		regexTool('Formatar cabeçalhos','format_cab()');
 		regexTool('Formatar predefinições','format_predef()');
 		regexTool('Formatar categorias','format_cat()');
@@ -43,12 +43,32 @@ function rmflinks() {
 		regexTool('Gravar lista de capítulos (CUIDADO!)','grava_lista_cap()');
 		regexTool('TEST: Criar AutoNav','cria_autonav()');
 		regexTool('TEST: Refs do Google Books','converte_refs()');
+		break;
+	default:
+		
 	}
+	if( 'pt' === mw.config.get( 'wgContentLanguage' ) ) {
+		regexTool('Corrige [[Ficheiro','fixImageLinks()');
+	}
+	regexTool('Regex no sumário','usando_regex()');
+
 }
 function editRegexes() {
-	window.open( mw.util.wikiGetlink( 'User:Helder.wiki/Tools/Regex menu framework.js' ) + '?action=edit' );
+	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/Regex_menu_framework.js?action=edit' );
 }
+function fixObsoleteTemplates(){
+	//[[w:Especial:Páginas afluentes/Predefinição:Ver também]]
+	regex( /\n==\s*\{\{(?:V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s)\}\}\s*==/gi, '== Ver também ==' );
 
+	//[[w:Especial:Páginas afluentes/Predefinição:Bibliografia]]
+	regex( /\n==\s*\{\{Bibliografia\}\}\s*==/gi, '== Bibliografia ==' );
+
+	//[[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
+	regex( /\n==\s*\{\{(?:(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)?|(?:Ligaç(?:ão|ões)|Links||)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?)\}\}\s*==/gi, '== Ligações externas ==' );
+
+	setreason( '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]', 'appendonce');
+	doaction('diff');
+}
 function removeMathHack(){
 	var reHack, reason;
 	reHack = /\\,\\!\s*<\/math>/g;
@@ -58,6 +78,11 @@ function removeMathHack(){
 	};
 	regex( reHack, '</math>' );
 	setreason( reason[mw.config.get('wgContentLanguage')] || reason.en, 'appendonce');
+	doaction('diff');
+}
+function fixDefList(){
+	regex( /\s*\n;([^\n]+)\n([^:])/g, '\n;$1\n:$2' );
+	setreason( '+semântica na lista de definições (;:)', 'appendonce');
 	doaction('diff');
 }
 
