@@ -57,6 +57,8 @@ function editRegexes() {
 	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/Regex_menu_framework.js?action=edit' );
 }
 function fixObsoleteTemplates(){
+	var oldText = editbox.value;
+
 	//[[w:Especial:Páginas afluentes/Predefinição:Ver também]]
 	regex( /\n==\s*\{\{(?:V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s)\}\}\s*==/gi, '\n== Ver também ==' );
 
@@ -66,53 +68,73 @@ function fixObsoleteTemplates(){
 	//[[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
 	regex( /\n==\s*\{\{(?:(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)?|(?:Ligaç(?:ão|ões)|Links||)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?)\}\}\s*==/gi, '\n== Ligações externas ==' );
 
-	setreason( '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]', 'appendonce');
-	doaction('diff');
+	if (editbox.value !== oldText) {
+		setreason( '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]', 'appendonce');
+		doaction('diff');
+	}
 }
 function removeMathHack(){
-	var reHack, reason;
+	var	reHack, reason,
+		oldText = editbox.value;
 	reHack = /\\,\\!\s*<\/math>/g;
 	reason = {
 		'pt': 'hack obsoleto: [[mw:MediaWiki 1.19|as fórmulas já aparecem em PNG]] e [[rev:104498|não há mais como exibi-las em HTML nem MathML]] (futuramente [[bugzilla:31406|teremos MathJax]])',
 		'en': 'obsolete hack: [[mw:MediaWiki 1.19|formulae are rendered as PNG by default]] and [[rev:104498|HTML or MathML options were removed]] (in the future [[bugzilla:31406|there will be MathJax]])'
 	};
 	regex( reHack, '</math>' );
-	setreason( reason[mw.config.get('wgContentLanguage')] || reason.en, 'appendonce');
-	doaction('diff');
+	if (editbox.value !== oldText) {
+		setreason( reason[mw.config.get('wgContentLanguage')] || reason.en, 'appendonce');
+		doaction('diff');
+	}
 }
 function fixDefList(){
+	var oldText = editbox.value;
+
 	regex( /\s*\n;([^\n]+)\n([^:])/g, '\n;$1\n:$2' );
-	setreason( '+semântica na lista de definições (;:)', 'appendonce');
-	doaction('diff');
+	if (editbox.value !== oldText) {
+		setreason( '+semântica na lista de definições (;:)', 'appendonce');
+		doaction('diff');
+	}
 }
 
 function fixImageLinks(){
+	var oldText = editbox.value;
 	var reOtherNames = /\[\[\s*(?:[Ii]mage|[Aa]rquivo|[Ff]i(?:cheiro|le))\s*:\s*([^|\]]+\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\s*(\||\]\])/g;
 	regex( reOtherNames, '[[Imagem:$1$2' );
-	setreason('Uso de "[Imagem:" ([[w:Project:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]])', 'appendonce');
+	if (editbox.value !== oldText) {
+		setreason('Uso de "[Imagem:" ([[w:Project:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]])', 'appendonce');
+	}
 }
 
 function fixHTTPLinks() {
+	var oldText = editbox.value;
+
 	// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 	// Ver também: [[Special:SiteMatrix]], [[meta:User:Nemo bis/HTTPS]]
 	var reOldLink = /\[https?:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
 	var relativeLink = '[$1]';
 	regex( reOldLink, relativeLink );
 	regex( /https:\/\/secure\.wikimedia\.org\/(wiki(?:pedia|books|news|quote|source|versity)|wiktionary)\/([a-z]{2,3}|meta)/g, '//$2.$1.org' );
-	setreason('[[wmfblog:2011/10/03/native-https-support-enabled-for-all-wikimedia-foundation-wikis|Links relativos ao protocolo]], pois todas as wikis podem ser acessadas via https', 'appendonce');
-	setoptions(minor='true');
-	doaction('diff');
+	if (editbox.value !== oldText) {
+		setreason('[[wmfblog:2011/10/03/native-https-support-enabled-for-all-wikimedia-foundation-wikis|Links relativos ao protocolo]], pois todas as wikis podem ser acessadas via https', 'appendonce');
+		setoptions(minor='true');
+		doaction('diff');
+	}
 }
 function corrige_assinatura() {
 	var	proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:',
-		lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:';
+		lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:',
+		oldText = editbox.value;
+
 	if ( !proj && lang ) { proj = ':'; }
 	var reOldSign = window.reOldSign;
 	var newSign = '[[' + proj + lang + 'User:Helder.wiki|Helder]]';
 	regex( reOldSign, newSign );
-	setreason('Fixing links (my user account was renamed)', 'appendonce');
-	setoptions(minor='true');
-	doaction('diff');
+	if (editbox.value !== oldText) {
+		setreason('Fixing links (my user account was renamed)', 'appendonce');
+		setoptions(minor='true');
+		doaction('diff');
+	}
 }
 
 /** Latex2wiki **
@@ -505,17 +527,17 @@ function grava_lista_cap() {
 }
 
 function converte_refs() {
-	var antigo = editbox.value;
+	var oldText = editbox.value;
 
 	regex(/Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img, '* {'+'{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}');
 
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('Referência do Google Books -> [[Predefinição:Referência a livro]]', 'appendonce');
 	}
 }
 
 function format_cab() {
-	var antigo = editbox.value;
+	var oldText = editbox.value;
 
 	// Formatação do livro de receitas
 	if ( 'Livro_de_receitas' === mw.config.get( 'wgBookName' ) ){
@@ -535,40 +557,40 @@ function format_cab() {
 	// -quebras de linha entre cabeçalhos consecutivos
 	regex(/\=\n+=/ig, '=\n=');
 
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('format. cabeçalhos', 'appendonce');
 	}
 }
 
 function format_predef() {
-	var antigo = editbox.value;
+	var oldText = editbox.value;
 
 	regex(/\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig, '{{$1}}');
 
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('format. predefs', 'appendonce');
 	}
 }
 
 function format_cat() {
-	var antigo = editbox.value;
+	var oldText = editbox.value;
 
 	regex(/\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
 	regex(/\[\[Categoria:([^\|\]]+)\|[a-zA-Z0-9]\]\]/ig, '[[Categoria:$1|{{SUBPAGENAME}}]]');
 	regex(/\[\[Categoria:([^\|\]]+)\|([\* !])\]\]/ig, '[[Categoria:$1|$2{{SUBPAGENAME}}]]');
 
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('format. categorias', 'appendonce');
 	}
 }
 
 function format_list() {
-	var antigo = editbox.value;
+	var oldText = editbox.value;
 
 	//Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 	regex(/^([*#:]+)\s*/mig, '$1 ');
 
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('format. listas', 'appendonce');
 	}
 }
@@ -584,7 +606,7 @@ if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ){
 }
 
 function format_links() {
-	var	antigo = editbox.value,
+	var	oldText = editbox.value,
 		padrao;
 
 	// -espaços redundantes
@@ -612,20 +634,19 @@ function format_links() {
 	regex(/\[\[File( Discussão)?:/ig,'[[Arquivo$1:');
 	regex(/\[\[File Talk:/ig, '[[Arquivo Discussão:');
 
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('formatação dos links', 'appendonce');
 	}
 }
 
 function format_math() {
-	var antigo = editbox.value;
+	var oldText = editbox.value;
 
 	// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	regex(/<\/math> *([\.,;:!\?]) */ig, '$1</math> ');
 	regex(/\\sin/mig, '\\mathrm{sen}\\,');
 
-
-	if (editbox.value !== antigo) {
+	if (editbox.value !== oldText) {
 		setreason('format. <math> e pontuação', 'appendonce');
 	}
 }
