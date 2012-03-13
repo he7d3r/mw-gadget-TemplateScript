@@ -1,3 +1,4 @@
+
 /**
  * Regex menu framework
  * Adds a sidebar menu of user-defined scripts
@@ -20,7 +21,7 @@ var	nomeLivro = mw.config.get( 'wgPageName' ).replace(/_/g,' '),
 /* menu links */
 // In the function below, add more lines like "regexTool('link text','function_name()')" to add
 // links to the sidebar menu. The function name is the function defined in rfmscripts() below.
-function rmflinks() {
+window.rmflinks = function () {
 	$('#p-regex').addClass( 'expanded' ).removeClass( 'collapsed' ).find( 'div.body' ).show();
 	regexTool('REGEX','custom()'); // Uma ferramenta padrão que executa regex em um formulário dinâmico
 	regexTool('Editar Regexes','editRegexes()');
@@ -62,7 +63,7 @@ function rmflinks() {
 	}
 	regexTool('Regex no sumário','usando_regex()');
 
-}
+};
 function editRegexes() {
 	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/Regex_menu_framework.js?action=edit' );
 }
