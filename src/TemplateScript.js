@@ -1,4 +1,3 @@
-
 /**
  * Regex menu framework
  * Adds a sidebar menu of user-defined scripts
@@ -64,10 +63,10 @@ window.rmflinks = function () {
 	regexTool('Regex no sumário','usando_regex()');
 
 };
-function editRegexes() {
+window.editRegexes = function () {
 	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/Regex_menu_framework.js?action=edit' );
-}
-function fixObsoleteTemplates(){
+};
+window.fixObsoleteTemplates = function (){
 	var oldText = editbox.value;
 
 	//[[w:Especial:Páginas afluentes/Predefinição:Ver também]]
@@ -83,8 +82,9 @@ function fixObsoleteTemplates(){
 		setreason( '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]', 'appendonce');
 		doaction('diff');
 	}
-}
-function removeMathHack(){
+};
+
+window.removeMathHack = function (){
 	var	reHack, reason,
 		oldText = editbox.value;
 	reHack = /\\,\\!\s*<\/math>/g;
@@ -97,8 +97,9 @@ function removeMathHack(){
 		setreason( reason[mw.config.get('wgContentLanguage')] || reason.en, 'appendonce');
 		doaction('diff');
 	}
-}
-function fixDefList(){
+};
+
+window.fixDefList = function (){
 	var oldText = editbox.value;
 
 	regex( /\s*\n;([^\n]+)\n([^:])/g, '\n;$1\n:$2' );
@@ -106,9 +107,9 @@ function fixDefList(){
 		setreason( '+semântica na lista de definições (;:)', 'appendonce');
 		doaction('diff');
 	}
-}
+};
 
-function fixImageLinks(){
+window.fixImageLinks = function (){
 	var	oldText = editbox.value,
 		reOtherNames = /\[\[\s*(?:[Ii]mage|[Aa]rquivo|[Ff]i(?:cheiro|le))\s*:\s*([^|\]]+\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\s*(\||\]\])/g;
 	regex( reOtherNames, '[[Imagem:$1$2' );
@@ -120,9 +121,9 @@ function fixImageLinks(){
 			'appendonce'
 		);
 	}
-}
+};
 
-function fixHTTPLinks() {
+window.fixHTTPLinks = function (){
 	var	oldText = editbox.value,
 		// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 		// Ver também: [[Special:SiteMatrix]], [[meta:User:Nemo bis/HTTPS]]
@@ -135,8 +136,9 @@ function fixHTTPLinks() {
 		setoptions( 'true' /* = minor */ );
 		doaction('diff');
 	}
-}
-function corrige_assinatura() {
+};
+
+window.corrige_assinatura = function (){
 	var	proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:',
 		lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:',
 		oldText = editbox.value, reOldSign, newSign;
@@ -150,7 +152,7 @@ function corrige_assinatura() {
 		setoptions( 'true' /* = minor */ );
 		doaction('diff');
 	}
-}
+};
 
 /** Latex2wiki **
  * Este script é uma adaptação para JavaScript:
@@ -179,11 +181,10 @@ function corrige_assinatura() {
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function math_conversion(dir) {
-
+window.math_conversion = function (){
 	var	text = editbox.value,
 		regex = 0, subst = 1, func = 2,
-		command, i;
+		command, i, dir;
 	command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
 		[//fórmulas dentro dos parágrafos
 			[/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>', null],
@@ -211,9 +212,9 @@ function math_conversion(dir) {
 	} else {
 		setreason('Criando versão latex [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
 	}
-}
+};
 
-function latex2wiki() {
+window.latex2wiki = function (){
 	var	top = '{' + '{AutoNav}' + '}\n',
 		bottom =	'\n== Notas ==\n' +
 			'<references group="nota "/>\n' +
@@ -252,10 +253,9 @@ function latex2wiki() {
 	editbox.value =	top + editbox.value + bottom;
 
 	setreason('Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
-}
+};
 
-
-function wiki2latex() {
+window.wiki2latex = function (){
 	var	preambulo, reWikiLink,
 		WikiLink = '',
 		url = mw.config.get( 'wgServer' ) + '/wiki/Special:Search/';
@@ -407,11 +407,11 @@ function wiki2latex() {
 	setreason('Versão em LaTeX [produzida com'
 		+' [[m:User:Pathoschild/Scripts/Regex menu framework|expressões regulares]]]'
 		+'(não era para salvar: REVERTA ESTA EDIÇÃO!)', 'appendonce');
-}
+};
 
 //Adaptação de um script de Paul Galloway (http://www.synergyx.com)
-function dedupe_list( lista ) {
-	var	listvalues, mainlist, i,
+window.dedupe_list = function (){
+	var	listvalues, mainlist, i, lista,
 		count = 0,
 		newlist = [],
 		hash = {};
@@ -441,9 +441,9 @@ function dedupe_list( lista ) {
 	if( typeof lista === 'object' ) {
 		return newlist;
 	}
-}
+};
 
-function cria_autonav() {
+window.cria_autonav = function (){
 	var	lista = editbox.value.split('\n'),
 		anterior = [],
 		posterior = [], i;
@@ -457,16 +457,17 @@ function cria_autonav() {
 	}
 
 	editbox.value = lista.join('\n') + '\n\n' + anterior.join('\n') + '\n\n' + posterior.join('\n');
-}
+};
 
 //As funções interpretaLinha e geraLista foram baseadas nas funções loadCollection e parseCollectionLine da extensão collection
 //http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/Collection/Collection.body.php?view=markup
-function interpretaLinha( linha ) {
+function interpretaLinha ( linha ){
 	var reLinkCap  = new RegExp( '.*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' + $.escapeRE( nomeLivro ) + '/([^\\|\\]]+?))\\s*(?:(?:#[^\\|\\]]+?)?\\|\\s*[^\\]]+?\\s*)?\\]\\].*', 'gi' );
 	linha = ( reLinkCap.test( linha ) ) ? linha.replace( reLinkCap, '$1$2' ).replace(/^\s+|\s+$/g,"") : '';
 	return( linha );
 }
-function geraLista() {
+
+function geraLista (){
 	var	linhas = $('#wpTextbox1').val().split(/[\r\n]+/),
 		lista = [], i, cap;
 	linhas = linhas.slice( 1, linhas.length - 1 );
@@ -476,8 +477,9 @@ function geraLista() {
 	}
 	return lista;
 }
-function geraPredef() {
-	var	lista = dedupe_list( geraLista() ),
+
+window.geraPredef = function (){
+	var	lista = window.dedupe_list( geraLista() ),
 		predef = '<includeonly>{'+'{{{{|safesubst:}}}Lista de capítulos/{{{1|}}}</includeonly>\n |'
 			+ lista.join( '\n |' )
 			+ '\n<includeonly>}}</includeonly><noinclude>\n'
@@ -485,9 +487,10 @@ function geraPredef() {
 			+ '<!-- ADICIONE CATEGORIAS E INTERWIKIS NA SUBPÁGINA /doc -->\n'
 			+ '</noinclude>';
 	editbox.value = predef;
-}
+};
 
 //Baseado em [[w:en:Wikipedia:WikiProject_User_scripts/Guide/Ajax#Edit_a_page_and_other_common_actions]]
+
 function editar(pagina, texto) {
 	// Edit page (must be done through POST)
 	$.post(
@@ -509,8 +512,8 @@ function editar(pagina, texto) {
 	});
 }//editar
 
-function geraCol() {
-	var	lista = dedupe_list( geraLista() ), i,
+window.geraCol = function (){
+	var	lista = window.dedupe_list( geraLista() ), i,
 		col = '{'+'{Livro gravado\n |título={'
 			+'{subst:SUBPAGENAME}}\n |subtítulo=\n |imagem da capa=\n'
 			+' |cor da capa=\n}}\n\n== ' + nomeLivro + ' ==\n';
@@ -519,9 +522,10 @@ function geraCol() {
 			+ lista[ i ].replace( /^.+\//g, '' ) + ']]\n';
 	}
 	editbox.value = col;
-}
-function geraImpr() {
-	var	lista = dedupe_list( geraLista() ), i,
+};
+
+window.geraImpr = function (){
+	var	lista = window.dedupe_list( geraLista() ), i,
 		imp = '{'+'{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( i = 0; i < lista.length; i++) {
 		imp += '=' + lista[ i ].replace( /^.+\//g, '' )
@@ -529,8 +533,9 @@ function geraImpr() {
 	}
 	imp += '\n{' + '{AutoCat}' + '}';
 	editbox.value = imp;
-}
-function grava_lista_cap() {
+};
+
+window.grava_lista_cap = function (){
 	var	pagina = 'Predefinição:Lista_de_capítulos/' + mw.config.get( 'wgPageName' ),
 		texto = editbox.value, r;
 		r = confirm('Antes de criar a lista de capítulos é preciso conferir' +
@@ -539,9 +544,9 @@ function grava_lista_cap() {
 	if (r===true) {
 		editar(pagina, texto);
 	}
-}
+};
 
-function converte_refs() {
+window.converte_refs = function (){
 	var oldText = editbox.value;
 
 	regex(/Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img, '* {'+'{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}');
@@ -549,9 +554,9 @@ function converte_refs() {
 	if (editbox.value !== oldText) {
 		setreason('Referência do Google Books -> [[Predefinição:Referência a livro]]', 'appendonce');
 	}
-}
+};
 
-function format_cab() {
+window.format_cab = function (){
 	var oldText = editbox.value;
 
 	// Formatação do livro de receitas
@@ -575,9 +580,9 @@ function format_cab() {
 	if (editbox.value !== oldText) {
 		setreason('format. cabeçalhos', 'appendonce');
 	}
-}
+};
 
-function format_predef() {
+window.format_predef = function (){
 	var oldText = editbox.value;
 
 	regex(/\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig, '{{$1}}');
@@ -585,9 +590,9 @@ function format_predef() {
 	if (editbox.value !== oldText) {
 		setreason('format. predefs', 'appendonce');
 	}
-}
+};
 
-function format_cat() {
+window.format_cat = function (){
 	var oldText = editbox.value;
 
 	regex(/\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig, '[[Categoria:$1$2$3]]');
@@ -597,9 +602,9 @@ function format_cat() {
 	if (editbox.value !== oldText) {
 		setreason('format. categorias', 'appendonce');
 	}
-}
+};
 
-function format_list() {
+window.format_list = function (){
 	var oldText = editbox.value;
 
 	//Deixa apenas 1 espaço entre *, # ou : e o texto da lista
@@ -608,19 +613,19 @@ function format_list() {
 	if (editbox.value !== oldText) {
 		setreason('format. listas', 'appendonce');
 	}
-}
+};
 
-function abs2rel() {
-if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ){
-	//troca underscores por espaços
-	var nome = mw.config.get( 'wgBookName' ).replace(/_/g,' ');
+window.abs2rel = function (){
+	if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ){
+		//troca underscores por espaços
+		var nome = mw.config.get( 'wgBookName' ).replace(/_/g,' ');
 
-	// [[Livro/Cap|Cap]] -> [[/Cap/]]
+		// [[Livro/Cap|Cap]] -> [[/Cap/]]
 		regex(new RegExp('\\[\\[\\s*' + nome + '\\/([^\\|\\]]+?)\\s*\\|\\s*\\1\\s*\\]\\]','ig'), '[[/$1/]]');
 	}
-}
+};
 
-function format_links() {
+window.format_links = function (){
 	var	oldText = editbox.value;
 
 	// -espaços redundantes
@@ -651,9 +656,9 @@ function format_links() {
 	if (editbox.value !== oldText) {
 		setreason('formatação dos links', 'appendonce');
 	}
-}
+};
 
-function format_math() {
+window.format_math = function (){
 	var oldText = editbox.value;
 
 	// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
@@ -663,33 +668,33 @@ function format_math() {
 	if (editbox.value !== oldText) {
 		setreason('format. <math> e pontuação', 'appendonce');
 	}
-}
+};
 
-function usando_regex() {
+window.usando_regex = function (){
     if ( mw.config.get( 'wgContentLanguage' ).substr( 0, 2 ) === 'pt' ) {
         setreason('[usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
     } else {
         setreason('[using [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
     }
-}
+};
 
 /* scripts */
 // Abaixo, defina as funções referenciadas a partir de rmflinks(), logo acima. Estas funções podem usar qualquer JavaScript,
 // mas há um conjunto de ferramentas simplificadas documentadas em
 // http://meta.wikimedia.org/wiki/User:Pathoschild/Script:Regex_menu_framework.
-function format_geral() {
-	format_cab();
-	format_predef();
-	format_cat();
-	format_list();
-	abs2rel();
-	format_links();
-	format_math();
-	usando_regex();
-	format_cab();doaction('diff');
-}
+window.format_geral = function (){
+	window.format_cab();
+	window.format_predef();
+	window.format_cat();
+	window.format_list();
+	window.abs2rel();
+	window.format_links();
+	window.format_math();
+	window.usando_regex();
+	window.format_cab();doaction('diff');
+};
 
-function remove_modernizacao_ocr_callback(res) {
+window.remove_modernizacao_ocr_callback = function (res){
 	var	pages = res.query.pages,
 		pagenames = dictionaries.split('|'),
 		sortable = [],
@@ -723,13 +728,13 @@ function remove_modernizacao_ocr_callback(res) {
 	}
 	// lc.conv_text_from_dic() está em [[User:Helder.wiki/Scripts/LanguageConverter.js]]
 	editbox.value = lc.conv_text_from_dic(editbox.value, wsolddict, false, null, false);
-}
+};
 
 function primeira_maiuscula(p) {
 	return p.charAt(0).toUpperCase() + p.substr(1);
 }
 
-function corrigir_ocr() {
+window.corrigir_ocr = function (){
 	var	old = editbox.value,
 		tabela, re, url, editreason;
 	if (mw.config.get('wgNamespaceNumber') === 106 ) {
@@ -835,6 +840,6 @@ function corrigir_ocr() {
 		}
 		doaction('diff');
 	}
-}
+};
 
 });
