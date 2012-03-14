@@ -87,7 +87,7 @@ window.fixObsoleteTemplates = function (){
 window.removeMathHack = function (){
 	var	reHack, reason,
 		oldText = editbox.value;
-	reHack = /\\,(?:\\!)?\s*<\/math>/g;
+	reHack = /(?:\\,\\!|\\!\\,|\\,)\s*<\/math>/g;
 	reason = {
 		'pt': 'hack obsoleto: [[mw:MediaWiki 1.19|as fórmulas já aparecem em PNG]] e [[rev:104498|não há mais como exibi-las em HTML nem MathML]] (futuramente [[bugzilla:31406|teremos MathJax]])',
 		'en': 'obsolete hack: [[mw:MediaWiki 1.19|formulae are rendered as PNG by default]] and [[rev:104498|HTML or MathML options were removed]] (in the future [[bugzilla:31406|there will be MathJax]])'
@@ -700,6 +700,7 @@ window.remove_modernizacao_ocr_callback = function (res){
 		sortable = [],
 		wsolddict = [],
 		i, j, str, match2, lines;
+	/*jslint unparam: true*/
 	$.each( pages, function(id, page){
 		if (!page.pageid) {
 			alert('Erro na função remove_modernizacao_ocr_callback usada na correção de OCR!');
@@ -711,6 +712,7 @@ window.remove_modernizacao_ocr_callback = function (res){
 			//, page.title //Title of page
 		]);
 	});
+	/*jslint unparam: false*/
 	sortable.sort(function (a, b) {
 		return a[1] - b[1];
 	}); // Sort dictionaries in the given order
@@ -765,6 +767,7 @@ window.corrigir_ocr = function (){
 	};
 
 	//Aplica cada uma das regras da tabela
+	/*jslint unparam: true*/
 	$.each( tabela, function(id, palavra){
 		var regex1 = new RegExp('\\b' + palavra + '\\b', 'g');
 		regex(regex1, palavra, 5);
@@ -772,7 +775,7 @@ window.corrigir_ocr = function (){
 		regex1 = new RegExp('\\b' + primeira_maiuscula(palavra) + '\\b', 'g');
 		regex(regex1, primeira_maiuscula(palavra), 5);
 	});
-
+	/*jslint unparam: false*/
 
 	//Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
 	//Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
