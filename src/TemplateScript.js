@@ -5,9 +5,9 @@
  * @author: [[User:Helder.wiki]] (this configuration file)
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/PAGENAME.js]] ([[File:User:Helder.wiki/Tools/PAGENAME.js]])
  */
-/*global $, alert, confirm, doaction, document, editbox, lc, location, mw, regex, regexTool, regsearch, setoptions, setreason, window */
-/*jslint devel: true, browser: true, continue: true, plusplus: true, regexp: true */
-$(function () {
+/*global jQuery, mediaWiki, regexTool, editbox, regex, setreason, doaction, setoptions, regsearch, lc */
+/*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true */
+( function ( $, mw /* , undefined */ ) {
 'use strict';
 
 mw.loader.load( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/Regex_menu_framework.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400' );
@@ -845,4 +845,4 @@ window.corrigir_ocr = function (){
 	}
 };
 
-});
+}( jQuery, mediaWiki ) );
