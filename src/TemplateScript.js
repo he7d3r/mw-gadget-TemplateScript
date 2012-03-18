@@ -87,7 +87,7 @@ window.fixObsoleteTemplates = function (){
 window.removeMathHack = function (){
 	var	reHack, reason,
 		oldText = editbox.value;
-	reHack = /\s*(?:\\,\\!|\\!\\,|\\,)\s*<\/math>/g;
+	reHack = /\s*(?:\\,\\!|\\!\\,|\\,)\s*<\/math>|<math>\s*(?:\\,\\!|\\!\\,|\\,)\s*/g;
 	reason = {
 		'pt': 'hack obsoleto: [[mw:MediaWiki 1.19|as fórmulas já aparecem em PNG]] e [[rev:104498|não há mais como exibi-las em HTML nem MathML]] (futuramente [[bugzilla:31406|teremos MathJax]])',
 		'en': 'obsolete hack: [[mw:MediaWiki 1.19|formulae are rendered as PNG by default]] and [[rev:104498|HTML or MathML options were removed]] (in the future [[bugzilla:31406|there will be MathJax]])'
