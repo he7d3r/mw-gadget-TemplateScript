@@ -3,7 +3,7 @@
  * Adds a sidebar menu of user-defined scripts
  * @author: [[m:user:Pathoschild]] ([[meta:User:Pathoschild/Scripts/Regex menu framework]])
  * @author: [[User:Helder.wiki]] (this configuration file)
- * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/PAGENAME.js]] ([[File:User:Helder.wiki/Tools/PAGENAME.js]])
+ * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/Regex menu framework.js]] ([[File:User:Helder.wiki/Tools/Regex menu framework.js]])
  */
 /*global jQuery, mediaWiki, regexTool, editbox, regex, setreason, doaction, setoptions, regsearch, lc */
 /*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true */
