@@ -39,7 +39,7 @@ window.rmflinks = function () {
 		regexTool('Formatação geral','format_geral()');
 		regexTool('Wiki -> LaTeX','wiki2latex()');
 		regexTool('LaTeX -> Wiki','latex2wiki()');
-		regexTool('Remover linhas duplicadas','dedupe_list()');
+		regexTool('Remover linhas duplicadas','dedupe_list(editbox.value)');
 		regexTool('Formatar cabeçalhos','format_cab()');
 		regexTool('Formatar predefinições','format_predef()');
 		regexTool('Formatar categorias','format_cat()');
@@ -410,8 +410,8 @@ window.wiki2latex = function (){
 };
 
 //Adaptação de um script de Paul Galloway (http://www.synergyx.com)
-window.dedupe_list = function (){
-	var	listvalues, mainlist, i, lista,
+window.dedupe_list = function (lista){
+	var	listvalues, mainlist, i, l,
 		count = 0,
 		newlist = [],
 		hash = {};
@@ -419,10 +419,10 @@ window.dedupe_list = function (){
 		mainlist = editbox.value;
 		mainlist = mainlist.replace( /\r|\n+/gi, '\n' );
 		listvalues = mainlist.split( '\n' );
-	} else if( typeof lista === 'object' ) {
+	} else if( $.isArray(lista) ) {
 		listvalues = lista;
 	}
-	for ( i = 0; i<listvalues.length; i++ )	{
+	for ( i = 0, l = listvalues.length; i<l; i++ )	{
 		if ( hash[listvalues[ i ].toLowerCase()] !== 1 )	{
 			newlist = newlist.concat( listvalues[ i ] );
 			hash[ listvalues[ i ].toLowerCase() ] = 1;
@@ -438,7 +438,7 @@ window.dedupe_list = function (){
 	if( typeof lista === 'string' ) {
 		return newlist.join( '\r\n' );
 	}
-	if( typeof lista === 'object' ) {
+	if( $.isArray(lista) ) {
 		return newlist;
 	}
 };
