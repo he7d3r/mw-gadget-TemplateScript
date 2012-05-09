@@ -243,7 +243,7 @@ window.geraImpr = function (){
 		imp = '{'+'{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( i = 0; i < lista.length; i++) {
 		imp += '=' + lista[ i ].replace( /^.+\//g, '' )
-			+ '=\n{'+'{:{{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
+			+ '=\n{' + '{:{' + '{NOMEDOLIVRO}}/' + lista[ i ] + '}}\n';
 	}
 	imp += '\n{' + '{AutoCat}' + '}';
 	editbox.value = imp;
@@ -299,7 +299,7 @@ window.formatHeadings = function (){
 window.formatTemplates = function (){
 	var oldText = editbox.value;
 
-	regex(/\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig, '{{$1}}');
+	regex(/\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig, '{' + '{$1}}');
 
 	if (editbox.value !== oldText) {
 		setreason('format. predefs', 'appendonce');
@@ -391,8 +391,8 @@ window.fixMath = function (){
 		oldText = editbox.value;
 	reHack = /\s*(?:\\,\\!|\\!\\,|\\,)\s*<(\/)math>|<math>\s*(?:\\,\\!|\\!\\,|\\,)\s*/g;
 	reason = {
-		'pt': 'hack obsoleto: [[mw:MediaWiki 1.19|as fórmulas já aparecem em PNG]] e [[rev:104498|não há mais como exibi-las em HTML nem MathML]] (futuramente [[bugzilla:31406|teremos MathJax]])',
-		'en': 'obsolete hack: [[mw:MediaWiki 1.19|formulae are rendered as PNG by default]] and [[rev:104498|HTML or MathML options were removed]] (in the future [[bugzilla:31406|there will be MathJax]])'
+		'pt': '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[bugzilla:31406#c24]])',
+		'en': '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[bugzilla:31406#c24]])'
 	};
 	regex( reHack, '<$1math>' );
 	if (editbox.value !== oldText) {
@@ -555,7 +555,7 @@ window.fixOCR = function (){
 		//Remoção de hifens em quebras de linha
 		' *— *': ' — ',
 		//Ajuste no espaçamento em torno de um traço —
-		'\\n(\\d+)\\. ([^\\n]+)': '\n{{âncora|Item $1}}$1. $2',
+		'\\n(\\d+)\\. ([^\\n]+)': '\n{' + '{âncora|Item $1}}$1. $2',
 		//Inclusão de âncoras no início de cada item
 		'-,': ';',
 		'(\\d+)(?:\\?|o|"\\.) ([Cc]asos?|[Ee]xemplos?|[Pp]rincipios?)': '$1º $2',
