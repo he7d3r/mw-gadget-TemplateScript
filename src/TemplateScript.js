@@ -353,8 +353,8 @@ window.formatLinks = function (){
 	// texto exibido redundante:
 	// * [[Texto|Texto]]  -> [[Texto]]
 	// * [[/Texto|Texto]] -> [[/Texto/]]
-	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/ig, '[[$1]]');
-	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/ig,'[[/$1/]]');
+	regex(/\[\[([^\|\]]+?)\s*\|\s*\1\]\]/g, '[[$1]]');
+	regex(/\[\[\s*\/\s*([^\|\]]+?)\s*\|\s*\1\s*\]\]/g,'[[/$1/]]');
 
 	// troca de underscores por espaços nas ligações
 	regex(/\[\[([^\|\]]+?)_/ig, '[[$1 ', 5);
