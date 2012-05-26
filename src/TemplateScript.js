@@ -1,4 +1,3 @@
-
 /**
  * Regex menu framework
  * Adds a sidebar menu of user-defined scripts
@@ -88,6 +87,16 @@ window.fixObsoleteTemplates = function (){
 
 	if (editbox.value !== oldText) {
 		setreason( '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]', 'appendonce');
+	}
+};
+
+window.fixObsoleteHTML = function (){
+	var oldText = editbox.value;
+
+	regex( /<font\s+color="(.+?)"\s*>(.+?)<\/font>/gi, '<span style="color:$1;">$2</span>' );
+
+	if (editbox.value !== oldText) {
+		setreason( '-código HTML obsoleto', 'appendonce');
 	}
 };
 
@@ -409,16 +418,17 @@ window.fixMath = function (){
 };
 
 window.usingRegex = function (){
-    if ( mw.config.get( 'wgContentLanguage' ).substr( 0, 2 ) === 'pt' ) {
-        setreason('[usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
-    } else {
-        setreason('[using [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
-    }
+	if ( mw.config.get( 'wgContentLanguage' ).substr( 0, 2 ) === 'pt' ) {
+		setreason('[usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+	} else {
+		setreason('[using [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]', 'appendonce');
+	}
 };
 
 window.generalFixes = function (){
 	switch( mw.config.get( 'wgDBname' ) ) {
 	case 'ptwiki':
+		window.fixObsoleteHTML();
 		window.fixMath();
 		window.fixHTTPLinks();
 		window.fixLists();
@@ -429,6 +439,7 @@ window.generalFixes = function (){
 	case 'ptwikisource':
 		break;
 	case 'ptwikibooks':
+		window.fixObsoleteHTML();
 		window.formatHeadings();
 		window.formatTemplates();
 		window.formatCategories();
