@@ -93,6 +93,7 @@ window.fixObsoleteTemplates = function (){
 window.fixObsoleteHTML = function (){
 	var oldText = editbox.value;
 
+	regex( /<font\s+color="(.+?)"\s*>(\s*\[\[[^\|\]]+\|)([^\]]+)(\]\]\s*)<\/font>/gi, '$2<span style="color:$1;">$3</span>$4' );
 	regex( /<font\s+color="(.+?)"\s*>(.+?)<\/font>/gi, '<span style="color:$1;">$2</span>' );
 
 	if (editbox.value !== oldText) {
