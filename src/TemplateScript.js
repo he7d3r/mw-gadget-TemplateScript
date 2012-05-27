@@ -90,6 +90,7 @@ window.fixObsoleteTemplates = function (){
 	}
 };
 
+// See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
 window.fixObsoleteHTML = function (){
 	var oldText = editbox.value;
 
