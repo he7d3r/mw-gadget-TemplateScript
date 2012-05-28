@@ -56,7 +56,7 @@ function dedupeList( items ){
 }
 
 function editRegexes( /* context */ ){
-	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/Regex_menu_framework.js?action=edit' );
+	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/TemplateScript.js?action=edit' );
 }
 
 function fixObsoleteTemplates( context ){
