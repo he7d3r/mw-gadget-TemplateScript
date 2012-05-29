@@ -25,8 +25,12 @@ function regex(context, regexList, summary, pos ) {
 		text = text.replace( rule.find, rule.replace );
 	}
 	if (text !== oldText) {
+		pos = pos || 'after';
 		context.$target.val( text );
-		pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos || 'after' );
+		if( pos === 'after' && context.$target.val().match(/[^\s]/) ) {
+			summary = ', ' + summary;
+		}
+		pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos );
 	}
 }
 
@@ -175,7 +179,7 @@ function createList( context ){
 }
 
 function createTemplate( context ){
-	var	list = dedupeList( createList() ),
+	var	list = dedupeList( createList( context ) ),
 		predef = '<includeonly>{'+'{{{{|safesubst:}}}Lista de capítulos/{{{1|}}}</includeonly>\n |'
 			+ list.join( '\n |' )
 			+ '\n<includeonly>}}</includeonly><noinclude>\n'
@@ -208,7 +212,7 @@ function editPage(pagina, texto) {
 }//editPage
 
 function createCollectionPage( context ){
-	var	list = dedupeList( createList() ), i,
+	var	list = dedupeList( createList( context ) ), i,
 		col = '{'+'{Livro gravado\n |título={'
 			+'{subst:SUBPAGENAME}}\n |subtítulo=\n |imagem da capa=\n'
 			+' |cor da capa=\n}}\n\n== ' + bookName + ' ==\n';
@@ -220,7 +224,7 @@ function createCollectionPage( context ){
 }
 
 function createPrintVersion( context ){
-	var	list = dedupeList( createList() ), i,
+	var	list = dedupeList( createList( context ) ), i,
 		imp = '{'+'{Versão para impressão|{{BASEPAGENAME}}|{{BASEPAGENAME}}/Imprimir}}\n';
 	for ( i = 0; i < list.length; i++) {
 		imp += '=' + list[ i ].replace( /^.+\//g, '' )
