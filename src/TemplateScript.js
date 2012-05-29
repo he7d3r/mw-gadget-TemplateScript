@@ -27,7 +27,7 @@ function regex(context, regexList, summary, pos ) {
 	if (text !== oldText) {
 		pos = pos || 'after';
 		context.$target.val( text );
-		if( pos === 'after' && context.$target.val().match(/[^\s]/) ) {
+		if( pos === 'after' && context.$editSummary.val().match(/[^\s]/) ) {
 			summary = ', ' + summary;
 		}
 		pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos );
