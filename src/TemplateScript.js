@@ -5,7 +5,7 @@
  * @author: [[User:Helder.wiki]] (this configuration file)
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/TemplateScript.js]] ([[File:User:Helder.wiki/Tools/TemplateScript.js]])
  */
-/*global jQuery, mediaWiki, LanguageConverter */
+/*global jQuery, mediaWiki, LanguageConverter, pathoschild */
 /*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true */
 ( function ( $, mw /* , undefined */ ) {
 'use strict';
