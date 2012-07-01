@@ -11,7 +11,7 @@
 'use strict';
 
 var	bookName = mw.config.get( 'wgPageName' ).replace(/_/g,' '),
-	//Maiúsculas e minúsculas usadas em português
+	// Maiúsculas e minúsculas usadas em português
 	LETRA = 'A-Za-zÁÀÂÃÇÉÊÍÓÒÔÕÚáàâãçéêíóòôõú',
 	dictionaries = 'Wikisource:Modernização/Dicionário/pt-PT|Wikisource:Modernização/Dicionário/pt-BR',
 	oldText = null,
@@ -27,10 +27,12 @@ function regex(context, regexList, summary, pos ) {
 	if (text !== oldText) {
 		pos = pos || 'after';
 		context.$target.val( text );
-		if( pos === 'after' && context.$editSummary.val().match(/[^\s]/) ) {
-			summary = ', ' + summary;
+		if( summary ) {
+			if( pos === 'after' && context.$editSummary.val().match(/[^\s]/) ) {
+				summary = ', ' + summary;
+			}
+			pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos );
 		}
-		pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos );
 	}
 }
 
@@ -79,7 +81,7 @@ function fixObsoleteTemplates( context ){
 		replace: '\n== Ligações externas =='
 	}];
 
-	regex( context, list, '-[[Project:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]' );
+	regex( context, list, '-[[WP:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]' );
 }
 
 // See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
@@ -421,7 +423,7 @@ function fixImageLinks( context ){
 		}],
 		'Uso de "[Imagem:" ([[' +
 			(mw.config.get( 'wgDBname' ) === 'ptwiki'? '' : 'w:') +
-			'Project:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]])'
+			'WP:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]])'
 	);
 }
 
