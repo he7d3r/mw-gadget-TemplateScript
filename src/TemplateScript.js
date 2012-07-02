@@ -387,7 +387,7 @@ function fixLists( context ){
 
 	regex( context, [{
 		// Deixa apenas 1 espaço entre *, # ou : e o texto da lista
-		find: /^([*#:]+)\s*/mig,
+		find: /^(:+(?![\{:])|[*#][*#:]*|:+[*#]+[*#:]*)\s*/gm,
 		replace: '$1 '
 	}], 'format. listas' );
 }
