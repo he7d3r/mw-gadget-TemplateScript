@@ -87,24 +87,40 @@ function fixObsoleteTemplates( context ){
 // See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
 function fixObsoleteHTML( context ){
 	var	colorNames = '(?:AliceBlue|AntiqueWhite|Aqua(?:marine)?|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue(?:Violet)?|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|Dark(?:Blue|Cyan|GoldenRod|Gray|Green|Grey|Khaki|Magenta|OliveGreen|orange|Orchid|Red|Salmon|SeaGreen|Slate(?:Blue|Gray|Grey)|Turquoise|Violet)|DeepPink|DeepSkyBlue|DimGray|DimGrey|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold(?:enRod)?|Gray|Green(?:Yellow)?|Grey|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender(?:Blush)?|LawnGreen|LemonChiffon|Light(?:Blue|Coral|Cyan|GoldenRodYellow|Gray|Green|Grey|Pink|Salmon|SeaGreen|SkyBlue|SlateGray|SlateGrey|SteelBlue|Yellow)|Lime(?:Green)?|Linen|Magenta|Maroon|Medium(?:AquaMarine|Blue|Orchid|Purple|SeaGreen|SlateBlue|SpringGreen|Turquoise|VioletRed)|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive(?:Drab)?|Orange(?:Red)?|Orchid|Pale(?:GoldenRod|Green|Turquoise|VioletRed)|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|Slate(?:Blue|Gray|Grey)|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White(?:Smoke)?|Yellow(?:Green)?)',
-		colorCodes = '(?:\\#?(?:[a-f0-9]{6}|[a-f0-9]{3}))';
+		colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})';
 	oldText = context.$target.val();
 	list = [{
 		find: new RegExp(
 			'<font\\s+color\\s*=\\s*(["\']?)(' +
-				colorNames + '|' + colorCodes +
+				colorNames +
 				')\\1\\s*>(\\s*\\[\\[[^\\|\\]]+\\|)([^\\]]+)(\\]\\]\\s*)<\\/font>',
 			'gi'
 		),
 		replace: '$3<span style="color:$2;">$4</span>$5'
 	},{
 		find: new RegExp(
+			'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
+				colorCodes +
+				')\\1\\s*>(\\s*\\[\\[[^\\|\\]]+\\|)([^\\]]+)(\\]\\]\\s*)<\\/font>',
+			'gi'
+		),
+		replace: '$3<span style="color:#$2;">$4</span>$5'
+	},{
+		find: new RegExp(
 			'<font\\s+color\\s*=\\s*(["\']?)(' +
-				colorNames + '|' + colorCodes +
+				colorNames +
 				')\\1\\s*>(.+?)<\\/font>',
 			'gi'
 		),
 		replace: '<span style="color:$2;">$3</span>'
+	},{
+		find: new RegExp(
+			'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
+				colorCodes +
+				')\\1\\s*>(.+?)<\\/font>',
+			'gi'
+		),
+		replace: '<span style="color:#$2;">$3</span>'
 	}];
 	regex( context, list, '-código HTML obsoleto' );
 }
