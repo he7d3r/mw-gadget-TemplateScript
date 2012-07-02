@@ -90,6 +90,27 @@ function fixObsoleteHTML( context ){
 		colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})';
 	oldText = context.$target.val();
 	list = [{
+		// <font color="red">[[página]]</font>
+		// [[página|<span style="color:red;">página</span>]]
+		find: new RegExp(
+			'<font\\s+color\\s*=\\s*(["\']?)(' +
+				colorNames +
+				')\\1\\s*>(\\s*\\[\\[)([^\\|\\]]+)(\\]\\]\\s*)<\\/font>',
+			'gi'
+		),
+		replace: '$3$4|<span style="color:$2;">$4</span>$5'
+	},{
+		// <font color="#123456">[[página]]</font>
+		// [[página|<span style="color:#123456;">página</span>]]
+		find: new RegExp(
+			'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
+				colorCodes +
+				')\\1\\s*>(\\s*\\[\\[)([^\\|\\]]+)(\\]\\]\\s*)<\\/font>',
+			'gi'
+		),
+		replace: '$3$4|<span style="color:#$2;">$4</span>$5'
+	},{
+		// <font color="red">[[página|texto]]</font>
 		find: new RegExp(
 			'<font\\s+color\\s*=\\s*(["\']?)(' +
 				colorNames +
@@ -98,6 +119,7 @@ function fixObsoleteHTML( context ){
 		),
 		replace: '$3<span style="color:$2;">$4</span>$5'
 	},{
+		// <font color="#123456">[[página|texto]]</font>
 		find: new RegExp(
 			'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
 				colorCodes +
@@ -106,6 +128,7 @@ function fixObsoleteHTML( context ){
 		),
 		replace: '$3<span style="color:#$2;">$4</span>$5'
 	},{
+		// <font color="red">texto [[página|texto]] texto</font>
 		find: new RegExp(
 			'<font\\s+color\\s*=\\s*(["\']?)(' +
 				colorNames +
@@ -114,6 +137,7 @@ function fixObsoleteHTML( context ){
 		),
 		replace: '<span style="color:$2;">$3</span>'
 	},{
+		// <font color="#123456">texto [[página|texto]] texto</font>
 		find: new RegExp(
 			'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
 				colorCodes +
