@@ -148,7 +148,7 @@ function fixObsoleteHTML( context ){
 	},{
 		// Simplify color hex codes
 		find: /#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/g,
-		replace: #$1$2$3
+		replace: '#$1$2$3'
 	}];
 	regex( context, list, '-código HTML obsoleto' );
 }
