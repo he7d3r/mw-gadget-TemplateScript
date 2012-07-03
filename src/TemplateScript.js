@@ -81,7 +81,7 @@ function fixObsoleteTemplates( context ){
 		replace: '\n== Ligações externas =='
 	}];
 
-	regex( context, list, '-[[WP:Esplanada/propostas/Parar de usar Ver também e Ligações externas (16dez2011)|predef\'s obsoletas]]' );
+	regex( context, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
 }
 
 // See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
@@ -463,7 +463,7 @@ function fixImageLinks( context ){
 		}],
 		'Uso de "[Imagem:" ([[' +
 			(mw.config.get( 'wgDBname' ) === 'ptwiki'? '' : 'w:') +
-			'WP:Esplanada/propostas/Incentivar o uso de "Imagem" em vez de "Arquivo" ou "Ficheiro" (12mar2011)|detalhes]])'
+			'Special:PermaLink/27949155|detalhes]])'
 	);
 }
 
@@ -494,9 +494,9 @@ function fixMath( context ){
 function usingRegex( context ){
 	var summary;
 	if ( mw.config.get( 'wgContentLanguage' ).substr( 0, 2 ) === 'pt' ) {
-		summary = '[usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]';
+		summary = '[usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
 	} else {
-		summary = '[using [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]';
+		summary = '[using [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
 	}
 	pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, 'after' );
 }
@@ -747,9 +747,9 @@ function convertMath( context ){
 	}
 	context.$target.val( text );
 	if (0 === dir) {
-		summary = 'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]';
+		summary = 'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
 	} else {
-		summary = 'Criando versão latex [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)';
+		summary = 'Criando versão latex [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)';
 	}
 	pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, 'replace' );
 }
@@ -833,7 +833,7 @@ function latex2wiki( context ){
 	context.$target.val( top + context.$target.val() + bottom );
 	pathoschild.TemplateScript.InsertLiteral(
 		context.$editSummary,
-		'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/Regex menu framework|regex]]]',
+		'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]',
 		'replace'
 	);
 }
@@ -1098,7 +1098,7 @@ function wiki2latex( context ){
 	pathoschild.TemplateScript.InsertLiteral(
 		context.$editSummary,
 		'Versão em LaTeX [produzida com'
-			+' [[m:User:Pathoschild/Scripts/Regex menu framework|expressões regulares]]]'
+			+' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]'
 			+'(não era para salvar: REVERTA ESTA EDIÇÃO!)',
 		'replace'
 	);
