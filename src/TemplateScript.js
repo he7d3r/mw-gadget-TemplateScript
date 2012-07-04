@@ -250,7 +250,7 @@ function createTemplate( context ){
 	context.$target.val( predef );
 }
 
-// Baseado em [[w:en:Wikipedia:WikiProject User scripts/Guide/Ajax#Edit a page and other common actions]]
+// Baseado em [[w:en:WP:WikiProject User scripts/Guide/Ajax#Edit a page and other common actions]]
 function editPage(pagina, texto) {
 	// Edit page (must be done through POST)
 	$.post(
@@ -262,12 +262,13 @@ function editPage(pagina, texto) {
 			summary: 'Criação da lista com base no [[' + mw.config.get( 'wgBookName' ) +
 				'|índice do livro]] (usando regex)',
 			token: mw.user.tokens.get( 'editToken' )
-		},
-		function() {
-			alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
-			location.href = mw.util.wikiGetlink( pagina );
 		}
-	).error(function() {
+	)
+	.done(function() {
+		alert('A página "' + pagina.replace(/_/g, ' ') + '" foi editada e será exibida a seguir.');
+		location.href = mw.util.wikiGetlink( pagina );
+	})
+	.fail(function() {
 		alert( 'Não foi possível editar a página. =(' );
 	});
 }// editPage
