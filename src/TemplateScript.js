@@ -28,7 +28,7 @@ function regex(context, regexList, summary, pos ) {
 		pos = pos || 'after';
 		context.$target.val( text );
 		if( summary ) {
-			if( pos === 'after' && context.$editSummary.val().match(/[^\s]/) ) {
+			if( pos === 'after' && context.$editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
 				summary = ', ' + summary;
 			}
 			pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos );
@@ -36,7 +36,7 @@ function regex(context, regexList, summary, pos ) {
 	}
 }
 
-//Adaptação de um script de Paul Galloway (http://www.synergyx.com)
+// Adaptação de um script de Paul Galloway (http://www.synergyx.com)
 function dedupeList( items ){
 	var	i, l,
 		count = 0,
@@ -213,8 +213,8 @@ function createAutoNav( context ){
 	].join( '\n\n' ) );
 }
 
-//As funções parseLine e createList foram baseadas nas funções loadCollection e parseCollectionLine da extensão collection
-//http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/Collection/Collection.body.php?view=markup
+// As funções parseLine e createList foram baseadas nas funções loadCollection e parseCollectionLine da extensão collection
+// http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/Collection/Collection.body.php?view=markup
 function parseLine( line ){
 	var reLinkCap = new RegExp( '.*\\[\\[\\s*(?:/([^\\|\\]]+?)/?|' +
 		$.escapeRE( bookName ) +
@@ -270,7 +270,7 @@ function editPage(pagina, texto) {
 	).error(function() {
 		alert( 'Não foi possível editar a página. =(' );
 	});
-}//editPage
+}// editPage
 
 function createCollectionPage( context ){
 	var	list = dedupeList( createList( context ) ), i,
@@ -541,9 +541,9 @@ function fixOCR( context ){
 						return true;
 					}
 					sortable.push([
-						page.revisions[0]['*'], //Wiki code of dictionary page
-						pagenames.indexOf(page.title) //Order of page
-						//, page.title //Title of page
+						page.revisions[0]['*'], // Wiki code of dictionary page
+						pagenames.indexOf(page.title) // Order of page
+						// , page.title // Title of page
 					]);
 				});
 				/*jslint unparam: false*/
@@ -554,10 +554,10 @@ function fixOCR( context ){
 					str = sortable[i][0];
 					lines = str.split('\n');
 					for (j=0; j< lines.length; j++) {
-						// Current syntax: * old word : new word //Some comment
+						// Current syntax: * old word : new word // Some comment
 						match2 = /^\*\s*(\S[^:]*?)\s*:\s*([\S].*?)\s*(?:\/\/.*?)?$/.exec(lines[j]);
 						if (match2) {
-							wsolddict[match2[2]] = match2[1]; //"atual" => "antiga"
+							wsolddict[match2[2]] = match2[1]; // "atual" => "antiga"
 							continue;
 						}
 					}
@@ -577,8 +577,8 @@ function fixOCR( context ){
 	}
 
 	list = [];
-	//Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
-	//Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
+	// Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
+	// Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
 	tabela = {
 		'aããição': 'addição',
 		'arithmetiea': 'arithmetica',
@@ -604,23 +604,23 @@ function fixOCR( context ){
 		list.push({
 			find: new RegExp('\\b' + palavra + '\\b', 'g'),
 			replace: palavra
-			//, 5 // FIXME
+			// , 5 // FIXME
 		},{
 			// Converte também a palavra correspondente com a primeira letra maiúscula
 			find: new RegExp('\\b' + ucFirst(palavra) + '\\b', 'g'),
 			replace: ucFirst(palavra)
-			//, 5 // FIXME
+			// , 5 // FIXME
 		});
 	});
 	/*jslint unparam: false*/
 
-	//Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
-	//Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
-	//OSB:	1) Estas expressões precisam de tratamento especial pois o \b se confunde com letras acentuadas e cedilha
+	// Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
+	// Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
+	// OSB:	1) Estas expressões precisam de tratamento especial pois o \b se confunde com letras acentuadas e cedilha
 	//	2) São usados dois grupos extras nestas regras: um para o 1º caractere anterior e outro para o 1º posterior à palavra;
 	tabela = {
 		'ã([eo])': '$1d$2$3',
-		//A letra "d" em itálico parece um "ã" (por causa da serifa no topo do "d")
+		// A letra "d" em itálico parece um "ã" (por causa da serifa no topo do "d")
 		'ão(u)?s': '$1do$2s$3',
 		'ê': '$1é$2'
 	};
@@ -629,26 +629,26 @@ function fixOCR( context ){
 		list.push( {
 			find: new RegExp('([^' + LETRA + '])' + find + '([^' + LETRA + '])', 'g'),
 			replace: rep
-			//5 //FIXME
+			// 5 // FIXME
 		} );
 	} );
 
-	//Estas expressões SÃO convertidas mesmo se estiverem contidas em outras
-	//Se for preciso impedir a conversão nestes casos, basta mover a regra para a primeira tabela (acima)
+	// Estas expressões SÃO convertidas mesmo se estiverem contidas em outras
+	// Se for preciso impedir a conversão nestes casos, basta mover a regra para a primeira tabela (acima)
 	tabela = {
 		' +([.,;:!?]) +': '$1 ',
-		//Remoção do espaçamento antes de pontuação
+		// Remoção do espaçamento antes de pontuação
 		'([a-zA-Z])-\\n([a-zA-Z])': '$1$2',
-		//Remoção de hifens em quebras de linha
+		// Remoção de hifens em quebras de linha
 		' *— *': ' — ',
-		//Ajuste no espaçamento em torno de um traço —
+		// Ajuste no espaçamento em torno de um traço —
 		'\\n(\\d+)\\. ([^\\n]+)': '\n{' + '{âncora|Item $1}}$1. $2',
-		//Inclusão de âncoras no início de cada item
+		// Inclusão de âncoras no início de cada item
 		'-,': ';',
 		'(\\d+)(?:\\?|o|"\\.) ([Cc]asos?|[Ee]xemplos?|[Pp]rincipios?)': '$1º $2',
 		'[Ii]o ([Cc]asos?|[Ee]xemplos?|[Pp]rincipios?)': '1º $1',
 		'(\\d+)\\.[\\t ]': '$1. ',
-		//Correção da numeração manual
+		// Correção da numeração manual
 		'ãa': 'da',
 		'qne': 'que'
 	};
@@ -657,7 +657,7 @@ function fixOCR( context ){
 		list.push({
 			find: new RegExp(find, 'g'),
 			replace: rep
-			//5 // FIXME
+			// 5 // FIXME
 		},{
 			// Converte também a palavra correspondente com a primeira letra maiúscula
 			find: new RegExp('\\b' + ucFirst(find), 'g'),
@@ -731,16 +731,16 @@ function convertMath( context ){
 	var	text = context.$target.val(),
 		regex = 0, subst = 1, func = 2,
 		command, i, dir, summary;
-	command = [//(dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
-		[//fórmulas dentro dos parágrafos
+	command = [// (dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
+		[// fórmulas dentro dos parágrafos
 			[/\$\s*([^$]*?)\s*\$/img, '<math>$1</math>', null],
 			[/<\/?math>/ig, '$', null]
 		],
-		[//fórmulas em parágrafos isolados
+		[// fórmulas em parágrafos isolados
 			[/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n: <math>$1</math>\n\n', null],
 			[null, null, null]
 		],
-		[//notas de rodapé
+		[// notas de rodapé
 			[/\\footnote\{(.*?)\}/g, '<ref>$1</ref>', null],
 			[/<ref.*?>(.*?)<\/ref.*?>/ig, '\\footnote{$1}', null]
 		]
@@ -994,7 +994,7 @@ function wiki2latex( context ){
 
 	reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
 	WikiLink = reWikiLink.exec( context.$target.val() );
-	while( WikiLink ){//[[proj:idioma:alvo|texto]]
+	while( WikiLink ){// [[proj:idioma:alvo|texto]]
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		context.$target.val(
 			context.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
@@ -1003,7 +1003,7 @@ function wiki2latex( context ){
 	}
 	reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*\}\}/i;
 	WikiLink = reWikiLink.exec( context.$target.val() );
-	while( WikiLink ){//{{proj|alvo|texto}}
+	while( WikiLink ){// {{proj|alvo|texto}}
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		context.$target.val(
 			context.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
@@ -1012,7 +1012,7 @@ function wiki2latex( context ){
 	}
 	reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*\}\}/i;
 	WikiLink = reWikiLink.exec( context.$target.val() );
-	while( WikiLink ){//{{proj|alvo}}
+	while( WikiLink ){// {{proj|alvo}}
 		WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g,'\\$1');
 		context.$target.val(
 			context.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
