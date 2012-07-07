@@ -169,7 +169,7 @@ function fixHTTPLinks( context ){
 		find: /https:\/\/secure\.wikimedia\.org\/(wiki(?:pedia|books|news|quote|source|versity)|wiktionary)\/([a-z]{2,3}|meta)/g,
 		replace: '//$2.$1.org'
 	}];
-	regex( context, list, '[[wmfblog:2011/10/03/native-https-support-enabled-for-all-wikimedia-foundation-wikis|Links relativos ao protocolo]], pois todas as wikis podem ser acessadas via https' );
+	regex( context, list, '[[wmfblog:2011/10/03/native-https-support-enabled-for-all-wikimedia-foundation-wikis|http é inseguro]]' );
 }
 
 function fixSignature( context ){
