@@ -409,11 +409,13 @@ function fixLists( context ){
 	regex( context, [{
 		find: /\s*\n;([^\n]+)\n([^:])/g,
 		replace: '\n;$1\n:$2'
-	}], '+semântica na lista de definições (;:)' );
+	}], '+[[' +
+		(mw.config.get( 'wgDBname' ) === 'ptwiki'? '' : 'w:') +
+		'Special:PermaLink/31511942|semântica]] na lista de definições (;:)' );
 
 	regex( context, [{
 		// Deixa apenas 1 espaço entre *, # ou : e o texto da lista
-		find: /^(:+(?![\{:])|[*#][*#:]*|:+[*#]+[*#:]*)\s*/gm,
+		find: /^(:+[*#]+[*#:]*|:+(?![\{:])|[*#][*#:]*)\s*/gm,
 		replace: '$1 '
 	}], 'format. listas' );
 }
@@ -1182,9 +1184,6 @@ function loadMyRegexTools(){
 		name: 'Corrige links HTTP',
 		script: fixHTTPLinks,
 		isMinorEdit: true
-	}, {
-		name: 'Formatação geral',
-		script: generalFixes
 	}]);
 
 	switch( mw.config.get( 'wgDBname' ) ) {
