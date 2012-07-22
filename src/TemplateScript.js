@@ -65,23 +65,41 @@ function editRegexes( /* context */ ){
 	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/TemplateScript.js?action=edit' );
 }
 
-function fixObsoleteTemplates( context ){
+function fixObsoleteTemplatesOnPtwiki( context ){
+	var reText = {
+		// [[w:Especial:Páginas afluentes/Predefinição:Ver também]]
+		seeAlso: 'V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s',
+		// [[w:Especial:Páginas afluentes/Predefinição:Bibliografia]]
+		biblio: 'Bibliografia',
+		// [[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
+		extLinks: '(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)?|(?:Ligaç(?:ão|ões)|Links||)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?'
+	};
 	oldText = context.$target.val();
 	list = [{
-		// [[w:Especial:Páginas afluentes/Predefinição:Ver também]]
-		find: /\n==\s*\{\{(?:V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s)\}\}\s*==/gi,
+		find: new RegExp( '\\n==\\s*\\{\\{(?:' + reText.seeAlso + ')\\}\\}\\s*==', 'gi' ),
 		replace: '\n== Ver também =='
 	},{
-		// [[w:Especial:Páginas afluentes/Predefinição:Bibliografia]]
-		find: /\n==\s*\{\{Bibliografia\}\}\s*==/gi,
+		find: new RegExp( '\\n==\\s*\\{\\{' + reText.biblio + '\\}\\}\\s*==', 'gi' ),
 		replace: '\n== Bibliografia =='
 	},{
-		// [[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
-		find: /\n==\s*\{\{(?:(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)?|(?:Ligaç(?:ão|ões)|Links||)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?)\}\}\s*==/gi,
+		find: new RegExp( '\\n==\\s*\\{\\{(?:' + reText.extLinks + ')\\}\\}\\s*==', 'gi' ),
 		replace: '\n== Ligações externas =='
 	}];
 
 	regex( context, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
+	oldText = context.$target.val();
+	list = [{
+		find: new RegExp( '\\n==\\s*(?:' + reText.seeAlso + ')\\s*==', 'gi' ),
+		replace: '\n== Ver também =='
+	},{
+		find: new RegExp( '\\n==\\s*' + reText.biblio + '\\s*==', 'gi' ),
+		replace: '\n== Bibliografia =='
+	},{
+		find: new RegExp( '\\n==\\s*(?:' + reText.extLinks + ')\\s*==', 'gi' ),
+		replace: '\n== Ligações externas =='
+	}];
+
+	regex( context, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
 }
 
 // See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
@@ -1120,7 +1138,7 @@ function generalFixes( context ){
 		fixMath(c);
 		fixHTTPLinks(c);
 		fixLists(c);
-		fixObsoleteTemplates(c);
+		fixObsoleteTemplatesOnPtwiki(c);
 		formatLinks(c);
 		fixImageLinks(c);
 		break;
@@ -1175,7 +1193,7 @@ function loadMyRegexTools(){
 			forActions: 'edit'
 		},[{
 			name: 'Usar "Ver também,..."',
-			script: fixObsoleteTemplates
+			script: fixObsoleteTemplatesOnPtwiki
 		}, {
 			name: 'Corrigir fórmulas',
 			script: fixMath
