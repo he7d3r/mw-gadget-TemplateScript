@@ -6,8 +6,8 @@
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/TemplateScript.js]] ([[File:User:Helder.wiki/Tools/TemplateScript.js]])
  */
 /*global jQuery, mediaWiki, LanguageConverter, pathoschild */
-/*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true */
-( function ( $, mw /* , undefined */ ) {
+/*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true, todo: true */
+( function ( mw, $ ) {
 'use strict';
 
 var	bookName = mw.config.get( 'wgPageName' ).replace(/_/g,' '),
@@ -1289,4 +1289,4 @@ function loadMyRegexTools(){
 
 $.getScript( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/TemplateScript/dev.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400', loadMyRegexTools );
 
-}( jQuery, mediaWiki ) );
+}( mediaWiki, jQuery ) );
