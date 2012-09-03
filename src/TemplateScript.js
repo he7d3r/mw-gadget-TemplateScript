@@ -17,6 +17,16 @@ var	bookName = mw.config.get( 'wgPageName' ).replace(/_/g,' '),
 	oldText = null,
 	list = [];
 
+function showDiff(){
+	var $button = $('#wpDiffLive');
+	// FIXME: Only do a diff if the text was changed
+	// Maybe use bit operators: MINOR & DIFF & SAVE & ...
+	if($button.length){
+		$button = $('#wpDiff');
+	}
+	$button.click();
+}
+
 function regex(context, regexList, summary, pos ) {
 	var	text = context.$target.val(),
 		i, l, rule;
@@ -205,9 +215,7 @@ function fixSignature( context ){
 		replace: newSign
 	}], 'Fixing links (my user account was renamed)' );
 
-	// FIXME: Only do a diff if the text was changed
-	// Maybe use bit operators: MINOR & DIFF & SAVE & ...
-	$('#wpDiff').click();
+	showDiff();
 }
 
 function createAutoNav( context ){
@@ -715,9 +723,7 @@ function fixOCR( context ){
 			: ''
 		)
 	);
-	// FIXME: Only do a diff if the text was changed
-	// Maybe use bit operators: MINOR & DIFF & SAVE & ...
-	$('#wpDiff').click();
+	showDiff.click();
 }
 
 
@@ -1162,9 +1168,7 @@ function generalFixes( context ){
 	default:
 
 	}
-	// FIXME: Only do a diff if the text was changed
-	// Maybe use bit operators: MINOR & DIFF & SAVE & ...
-	$('#wpDiff').click();
+	showDiff();
 }
 
 function loadMyRegexTools(){
