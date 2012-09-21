@@ -518,7 +518,7 @@ function fixMath( context ){
 
 	// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
 	list = [{
-		find: /<\/math> *([\.,;:!\?]) */ig,
+		find: /<\/math> *([\.,;:\?]|!(?!!)) */ig,
 		replace: '$1</math> '
 	},{
 		find: /\\sin/mig,
