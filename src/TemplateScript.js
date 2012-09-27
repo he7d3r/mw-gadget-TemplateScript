@@ -173,6 +173,10 @@ function fixObsoleteHTML( context ){
 			'gi'
 		),
 		replace: '<span style="color:#$2;">$3</span>'
+	},{
+		// <source lang=...>...</source>
+		find: /<source\s+(lang.+?>.+?)<\/source>/g,
+		replace: '<syntaxhighlight $1</syntaxhighlight>'
 	}];
 	regex( context, list, '-código HTML obsoleto' );
 	if( oldText !== context.$target.val() ){
