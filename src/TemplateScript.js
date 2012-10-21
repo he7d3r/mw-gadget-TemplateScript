@@ -10,7 +10,7 @@
 ( function ( mw, $ ) {
 'use strict';
 
-var	bookName = mw.config.get( 'wgPageName' ).replace(/_/g,' '),
+var bookName = mw.config.get( 'wgPageName' ).replace(/_/g,' '),
 	// Maiúsculas e minúsculas usadas em português
 	LETRA = 'A-Za-zÁÀÂÃÇÉÊÍÓÒÔÕÚáàâãçéêíóòôõú',
 	dictionaries = 'Wikisource:Modernização/Dicionário/pt-PT|Wikisource:Modernização/Dicionário/pt-BR',
@@ -21,7 +21,7 @@ function showDiff(){
 	var $button = $('#wpDiffLive');
 	// FIXME: Only do a diff if the text was changed
 	// Maybe use bit operators: MINOR & DIFF & SAVE & ...
-	if($button.length){
+	if(!$button.length){
 		$button = $('#wpDiff');
 	}
 	$button.click();
