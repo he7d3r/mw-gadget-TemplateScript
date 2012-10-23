@@ -1296,6 +1296,6 @@ function loadMyRegexTools(){
 	}
 }
 
-$.getScript( '//pt.wikibooks.org/w/index.php?title=User:Helder.wiki/Tools/Pathoschild/Templatescript.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400', loadMyRegexTools );
+$.getScript( '//pt.wikibooks.org/w/index.php?title=User:Helder.wiki/Tools/Pathoschild/TemplateScript.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400', loadMyRegexTools );
 
 }( mediaWiki, jQuery ) );
