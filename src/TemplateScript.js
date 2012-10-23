@@ -2,6 +2,7 @@
  * TemplateScript
  * Adds a menu of configurable templates and scripts to the sidebar
  * @author: [[m:user:Pathoschild]] ([[meta:User:Pathoschild/Scripts/TemplateScript]])
+ * @update-token: [[File:pathoschild/templatescript.js]]
  * @author: [[User:Helder.wiki]] (this configuration file)
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/TemplateScript.js]] ([[File:User:Helder.wiki/Tools/TemplateScript.js]])
  */
@@ -1295,6 +1296,6 @@ function loadMyRegexTools(){
 	}
 }
 
-$.getScript( '//meta.wikimedia.org/w/index.php?title=User:Pathoschild/Scripts/TemplateScript/dev.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400', loadMyRegexTools );
+$.getScript( '//pt.wikibooks.org/w/index.php?title=User:Helder.wiki/Tools/Pathoschild/Templatescript.js&action=raw&ctype=text/javascript&smaxage=21600&maxage=86400', loadMyRegexTools );
 
 }( mediaWiki, jQuery ) );
