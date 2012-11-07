@@ -758,7 +758,7 @@ function fixOCR( context ){
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
+/*
 function convertMath( context ){
 	var	text = context.$target.val(),
 		regex = 0, subst = 1, func = 2,
@@ -769,7 +769,7 @@ function convertMath( context ){
 			[/<\/?math>/ig, '$', null]
 		],
 		[// fórmulas em parágrafos isolados
-			[/\s*\$\$\s*([^$]*?)\s*\$\$\s*/img, '\n\n: <math>$1</math>\n\n', null],
+			[/\s*\$\$\s*([^$]*?)\s*\$\$\s{0,}/img, '\n\n: <math>$1</math>\n\n', null],
 			[null, null, null]
 		],
 		[// notas de rodapé
@@ -792,6 +792,7 @@ function convertMath( context ){
 	}
 	pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, 'replace' );
 }
+*/
 
 function latex2wiki( context ){
 	var	top = '',
