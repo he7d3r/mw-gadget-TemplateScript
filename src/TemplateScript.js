@@ -181,6 +181,7 @@ function fixObsoleteHTML( context ){
 	}];
 	regex( context, list, '-código HTML obsoleto' );
 	if( oldText !== context.$target.val() ){
+		oldText = context.$target.val();
 		regex( context, {
 			// Simplify color hex codes
 			find: /#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/g,
