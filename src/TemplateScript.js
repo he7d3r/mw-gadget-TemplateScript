@@ -1287,11 +1287,13 @@ function loadMyRegexTools(){
 	default:
 		if( 'pt' === mw.config.get( 'wgContentLanguage' ) ) {
 			pathoschild.TemplateScript.Add({
+				forActions: 'edit',
 				name: 'Corrige [[Ficheiro',
 				script: fixImageLinks
 			});
 		}
 		pathoschild.TemplateScript.Add({
+			forActions: 'edit',
 			name: 'Regex no sumário',
 			script: usingRegex
 		});
