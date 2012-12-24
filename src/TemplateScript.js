@@ -79,7 +79,7 @@ function editRegexes( /* context */ ){
 function fixObsoleteTemplatesOnPtwiki( context ){
 	var reText = {
 		// [[w:Especial:Páginas afluentes/Predefinição:Ver também]]
-		seeAlso: 'V(?:eja|er|ide)[_ ](?:tamb[ée]m|mais)|(?:Tópico|Artigo|Página|Assunto)s[_ ]relacionad[oa]s|Li(?:gaçõe|nk)s[_ ]Intern[ao]s',
+		seeAlso: 'V(?:eja|er|ide|Consultar)[_ ](?:tamb[ée]m|mais|ainda)|(?:Tópico|Artigo|Página|Assunto)s[_ ](?:relacionad|divers)[oa]s|(?:Li(?:gaçõe|nk)|Referência)s[_ ]Intern[ao]s',
 		// [[w:Especial:Páginas afluentes/Predefinição:Bibliografia]]
 		biblio: 'Bibliografia',
 		// [[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
