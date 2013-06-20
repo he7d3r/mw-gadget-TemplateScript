@@ -118,7 +118,7 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERWIKIS NO FINAL DESTA PÁGINA -->/gi,
 		replace: '<!-- POR FAVOR, ADICIONE CATEGORIAS NO FINAL DESTA PÁGINA -->'
 	},{
-		find: /<!-- CATEGORIAS E INTERWIKIS AQUI, OBRIGADO -->gi,
+		find: /<!-- CATEGORIAS E INTERWIKIS AQUI, OBRIGADO -->/gi,
 		replace: '<!-- CATEGORIAS AQUI, OBRIGADO -->'
 	}];
 	regex( context, list, 'indique os outros idiomas no Wikidata' );
