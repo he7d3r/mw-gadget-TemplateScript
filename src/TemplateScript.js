@@ -116,10 +116,10 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
 	},{
 		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERWIKIS NO FINAL DESTA PÁGINA -->/gi,
-		replace: '<!-- POR FAVOR, ADICIONE CATEGORIAS NO FINAL DESTA PÁGINA -->'
+		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
 		find: /<!-- CATEGORIAS E INTERWIKIS AQUI, OBRIGADO -->/gi,
-		replace: '<!-- CATEGORIAS AQUI, OBRIGADO -->'
+		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	}];
 	regex( context, list, 'indique os outros idiomas no Wikidata' );
 }
