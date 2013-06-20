@@ -110,6 +110,18 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 	}];
 
 	regex( context, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
+	oldText = context.$target.val();
+	list = [{
+		find: /<!-- Inserir categorias e interwikis apenas na página de DOC desta predefinição -->/gi,
+		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
+	},{
+		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERWIKIS NO FINAL DESTA PÁGINA -->/gi,
+		replace: '<!-- POR FAVOR, ADICIONE CATEGORIAS NO FINAL DESTA PÁGINA -->'
+	},{
+		find: /<!-- CATEGORIAS E INTERWIKIS AQUI, OBRIGADO -->gi,
+		replace: '<!-- CATEGORIAS AQUI, OBRIGADO -->'
+	}];
+	regex( context, list, 'indique os outros idiomas no Wikidata' );
 }
 
 // See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
