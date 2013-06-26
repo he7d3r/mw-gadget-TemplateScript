@@ -218,8 +218,9 @@ function fixHTTPLinks( context ){
 }
 
 function fixSignature( context ){
-	var	proj = ( mw.config.get( 'wgServer' ).indexOf('wikibooks') > -1) ? '' : 'b:',
-		lang = ( 'pt' === mw.config.get( 'wgContentLanguage' ) ) ? '' : 'pt:',
+	var useLocalUserPage = $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwiki', 'enwiki' ] ) !== -1,
+		proj = mw.config.get( 'wgServer' ).indexOf( 'wikibooks' ) !== -1 || useLocalUserPage ? '' : 'b:',
+		lang = 'pt' === mw.config.get( 'wgContentLanguage' ) || useLocalUserPage ? '' : 'pt:',
 		reOldSign, newSign;
 	oldText = context.$target.val();
 	if ( !proj && lang ) {
@@ -231,7 +232,12 @@ function fixSignature( context ){
 		find: reOldSign,
 		replace: newSign
 	}], 'Fixing links (my user account was renamed)' );
-
+	if ( useLocalUserPage ) {
+		regex( context, [{
+			find: /\[\[b:(?:pt:)?User:Helder.wiki\|Helder\]\]/g,
+			replace: newSign
+		}], 'Fixing links (my user account was renamed)' );
+	}
 	showDiff();
 }
 
