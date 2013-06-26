@@ -234,9 +234,9 @@ function fixSignature( context ){
 	}], 'Fixing links (my user account was renamed)' );
 	if ( useLocalUserPage ) {
 		regex( context, [{
-			find: /\[\[b:(?:pt:)?User:Helder.wiki\|Helder\]\]/g,
+			find: /\[\[(?:b:(?:pt:)?|:pt:)User:Helder.wiki\|Helder\]\]/g,
 			replace: newSign
-		}], 'Fixing links (my user account was renamed)' );
+		}] );
 	}
 	showDiff();
 }
