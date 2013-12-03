@@ -115,6 +115,9 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		find: /<!-- Inserir categorias e interwikis apenas na página de DOC desta predefinição -->/gi,
 		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
 	},{
+		find: /<!-- Add categories and interwikis to the \/doc subpage, not here! -->/gi,
+		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
+	},{
 		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERWIKIS NO FINAL DESTA PÁGINA -->/gi,
 		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
