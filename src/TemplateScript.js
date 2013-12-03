@@ -121,7 +121,13 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERWIKIS NO FINAL DESTA PÁGINA -->/gi,
 		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
+		find: /<!-- PLEASE ADD CATEGORIES AND INTERWIKIS AT THE BOTTOM OF THIS PAGE -->/gi,
+		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
+	},{
 		find: /<!-- CATEGORIAS E INTERWIKIS AQUI, OBRIGADO -->/gi,
+		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
+	},{
+		find: /<<!-- CATEGORIES AND INTERWIKIS HERE, THANKS -->/gi,
 		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	}];
 	regex( context, list, 'indique os outros idiomas no Wikidata' );
@@ -629,9 +635,9 @@ function fixOCR( context ){
 		replace: '</math>'
 	});
 	regex( context, list,
-	       'Correção de OCR' + ( totalAnchorsBefore < context.$target.val().split( '{{âncora' ).length
-			? '; Adição de {{âncora}}'
-			: ''
+			'Correção de OCR' + ( totalAnchorsBefore < context.$target.val().split( '{{âncora' ).length ?
+                           '; Adição de {{âncora}}' :
+                           ''
 		)
 	);
 	showDiff.click();
@@ -1031,8 +1037,8 @@ function wiki2latex( context ){
 		'\\frontmatter\n',
 		'\\tableofcontents\n',
 		'\\mainmatter %Depois de índice e prefácio\n',
-		'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:'
-			+ mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n',
+		'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:' +
+			mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n',
 		context.$target.val(),
 		'\n\\backmatter\n',
 		'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat',
@@ -1043,9 +1049,9 @@ function wiki2latex( context ){
 	);
 	pathoschild.TemplateScript.InsertLiteral(
 		context.$editSummary,
-		'Versão em LaTeX [produzida com'
-			+' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]'
-			+'(não era para salvar: REVERTA ESTA EDIÇÃO!)',
+		'Versão em LaTeX [produzida com' +
+			' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]' +
+			'(não era para salvar: REVERTA ESTA EDIÇÃO!)',
 		'replace'
 	);
 }
