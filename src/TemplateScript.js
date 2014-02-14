@@ -198,6 +198,10 @@ function fixObsoleteHTML( context ){
 		// <source lang=...>...</source>
 		find: /<source\s+(lang.+?>.+?)<\/source>/g,
 		replace: '<syntaxhighlight $1</syntaxhighlight>'
+	},{
+		// <tt>...</tt>
+		find: /<tt>(.+?)<\/tt>/g,
+		replace: '<code>$1</code>'
 	}];
 	regex( context, list, '-código HTML obsoleto' );
 	if( oldText !== context.$target.val() ){
@@ -816,7 +820,7 @@ function wiki2latex( context ){
 		"\\hypersetup{\n" +
 		"		pdftitle = {" + mw.config.get( 'wgBookName' ) + "},\n" +
 		"		pdfauthor = {Colaboradores do Wikilivros},\n" +
-		"		pdfcreator = {" + mw.user.name() + "},\n" +
+		"		pdfcreator = {" + mw.user.getName() + "},\n" +
 		"		pdfsubject = {},\n" +
 		"		pdfkeywords = {wiki, livro, wikilivro, Wikilivros},\n" +
 		"		colorlinks = true,\n" +
