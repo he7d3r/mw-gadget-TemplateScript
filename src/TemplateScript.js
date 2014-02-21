@@ -203,8 +203,8 @@ function fixObsoleteHTML( context ){
 		find: /<tt>(.+?)<\/tt>/g,
 		replace: '<code>$1</code>'
 	},{
-		find: /\n\|-\s*bgcolor\s*=\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*/gi,
-		replace: '\n|- style="background: #$1;"'
+		find: /\n\|-\s*bgcolor\s*=\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*\n/gi,
+		replace: '\n|- style="background: #$1;"\n'
 	}];
 	regex( context, list, '-código HTML obsoleto' );
 	if( oldText !== context.$target.val() ){
