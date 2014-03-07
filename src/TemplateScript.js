@@ -127,7 +127,7 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		find: /<!-- *CATEGORIAS E INTERWIKIS AQUI, OBRIGADO *-->/gi,
 		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	},{
-		find: /<!-- *(?:ADD INTERWIKIS BELOW THIS LINE|CATEGORIAS E INTERWÍKIS AQUI, OBRIGADO) *-->\n/gi,
+		find: /<!--+ *(?:ADD INTERWIKIS BELOW THIS LINE|CATEGORIAS E INTERWÍKIS AQUI, OBRIGADO|Categorias e interwikis da predefinição) *--+>\n/gi,
 		replace: ''
 	},{
 		find: /<!-- CATEGORIES AND INTERWIKIS HERE, THANKS -->/gi,
