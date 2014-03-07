@@ -118,16 +118,16 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		find: /<!-- Add categories and interwikis to the \/doc subpage, not here! -->/gi,
 		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
 	},{
-		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERWIKIS NO FINAL DESTA PÁGINA -->/gi,
+		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERW[IÍ]KIS NO FINAL DESTA PÁGINA -->/gi,
 		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
 		find: /<!-- PLEASE ADD CATEGORIES AND INTERWIKIS AT THE BOTTOM OF THIS PAGE -->/gi,
 		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
-		find: /<!-- CATEGORIAS E INTERWIKIS AQUI, OBRIGADO -->/gi,
+		find: /<!-- *CATEGORIAS E INTERWIKIS AQUI, OBRIGADO *-->/gi,
 		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	},{
-		find: /<!-- ADD INTERWIKIS BELOW THIS LINE -->\n/gi,
+		find: /<!-- *(?:ADD INTERWIKIS BELOW THIS LINE|CATEGORIAS E INTERWÍKIS AQUI, OBRIGADO) *-->\n/gi,
 		replace: ''
 	},{
 		find: /<!-- CATEGORIES AND INTERWIKIS HERE, THANKS -->/gi,
