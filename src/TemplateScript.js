@@ -112,22 +112,16 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 	regex( context, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
 	oldText = context.$target.val();
 	list = [{
-		find: /<!-- Inserir categorias e interwikis apenas na página de DOC desta predefinição -->/gi,
+		find: /<!--+ *(?:Inserir categorias e interwikis apenas na página de DOC desta predefinição|Add categories and interwikis to the \/doc subpage, not here!) *--+>/gi,
 		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
 	},{
-		find: /<!-- Add categories and interwikis to the \/doc subpage, not here! -->/gi,
-		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
-	},{
-		find: /<!-- POR FAVOR, ADICIONE CATEGORIAS E INTERW[IÍ]KIS NO FINAL DESTA PÁGINA -->/gi,
+		find: /<!--+ *(?:POR FAVOR, ADICIONE CATEGORIAS E INTERW[IÍ]KIS NO FINAL DESTA PÁGINA|EDIT TEMPLATE DOCUMENTATION BELOW THIS LINE|PLEASE ADD CATEGORIES AND INTERWIKIS AT THE BOTTOM OF THIS PAGE) *--+>/gi,
 		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
-		find: /<!-- PLEASE ADD CATEGORIES AND INTERWIKIS AT THE BOTTOM OF THIS PAGE -->/gi,
-		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
-	},{
-		find: /<!--+ *(?:CATEGORIAS E INTERWIKIS AQUI, OBRIGADO|CATEGORIES AND INTERWIKIS HERE, THANKS|ADICIONE CATEGORIAS ABAIXO DESTA LINHA) *--+>/gi,
+		find: /<!--+ *(?:CATEGORIAS E INTERW[ÍI]KIS AQUI, OBRIGADO|CATEGORIES AND INTERWIKIS HERE, THANKS|ADICIONE CATEGORIAS ABAIXO DESTA LINHA|ADD CATEGORIES BELOW THIS LINE|Categorias e interwikis da predefinição) *--+>/gi,
 		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	},{
-		find: /<!--+ *(?:ADD INTERWIKIS BELOW THIS LINE|CATEGORIAS E INTERWÍKIS AQUI, OBRIGADO|Categorias e interwikis da predefinição) *--+>\n/gi,
+		find: /<!--+ *(?:ADD INTERWIKIS BELOW THIS LINE) *--+>\n/gi,
 		replace: ''
 	}];
 	regex( context, list, 'indique os outros idiomas no Wikidata' );
