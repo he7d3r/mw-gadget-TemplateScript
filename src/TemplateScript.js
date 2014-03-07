@@ -124,14 +124,11 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 		find: /<!-- PLEASE ADD CATEGORIES AND INTERWIKIS AT THE BOTTOM OF THIS PAGE -->/gi,
 		replace: '<!-- Categorias no final desta página e links para outros idiomas no Wikidata -->'
 	},{
-		find: /<!-- *CATEGORIAS E INTERWIKIS AQUI, OBRIGADO *-->/gi,
+		find: /<!--+ *(?:CATEGORIAS E INTERWIKIS AQUI, OBRIGADO|CATEGORIES AND INTERWIKIS HERE, THANKS|ADICIONE CATEGORIAS ABAIXO DESTA LINHA) *--+>/gi,
 		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	},{
 		find: /<!--+ *(?:ADD INTERWIKIS BELOW THIS LINE|CATEGORIAS E INTERWÍKIS AQUI, OBRIGADO|Categorias e interwikis da predefinição) *--+>\n/gi,
 		replace: ''
-	},{
-		find: /<!-- CATEGORIES AND INTERWIKIS HERE, THANKS -->/gi,
-		replace: '<!-- Categorias aqui e links para outros idiomas no Wikidata -->'
 	}];
 	regex( context, list, 'indique os outros idiomas no Wikidata' );
 }
