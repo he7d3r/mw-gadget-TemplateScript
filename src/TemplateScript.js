@@ -112,7 +112,7 @@ function fixObsoleteTemplatesOnPtwiki( context ){
 	regex( context, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
 	oldText = context.$target.val();
 	list = [{
-		find: /<!--+ *(?:Inserir categorias e interwikis apenas na página de DOC desta predefinição|Add categories (?:and interwikis )?to the \/doc subpage, not here!) *--+>/gi,
+		find: /<!--+ *(?:Inserir categorias e interwikis apenas na página de DOC desta predefinição|(?:Please )?Add categories (?:and interwikis )?to the \/doc subpage, (?:not here!|thanks)) *--+>/gi,
 		replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
 	},{
 		find: /<!--+ *(?:POR FAVOR, ADICIONE CATEGORIAS (?:E INTERW[IÍ]KIS )?NO FINAL DESTA PÁGINA|EDIT TEMPLATE DOCUMENTATION BELOW THIS LINE|PLEASE ADD CATEGORIES AND INTERWIKIS AT THE BOTTOM OF THIS PAGE) *--+>/gi,
