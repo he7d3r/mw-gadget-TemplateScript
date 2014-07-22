@@ -197,6 +197,10 @@ function fixObsoleteHTML( context ){
 		find: /<tt>(.+?)<\/tt>/g,
 		replace: '<code>$1</code>'
 	},{
+		// <center>...</center>
+		find: /<center>(.+?)<\/center>/g,
+		replace: '<div style="text-align: center;">$1</div>'
+	},{
 		find: /\n\|-\s*bgcolor\s*=\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*\n/gi,
 		replace: '\n|- style="background: #$1;"\n'
 	}];
