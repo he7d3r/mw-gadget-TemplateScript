@@ -1093,7 +1093,7 @@ function generalFixes( context ){
 		formatHeadings(c);
 		break;
 	default:
-
+		fixObsoleteHTML(c);
 	}
 	showDiff();
 }
