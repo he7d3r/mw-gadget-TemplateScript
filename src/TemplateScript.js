@@ -198,7 +198,7 @@ function fixObsoleteHTML( context ){
 		replace: '<code>$1</code>'
 	},{
 		// <center>...</center>
-		find: /<center>(.+?)<\/center>/g,
+		find: /<center>([\s\S]*?)<\/center>/g,
 		replace: '<div style="text-align: center;">$1</div>'
 	},{
 		// <big>...</big>
