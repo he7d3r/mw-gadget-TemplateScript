@@ -3,7 +3,8 @@
  * Adds a menu of configurable templates and scripts to the sidebar
  * @author: [[m:user:Pathoschild]] ([[meta:User:Pathoschild/Scripts/TemplateScript]])
  * @update-token: [[File:pathoschild/templatescript.js]]
- * @author: [[User:Helder.wiki]] (this configuration file)
+ * @author: Helder (https://github.com/he7d3r)
+ * @license: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/> (this configuration file)
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/TemplateScript.js]] ([[File:User:Helder.wiki/Tools/TemplateScript.js]])
  */
 /*global jQuery, mediaWiki, LanguageConverter, pathoschild */
