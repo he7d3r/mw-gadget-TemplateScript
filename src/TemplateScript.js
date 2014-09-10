@@ -1201,6 +1201,6 @@ function loadMyRegexTools(){
 	}
 }
 
-$.getScript( '//pt.wikibooks.org/w/index.php?title=User:Helder.wiki/Tools/Pathoschild/TemplateScript.js&action=raw&ctype=text/javascript', loadMyRegexTools );
+$.getScript( '//tools.wmflabs.org/meta/scripts/pathoschild.templatescript.js', loadMyRegexTools );
 
 }( mediaWiki, jQuery ) );
