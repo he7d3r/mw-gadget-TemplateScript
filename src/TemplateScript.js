@@ -71,10 +71,6 @@ function dedupeList( items ){
 	return newlist;
 }
 
-function editRegexes( /* context */ ){
-	window.open( '//pt.wikibooks.org/wiki/User:Helder.wiki/Tools/TemplateScript.js?action=edit' );
-}
-
 function fixObsoleteTemplatesOnPtwiki( context ){
 	var reText = {
 		// [[w:Especial:Páginas afluentes/Predefinição:Ver também]]
@@ -236,27 +232,15 @@ function fixHTTPLinks( context ){
 }
 
 function fixSignature( context ){
-	var useLocalUserPage = $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwiki', 'enwiki' ] ) !== -1,
-		proj = mw.config.get( 'wgServer' ).indexOf( 'wikibooks' ) !== -1 || useLocalUserPage ? '' : 'b:',
-		lang = 'pt' === mw.config.get( 'wgContentLanguage' ) || useLocalUserPage ? '' : 'pt:',
-		reOldSign, newSign;
+	var reOldSign = window.reOldSign;
 	oldText = context.$target.val();
-	if ( !proj && lang ) {
-		proj = ':';
-	}
-	reOldSign = window.reOldSign;
-	newSign = '[[' + proj + lang + 'User:Helder.wiki|Helder]]';
-	regex( context, [{
-		find: reOldSign,
-		replace: newSign
-	}], 'Fixing links (my user account was renamed)' );
-	if ( useLocalUserPage ) {
+	mw.loader.using( 'user.options', function () {
 		regex( context, [{
-			find: /\[\[(?:b:(?:pt:)?|:pt:)User:Helder.wiki\|Helder\]\]/g,
-			replace: newSign
-		}] );
-	}
-	showDiff();
+			find: reOldSign,
+			replace: mw.user.options.get( 'nickname' )
+		}], 'Fixing links (my user account was renamed)' );
+		showDiff();
+	} );
 }
 
 function convertRefs( context ){
@@ -489,7 +473,7 @@ function fixOCR( context ){
 					sortable = [],
 					wsolddict = [],
 					i, j, str, match2, lines;
-				/*jslint unparam: true*/
+				/*jshint unused:true */
 				$.each( pages, function(id, page){
 					if (!page.pageid) {
 						alert('Erro na função removeOCRModernization usada na correção de OCR!');
@@ -517,7 +501,7 @@ function fixOCR( context ){
 						}
 					}
 				}
-				// LanguageConverter.conv_text_from_dic() está em [[oldwikisource:User:Helder.wiki/Scripts/LanguageConverter.js]]
+				// LanguageConverter.conv_text_from_dic() está em [[oldwikisource:User:He7d3r/Tools/LanguageConverter.js]]
 				context.$target.val(
 					LanguageConverter.conv_text_from_dic(
 						context.$target.val(),
@@ -554,7 +538,7 @@ function fixOCR( context ){
 	};
 
 	// Aplica cada uma das regras da tabela
-	/*jslint unparam: true*/
+	/*jshint unused:true */
 	$.each( tabela, function(id, palavra){
 		list.push({
 			find: new RegExp('\\b' + palavra + '\\b', 'g'),
@@ -1102,9 +1086,6 @@ function loadMyRegexTools(){
 	pathoschild.TemplateScript.AddWith({
 		forActions: 'edit'
 	},[{
-		name: '[Editar]',
-		script: editRegexes
-	}, {
 		name: 'Formatação geral',
 		script: generalFixes
 	}, {
