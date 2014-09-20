@@ -5,7 +5,6 @@
  * @update-token: [[File:pathoschild/templatescript.js]]
  * @author: Helder (https://github.com/he7d3r)
  * @license: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/> (this configuration file)
- * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/TemplateScript.js]] ([[File:User:Helder.wiki/Tools/TemplateScript.js]])
  */
 /*global jQuery, mediaWiki, LanguageConverter, pathoschild */
 /*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true, todo: true */
