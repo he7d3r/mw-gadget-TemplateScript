@@ -6,8 +6,6 @@
  * @author: Helder (https://github.com/he7d3r)
  * @license: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/> (this configuration file)
  */
-/*global jQuery, mediaWiki, LanguageConverter, pathoschild */
-/*jslint browser: true, white: true, devel: true, regexp: true, continue: true, plusplus: true, todo: true */
 ( function ( mw, $ ) {
 'use strict';
 
@@ -473,7 +471,7 @@ function fixOCR( context ){
 					sortable = [],
 					wsolddict = [],
 					i, j, str, match2, lines;
-				/*jshint unused:true */
+				/*jshint unused:false */
 				$.each( pages, function(id, page){
 					if (!page.pageid) {
 						alert('Erro na função removeOCRModernization usada na correção de OCR!');
@@ -485,7 +483,7 @@ function fixOCR( context ){
 						// , page.title // Title of page
 					]);
 				});
-				/*jslint unparam: false*/
+				/*jshint unused:true */
 				sortable.sort(function (a, b) {
 					return a[1] - b[1];
 				}); // Sort dictionaries in the given order
@@ -503,6 +501,7 @@ function fixOCR( context ){
 				}
 				// LanguageConverter.conv_text_from_dic() está em [[oldwikisource:User:He7d3r/Tools/LanguageConverter.js]]
 				context.$target.val(
+					/*jshint camelcase: false */
 					LanguageConverter.conv_text_from_dic(
 						context.$target.val(),
 						wsolddict,
@@ -510,6 +509,7 @@ function fixOCR( context ){
 						null,
 						false
 					)
+					/*jshint camelcase: true */
 				);
 			}
 		);
@@ -538,7 +538,7 @@ function fixOCR( context ){
 	};
 
 	// Aplica cada uma das regras da tabela
-	/*jshint unused:true */
+	/*jshint unused:false */
 	$.each( tabela, function(id, palavra){
 		list.push({
 			find: new RegExp('\\b' + palavra + '\\b', 'g'),
@@ -551,7 +551,7 @@ function fixOCR( context ){
 			// , 5 // FIXME
 		});
 	});
-	/*jslint unparam: false*/
+	/*jshint unused:true */
 
 	// Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
 	// Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
