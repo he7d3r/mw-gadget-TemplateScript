@@ -128,74 +128,107 @@
 		oldText = context.$target.val();
 		list = [{
 			// <font color="red">[[página]]</font>
-			// [[página|<span style="color:red;">página</span>]]
+			// [[página|<span style="color: red;">página</span>]]
 			find: new RegExp(
 				'<font\\s+color\\s*=\\s*(["\']?)(' +
 					colorNames +
 					')\\1\\s*>(\\s*\\[\\[)([^\\|\\]]+)(\\]\\]\\s*)<\\/font>',
 				'gi'
 			),
-			replace: '$3$4|<span style="color:$2;">$4</span>$5'
+			replace: '$3$4|<span style="color: $2;">$4</span>$5'
 		}, {
 			// <font color="#123456">[[página]]</font>
-			// [[página|<span style="color:#123456;">página</span>]]
+			// [[página|<span style="color: #123456;">página</span>]]
 			find: new RegExp(
 				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
 					colorCodes +
 					')\\1\\s*>(\\s*\\[\\[)([^\\|\\]]+)(\\]\\]\\s*)<\\/font>',
 				'gi'
 			),
-			replace: '$3$4|<span style="color:#$2;">$4</span>$5'
+			replace: '$3$4|<span style="color: #$2;">$4</span>$5'
 		}, {
 			// <font color="red">[[página|texto]]</font>
+			// [[página|<span style="color: red;">texto</span>]]
 			find: new RegExp(
 				'<font\\s+color\\s*=\\s*(["\']?)(' +
 					colorNames +
 					')\\1\\s*>(\\s*\\[\\[[^\\|\\]]+\\|)([^\\]]+)(\\]\\]\\s*)<\\/font>',
 				'gi'
 			),
-			replace: '$3<span style="color:$2;">$4</span>$5'
+			replace: '$3<span style="color: $2;">$4</span>$5'
 		}, {
 			// <font color="#123456">[[página|texto]]</font>
+			// [[página|<span style="color: #123456;">texto</span>]]
 			find: new RegExp(
 				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
 					colorCodes +
 					')\\1\\s*>(\\s*\\[\\[[^\\|\\]]+\\|)([^\\]]+)(\\]\\]\\s*)<\\/font>',
 				'gi'
 			),
-			replace: '$3<span style="color:#$2;">$4</span>$5'
+			replace: '$3<span style="color: #$2;">$4</span>$5'
 		}, {
 			// <font color="red">texto [[página|texto]] texto</font>
+			// <span style="color: red;">texto [[página|texto]] texto</span>
 			find: new RegExp(
 				'<font\\s+color\\s*=\\s*(["\']?)(' +
 					colorNames +
 					')\\1\\s*>(.+?)<\\/font>',
 				'gi'
 			),
-			replace: '<span style="color:$2;">$3</span>'
+			replace: '<span style="color: $2;">$3</span>'
 		}, {
 			// <font color="#123456">texto [[página|texto]] texto</font>
+			// <span style="color: #123456;">texto [[página|texto]] texto</span>
 			find: new RegExp(
 				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
 					colorCodes +
 					')\\1\\s*>(.+?)<\\/font>',
 				'gi'
 			),
-			replace: '<span style="color:#$2;">$3</span>'
+			replace: '<span style="color: #$2;">$3</span>'
+		}, {
+			// <font color="#123456" face="Verdana">texto</font>
+			// <span style="color: #123456;font-family: Verdana;">texto</span>
+			find: new RegExp(
+				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
+					colorCodes +
+					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>(.+?)<\\/font>',
+				'gi'
+			),
+			replace: '<span style="color: #$2;font-family: $4;">$5</span>'
+		}, {
+			// <font face="Verdana" color="#123456">texto</font>
+			// <span style="color: #123456;font-family: Verdana;">texto</span>
+			find: new RegExp(
+				'<font\\s+face\\s*=\\s*(["\']?)([^"\'>]+?)\\1\\s*color\\s*=\\s*(["\']?)\\#?(' +
+					colorCodes +
+					')\\3\\s*>(.+?)<\\/font>',
+				'gi'
+			),
+			replace: '<span style="color: #$4;font-family: $2;">$5</span>'
+		}, {
+			// <font face="Verdana">texto</font>
+			// <span style="font-family: Verdana;">texto</span>
+			find: /<font\s+face\s*=\s*(["']?)([^"'>]+?)\1\s*>(.+?)<\/font>/gi,
+			replace: '<span style="font-family: $2;">$3</span>'
 		}, {
 			// <source lang=...>...</source>
+			// <syntaxhighlight lang=...>...</syntaxhighlight>
 			find: /<source\s+(lang.+?>.+?)<\/source>/g,
 			replace: '<syntaxhighlight $1</syntaxhighlight>'
 		}, {
 			// <tt>...</tt>
+			// <code>...</code>
 			find: /<tt>(.+?)<\/tt>/g,
 			replace: '<code>$1</code>'
 		}, {
 			// <center>...</center>
+			// <div style="text-align: center;">...</div>
 			find: /<center>([\s\S]*?)<\/center>/g,
 			replace: '<div style="text-align: center;">$1</div>'
 		}, {
 			// <big>...</big>
+			// <div style="font-size: larger;">...</div>
 			find: /<big>(.+?)<\/big>/g,
 			replace: '<div style="font-size: larger;">$1</div>'
 		}, {
