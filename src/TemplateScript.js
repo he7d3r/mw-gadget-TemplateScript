@@ -1,7 +1,7 @@
 /**
  * TemplateScript
  * Adds a menu of configurable templates and scripts to the sidebar
- * @author: [[m:user:Pathoschild]] ([[meta:User:Pathoschild/Scripts/TemplateScript]])
+ * @author: [[m:user:Pathoschild]] ([[m:User:Pathoschild/Scripts/TemplateScript]])
  * @update-token: [[File:pathoschild/templatescript.js]]
  * @author: Helder (https://github.com/he7d3r)
  * @license: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/> (this configuration file)
@@ -249,7 +249,7 @@
 	function fixHTTPLinks( context ) {
 		var	relativeLink = '[$1]',
 			// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
-			// Ver também: [[Special:SiteMatrix]], [[meta:User:Nemo bis/HTTPS]]
+			// Ver também: [[Special:SiteMatrix]], [[m:User:Nemo bis/HTTPS]]
 			reOldLink = /\[https?:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
 		oldText = context.$target.val();
 		list = [{
