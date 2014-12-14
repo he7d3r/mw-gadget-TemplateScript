@@ -449,8 +449,8 @@
 		oldText = context.$target.val();
 		reHack = /\s*(?:\\[,!\s\;]\s*)+\s*<(\/)math>|<math>\s*(?:\\[,!\s\;]\s*)+\s*/g;
 		reason = {
-			'pt': '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[bugzilla:31406#c24]])',
-			'en': '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[bugzilla:31406#c24]])'
+			'pt': '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[phab:T33406#344368]])',
+			'en': '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[phab:T33406#344368]])'
 		};
 		regex( context, [{
 			find: reHack,
