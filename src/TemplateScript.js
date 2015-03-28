@@ -1212,7 +1212,17 @@
 			});
 		}
 	}
-
-	$.getScript( '//tools.wmflabs.org/meta/scripts/pathoschild.templatescript.js', loadMyRegexTools );
+	/**
+	 * TemplateScript adds configurable templates and scripts to the sidebar, and adds an example regex editor.
+	 * @see https://meta.wikimedia.org/wiki/TemplateScript
+	 * @update-token [[File:pathoschild/templatescript.js]]
+	 */
+	$.ajax(
+		'//tools-static.wmflabs.org/meta/scripts/pathoschild.templatescript.js',
+		{
+			dataType:'script',
+			cache:true
+		}
+	).then( loadMyRegexTools );
 
 }( mediaWiki, jQuery ) );
