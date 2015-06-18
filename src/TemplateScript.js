@@ -1222,7 +1222,8 @@
 			'//tools-static.wmflabs.org/meta/scripts/pathoschild.templatescript.js',
 			{
 				dataType:'script',
-				cache:true
+				cache:true,
+				timeout: 30000
 			}
 		).then( loadMyRegexTools );
 	}
