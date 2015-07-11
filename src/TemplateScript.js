@@ -431,16 +431,50 @@
 	}
 
 	function fixImageLinks( context ) {
-		var reOtherNames = /\[\[\s*(?:[Ii]mage|[Aa]rquivo|[Ff]i(?:cheiro|le))\s*:\s*([^|\]]+\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\s*(\||\]\])/g;
+		var summary = '[[$1Special:PermaLink/27949155|$2 → Imagem]]'
+				.replace( /\$1/g, mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ),
+			reSuffix = '\\s*:\\s*([^|\\]]+\\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\\s*(\\||\\]\\])';
 		oldText = context.$target.val();
+
 		regex(
 			context, [{
-				find: reOtherNames,
+				find: new RegExp(
+					'\\[\\[\\s*[Ii]mage' + reSuffix,
+					'g'
+				),
 				replace: '[[Imagem:$1$2'
 			}],
-			'Uso de "[Imagem:" ([[' +
-				(mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:') +
-				'Special:PermaLink/27949155|detalhes]])'
+			summary.replace( /\$2/g, 'Image' )
+		);
+		regex(
+			context, [{
+				find: new RegExp(
+					'\\[\\[\\s*[Aa]rquivo' + reSuffix,
+					'g'
+				),
+				replace: '[[Imagem:$1$2'
+			}],
+			summary.replace( /\$2/g, 'Arquivo' )
+		);
+		regex(
+			context, [{
+				find: new RegExp(
+					'\\[\\[\\s*[Ff]icheiro' + reSuffix,
+					'g'
+				),
+				replace: '[[Imagem:$1$2'
+			}],
+			summary.replace( /\$2/g, 'Ficheiro' )
+		);
+		regex(
+			context, [{
+				find: new RegExp(
+					'\\[\\[\\s*[Ff]ile' + reSuffix,
+					'g'
+				),
+				replace: '[[Imagem:$1$2'
+			}],
+			summary.replace( /\$2/g, 'File' )
 		);
 	}
 
