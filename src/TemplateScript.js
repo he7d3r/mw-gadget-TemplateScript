@@ -428,6 +428,12 @@
 			replace: '[//pt.wikipedia.org/w/index.php?title=Wikipédia'
 		}];
 		regex( context, list, 'formatação dos links' );
+		regex( context, [{
+			find: /\[bugzilla:\s*(\d+)\s*(\]\]|\|)/ig,
+			replace: function ( match, p1, p2, offset, totalStr ) {
+				return '[phab:T' + ( parseInt( p1, 10 ) + 2000 ) + p2;
+			}
+		}], 'Bugzilla → Phabricator' );
 	}
 
 	function fixImageLinks( context ) {
@@ -500,16 +506,6 @@
 			replace: '\\mathrm{sen}\\,'
 		}];
 		regex( context, list, 'format. <math> e pontuação' );
-	}
-
-	function usingRegex( context ) {
-		var summary;
-		if ( mw.config.get( 'wgContentLanguage' ).substr( 0, 2 ) === 'pt' ) {
-			summary = '[usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
-		} else {
-			summary = '[using [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
-		}
-		pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, 'after' );
 	}
 
 	function ucFirst(p) {
@@ -1139,7 +1135,6 @@
 			formatLinks(c);
 			fixImageLinks(c);
 			fixMath(c);
-			usingRegex(c);
 			formatHeadings(c);
 			break;
 		default:
@@ -1239,11 +1234,6 @@
 					script: fixImageLinks
 				});
 			}
-			pathoschild.TemplateScript.Add({
-				forActions: 'edit',
-				name: 'Regex no sumário',
-				script: usingRegex
-			});
 		}
 	}
 	if ( $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit' ] ) !== -1 ) {
