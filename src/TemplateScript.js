@@ -247,19 +247,19 @@
 	}
 
 	function fixHTTPLinks( context ) {
-		var	relativeLink = '[$1]',
+		var secureLink = '[https:$1]',
 			// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 			// Ver também: [[Special:SiteMatrix]], [[m:User:Nemo bis/HTTPS]]
-			reOldLink = /\[https?:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
+			reOldLink = /\[http:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
 		oldText = context.$target.val();
 		list = [{
 			find: reOldLink,
-			replace: relativeLink
+			replace: secureLink
 		}, {
 			find: /https:\/\/secure\.wikimedia\.org\/(wiki(?:pedia|books|news|quote|source|versity)|wiktionary)\/([a-z]{2,3}|meta)/g,
-			replace: '//$2.$1.org'
+			replace: 'https://$2.$1.org'
 		}];
-		regex( context, list, '[[wmfblog:2011/10/03/native-https-support-enabled-for-all-wikimedia-foundation-wikis|http é inseguro]]' );
+		regex( context, list, '[[wmfblog:2015/06/12/securing-wikimedia-sites-with-https|https]]' );
 	}
 
 	function fixSignature( context ) {
