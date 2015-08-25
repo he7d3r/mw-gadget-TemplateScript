@@ -26,7 +26,8 @@
 	}
 
 	function regex(editor, regexList, summary, pos ) {
-		var	text = editor.get(),
+		var text = editor.get(),
+			$editSummary = $( '#wpSummary:first' ),
 			i, l, rule;
 		for ( i = 0, l = regexList.length; i < l; i++ ) {
 			rule = regexList[i];
@@ -36,10 +37,10 @@
 			pos = pos || 'after';
 			editor.set( text );
 			if ( summary ) {
-				if ( pos === 'after' && editor.$editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
+				if ( pos === 'after' && $editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
 					summary = ', ' + summary;
 				}
-				pathoschild.TemplateScript.InsertLiteral( editor.$editSummary, summary, pos );
+				$editSummary.val( summary );
 			}
 		}
 	}
@@ -563,7 +564,7 @@
 						}
 					}
 					// LanguageConverter.conv_text_from_dic() está em [[oldwikisource:User:He7d3r/Tools/LanguageConverter.js]]
-					editor.$target.val(
+					editor.set(
 						/*jshint camelcase: false */
 						LanguageConverter.conv_text_from_dic(
 							editor.get(),
@@ -757,12 +758,12 @@
 		} else {
 			summary = 'Criando versão latex [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)';
 		}
-		pathoschild.TemplateScript.InsertLiteral( editor.$editSummary, summary, 'replace' );
+		$( '#wpSummary:first' ).val( summary );
 	}
 	*/
 
 	function latex2wiki( editor ) {
-		var	top = '',
+		var top = '',
 			bottom = [
 				'\n== Notas ==',
 				'<references group="nota "/>',
@@ -838,15 +839,15 @@
 
 		regex( editor, list );
 		editor.set( top + editor.get() + bottom );
-		pathoschild.TemplateScript.InsertLiteral(
-			editor.$editSummary,
-			'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]',
+		editor.replaceSelection(
+			$( '#wpSummary:first' ),
+			'Convertendo de LaTeX para Wiki',
 			'replace'
 		);
 	}
 
 	function wiki2latex( editor ) {
-		var	preambulo, reWikiLink,
+		var preambulo, reWikiLink,
 			WikiLink = '',
 			url = mw.config.get( 'wgServer' ) + '/wiki/Special:Search/';
 		list = [];
@@ -996,7 +997,7 @@
 		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// [[proj:idioma:alvo|texto]]
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
-			editor.$target.val(
+			editor.set(
 				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 			);
 			WikiLink = reWikiLink.exec( editor.get() );
@@ -1005,7 +1006,7 @@
 		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// {{proj|alvo|texto}}
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
-			editor.$target.val(
+			editor.set(
 				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 			);
 			WikiLink = reWikiLink.exec( editor.get() );
@@ -1014,7 +1015,7 @@
 		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// {{proj|alvo}}
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
-			editor.$target.val(
+			editor.set(
 				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
 			);
 			WikiLink = reWikiLink.exec( editor.get() );
@@ -1086,7 +1087,7 @@
 
 		regex( editor, list );
 
-		editor.$target.val(
+		editor.set(
 			preambulo + [
 			'\\begin{document}\n',
 			'\\frontmatter\n',
@@ -1102,13 +1103,9 @@
 			'\\end{document}'
 			].join('\n')
 		);
-		pathoschild.TemplateScript.InsertLiteral(
-			editor.$editSummary,
-			'Versão em LaTeX [produzida com' +
-				' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]' +
-				'(não era para salvar: REVERTA ESTA EDIÇÃO!)',
-			'replace'
-		);
+		$( '#wpSummary:first' ).val( 'Versão em LaTeX [produzida com' +
+			' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]' +
+			'(não era para salvar: REVERTA ESTA EDIÇÃO!)' )
 	}
 
 	function generalFixes( editor ) {
@@ -1144,9 +1141,7 @@
 	}
 
 	function loadMyRegexTools() {
-		pathoschild.TemplateScript.AddWith({
-			forActions: 'edit'
-		}, [{
+		pathoschild.TemplateScript.add([{
 			name: 'Formatação geral',
 			script: generalFixes
 		}, {
@@ -1161,9 +1156,7 @@
 
 		switch ( mw.config.get( 'wgDBname' ) ) {
 		case 'ptwiki':
-			pathoschild.TemplateScript.AddWith({
-				forActions: 'edit'
-			}, [{
+			pathoschild.TemplateScript.add([{
 				name: 'Usar "Ver também,..."',
 				script: fixObsoleteTemplatesOnPtwiki
 			}, {
@@ -1175,16 +1168,13 @@
 			}]);
 			break;
 		case 'ptwikisource':
-			pathoschild.TemplateScript.Add({
+			pathoschild.TemplateScript.add({
 				name: 'Corrigir OCR',
-				script: fixOCR,
-				forActions: 'edit'
+				script: fixOCR
 			});
 			break;
 		case 'ptwikibooks':
-			pathoschild.TemplateScript.AddWith({
-				forActions: 'edit'
-			}, [{
+			pathoschild.TemplateScript.add([{
 				name: 'Corrigi fórmulas',
 				script: fixMath
 			}, {
@@ -1193,7 +1183,7 @@
 					var items = editor.get()
 						.replace( /\r|\n+/gi, '\n' )
 						.split( '\n' );
-					editor.$target.val(
+					editor.set(
 						dedupeList( items ).join( '\r\n' )
 					);
 				}
@@ -1228,8 +1218,7 @@
 			break;
 		default:
 			if ( mw.config.get( 'wgContentLanguage' ) === 'pt' ) {
-				pathoschild.TemplateScript.Add({
-					forActions: 'edit',
+				pathoschild.TemplateScript.add({
 					name: 'Corrige [[Ficheiro',
 					script: fixImageLinks
 				});
