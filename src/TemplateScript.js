@@ -26,7 +26,7 @@
 	}
 
 	function regex(editor, regexList, summary, pos ) {
-		var	text = editor.$target.val(),
+		var	text = editor.get(),
 			i, l, rule;
 		for ( i = 0, l = regexList.length; i < l; i++ ) {
 			rule = regexList[i];
@@ -34,7 +34,7 @@
 		}
 		if (text !== oldText) {
 			pos = pos || 'after';
-			editor.$target.val( text );
+			editor.set( text );
 			if ( summary ) {
 				if ( pos === 'after' && editor.$editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
 					summary = ', ' + summary;
@@ -78,7 +78,7 @@
 			// [[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
 			extLinks: '(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)|(?:Ligaç(?:ão|ões)|Links|Recursos)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?'
 		};
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			find: new RegExp( '\\n==\\s*\\{\\{\\s*(?:' + reText.seeAlso + ')\\s*\\}\\}\\s*==', 'gi' ),
 			replace: '\n== Ver também =='
@@ -91,7 +91,7 @@
 		}];
 
 		regex( editor, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			find: new RegExp( '\\n==\\s*(?:' + reText.seeAlso + ')\\s*==', 'gi' ),
 			replace: '\n== Ver também =='
@@ -104,7 +104,7 @@
 		}];
 
 		regex( editor, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			find: /<!--+ *(?:Inserir categorias e interwikis apenas na página de DOC desta predefinição|(?:Please )?Add (this template's )?categories (?:and interwikis )?to the \/doc (?:sub)?page, (?:not here(?:!|, thanks)|thanks)) *--+>/gi,
 			replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
@@ -125,7 +125,7 @@
 	function fixObsoleteHTML( editor ) {
 		var	colorNames = '(?:AliceBlue|AntiqueWhite|Aqua(?:marine)?|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue(?:Violet)?|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|Dark(?:Blue|Cyan|GoldenRod|Gray|Green|Grey|Khaki|Magenta|OliveGreen|orange|Orchid|Red|Salmon|SeaGreen|Slate(?:Blue|Gray|Grey)|Turquoise|Violet)|DeepPink|DeepSkyBlue|DimGray|DimGrey|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold(?:enRod)?|Gray|Green(?:Yellow)?|Grey|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender(?:Blush)?|LawnGreen|LemonChiffon|Light(?:Blue|Coral|Cyan|GoldenRodYellow|Gray|Green|Grey|Pink|Salmon|SeaGreen|SkyBlue|SlateGray|SlateGrey|SteelBlue|Yellow)|Lime(?:Green)?|Linen|Magenta|Maroon|Medium(?:AquaMarine|Blue|Orchid|Purple|SeaGreen|SlateBlue|SpringGreen|Turquoise|VioletRed)|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive(?:Drab)?|Orange(?:Red)?|Orchid|Pale(?:GoldenRod|Green|Turquoise|VioletRed)|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|Slate(?:Blue|Gray|Grey)|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White(?:Smoke)?|Yellow(?:Green)?)',
 			colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})';
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			// <font color="red">[[página]]</font>
 			// [[página|<span style="color: red;">página</span>]]
@@ -236,8 +236,8 @@
 			replace: '\n|- style="background: #$1;"\n'
 		}];
 		regex( editor, list, '-código HTML obsoleto' );
-		if ( oldText !== editor.$target.val() ) {
-			oldText = editor.$target.val();
+		if ( oldText !== editor.get() ) {
+			oldText = editor.get();
 			regex( editor, {
 				// Simplify color hex codes
 				find: /#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/g,
@@ -251,7 +251,7 @@
 			// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 			// Ver também: [[Special:SiteMatrix]], [[m:User:Nemo bis/HTTPS]]
 			reOldLink = /\[http:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			find: reOldLink,
 			replace: secureLink
@@ -264,7 +264,7 @@
 
 	function fixSignature( editor ) {
 		var reOldSign = window.reOldSign;
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		mw.loader.using( 'user.options', function () {
 			regex( editor, [{
 				find: reOldSign,
@@ -275,7 +275,7 @@
 	}
 
 	function convertRefs( editor ) {
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			find: /Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img,
 			replace: '* {' + '{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}'
@@ -285,7 +285,7 @@
 
 	function formatHeadings( editor ) {
 		var cookbookList = [];
-		oldText = editor.$target.val();
+		oldText = editor.get();
 
 		// Formatação do livro de receitas
 		if ( mw.config.get( 'wgBookName' ) === 'Livro_de_receitas' ) {
@@ -329,7 +329,7 @@
 	}
 
 	function formatTemplates( editor ) {
-		oldText = editor.$target.val();
+		oldText = editor.get();
 
 		regex( editor, [{
 			find: /\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig,
@@ -338,7 +338,7 @@
 	}
 
 	function formatCategories( editor ) {
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		list = [{
 			find: /\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,
 			replace: '[[Categoria:$1$2$3]]'
@@ -353,7 +353,7 @@
 	}
 
 	function fixLists( editor ) {
-		oldText = editor.$target.val();
+		oldText = editor.get();
 
 		regex( editor, [{
 			find: /\s*\n;([^\n]+)\n([^:])/g,
@@ -387,7 +387,7 @@
 	}
 
 	function formatLinks( editor ) {
-		oldText = editor.$target.val();
+		oldText = editor.get();
 
 		list = [{
 			// -espaços redundantes
@@ -440,7 +440,7 @@
 		var summary = '[[$1Special:PermaLink/27949155|$2 → Imagem]]'
 				.replace( /\$1/g, mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ),
 			reSuffix = '\\s*:\\s*([^|\\]]+\\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\\s*(\\||\\]\\])';
-		oldText = editor.$target.val();
+		oldText = editor.get();
 
 		regex(
 			editor, [{
@@ -486,7 +486,7 @@
 
 	function fixMath( editor ) {
 		var	reHack, reason;
-		oldText = editor.$target.val();
+		oldText = editor.get();
 		reHack = /\s*(?:\\[,!\s\;]\s*)+\s*<(\/)math>|<math>\s*(?:\\[,!\s\;]\s*)+\s*/g;
 		reason = {
 			'pt': '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[phab:T33406#344368]])',
@@ -513,7 +513,7 @@
 	}
 
 	function fixOCR( editor ) {
-		var	oldText = editor.$target.val(),
+		var	oldText = editor.get(),
 			totalAnchorsBefore = oldText.split( '{{âncora' ).length,
 			tabela;
 		if (mw.config.get('wgNamespaceNumber') === 106 ) {
@@ -566,7 +566,7 @@
 					editor.$target.val(
 						/*jshint camelcase: false */
 						LanguageConverter.conv_text_from_dic(
-							editor.$target.val(),
+							editor.get(),
 							wsolddict,
 							false,
 							null,
@@ -691,7 +691,7 @@
 			replace: '</math>'
 		});
 		regex( editor, list,
-				'Correção de OCR' + ( totalAnchorsBefore < editor.$target.val().split( '{{âncora' ).length ?
+				'Correção de OCR' + ( totalAnchorsBefore < editor.get().split( '{{âncora' ).length ?
 				'; Adição de {{âncora}}' :
 				''
 			)
@@ -727,7 +727,7 @@
 	*/
 	/*
 	function convertMath( editor ) {
-		var	text = editor.$target.val(),
+		var	text = editor.get(),
 			regex = 0, subst = 1, func = 2,
 			command, i, dir, summary;
 		command = [// (dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
@@ -751,7 +751,7 @@
 				text = text.replace(command[i][dir][regex], command[i][dir][subst]);
 			}
 		}
-		editor.$target.val( text );
+		editor.set( text );
 		if (0 === dir) {
 			summary = 'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
 		} else {
@@ -837,7 +837,7 @@
 		}];
 
 		regex( editor, list );
-		editor.$target.val( top + editor.$target.val() + bottom );
+		editor.set( top + editor.get() + bottom );
 		pathoschild.TemplateScript.InsertLiteral(
 			editor.$editSummary,
 			'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]',
@@ -858,7 +858,7 @@
 			'\\usepackage{amsthm, amssymb, amsmath}' +
 			'\\usepackage{footmisc}\n'
 		].join('\n');
-		if ( editor.$target.val().match(/<!--(.|\s)*?-->/) ) {
+		if ( editor.get().match(/<!--(.|\s)*?-->/) ) {
 			preambulo += '\\usepackage{verbatim}' +
 				' %permite usar \\begin{comment}...\\end{comment} para comentar varias linhas\n';
 			list.push( {
@@ -993,31 +993,31 @@
 		regex( editor, list );
 
 		reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
-		WikiLink = reWikiLink.exec( editor.$target.val() );
+		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// [[proj:idioma:alvo|texto]]
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
 			editor.$target.val(
-				editor.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 			);
-			WikiLink = reWikiLink.exec( editor.$target.val() );
+			WikiLink = reWikiLink.exec( editor.get() );
 		}
 		reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*\}\}/i;
-		WikiLink = reWikiLink.exec( editor.$target.val() );
+		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// {{proj|alvo|texto}}
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
 			editor.$target.val(
-				editor.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 			);
-			WikiLink = reWikiLink.exec( editor.$target.val() );
+			WikiLink = reWikiLink.exec( editor.get() );
 		}
 		reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*\}\}/i;
-		WikiLink = reWikiLink.exec( editor.$target.val() );
+		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// {{proj|alvo}}
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
 			editor.$target.val(
-				editor.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
+				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
 			);
-			WikiLink = reWikiLink.exec( editor.$target.val() );
+			WikiLink = reWikiLink.exec( editor.get() );
 		}
 
 		list = [{
@@ -1094,7 +1094,7 @@
 			'\\mainmatter %Depois de índice e prefácio\n',
 			'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:' +
 				mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n',
-			editor.$target.val(),
+			editor.get(),
 			'\n\\backmatter\n',
 			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat',
 			'\\bibliography{biblio}\\label{cap:biblio}',
@@ -1190,7 +1190,7 @@
 			}, {
 				name: 'Remover linhas duplicadas',
 				script: function ( editor ) {
-					var items = editor.$target.val()
+					var items = editor.get()
 						.replace( /\r|\n+/gi, '\n' )
 						.split( '\n' );
 					editor.$target.val(
