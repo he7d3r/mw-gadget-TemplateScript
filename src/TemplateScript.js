@@ -27,20 +27,27 @@
 
 	function regex(editor, regexList, summary, pos ) {
 		var text = editor.get(),
-			$editSummary = $( '#wpSummary:first' ),
 			i, l, rule;
 		for ( i = 0, l = regexList.length; i < l; i++ ) {
 			rule = regexList[i];
 			text = text.replace( rule.find, rule.replace );
 		}
 		if (text !== oldText) {
-			pos = pos || 'after';
 			editor.set( text );
 			if ( summary ) {
-				if ( pos === 'after' && $editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
-					summary = ', ' + summary;
+				switch( pos ) {
+					case 'before':
+						$( '#wpSummary:first' ).val(function(i, val) { return summary + val; });
+						break;
+
+					case 'replace':
+						editor.setEditSummary( summary );
+						break;
+
+					default:
+						editor.appendEditSummary( summary );
+						break;
 				}
-				$editSummary.val( summary );
 			}
 		}
 	}
@@ -754,9 +761,9 @@
 		}
 		editor.set( text );
 		if (0 === dir) {
-			summary = 'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
+			summary = 'Convertendo de LaTeX para Wiki, [usando [[m:TemplateScript|regex]]]';
 		} else {
-			summary = 'Criando versão latex [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)';
+			summary = 'Criando versão latex [usando [[m:TemplateScript|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)';
 		}
 		$( '#wpSummary:first' ).val( summary );
 	}
@@ -839,11 +846,7 @@
 
 		regex( editor, list );
 		editor.set( top + editor.get() + bottom );
-		editor.replaceSelection(
-			$( '#wpSummary:first' ),
-			'Convertendo de LaTeX para Wiki',
-			'replace'
-		);
+		editor.setEditSummary('Convertendo de LaTeX para Wiki');
 	}
 
 	function wiki2latex( editor ) {
@@ -1103,9 +1106,9 @@
 			'\\end{document}'
 			].join('\n')
 		);
-		$( '#wpSummary:first' ).val( 'Versão em LaTeX [produzida com' +
-			' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]' +
-			'(não era para salvar: REVERTA ESTA EDIÇÃO!)' )
+		editor.setEditSummary('Versão em LaTeX [produzida com' +
+			' [[m:TemplateScript|expressões regulares]]]' +
+			'(não era para salvar: REVERTA ESTA EDIÇÃO!)' );
 	}
 
 	function generalFixes( editor ) {
