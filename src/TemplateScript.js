@@ -25,8 +25,8 @@
 		$button.click();
 	}
 
-	function regex(context, regexList, summary, pos ) {
-		var	text = context.$target.val(),
+	function regex(editor, regexList, summary, pos ) {
+		var	text = editor.$target.val(),
 			i, l, rule;
 		for ( i = 0, l = regexList.length; i < l; i++ ) {
 			rule = regexList[i];
@@ -34,12 +34,12 @@
 		}
 		if (text !== oldText) {
 			pos = pos || 'after';
-			context.$target.val( text );
+			editor.$target.val( text );
 			if ( summary ) {
-				if ( pos === 'after' && context.$editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
+				if ( pos === 'after' && editor.$editSummary.val().replace(/\/\*.+?\*\//, '').match(/[^\s]/) ) {
 					summary = ', ' + summary;
 				}
-				pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, pos );
+				pathoschild.TemplateScript.InsertLiteral( editor.$editSummary, summary, pos );
 			}
 		}
 	}
@@ -69,7 +69,7 @@
 		return newlist;
 	}
 
-	function fixObsoleteTemplatesOnPtwiki( context ) {
+	function fixObsoleteTemplatesOnPtwiki( editor ) {
 		var reText = {
 			// [[w:Especial:Páginas afluentes/Predefinição:Ver também]]
 			seeAlso: 'V(?:eja|er|ide|Consultar)[_ ](?:tamb[ée]m|mais|ainda)|(?:Tópico|Artigo|Página|Assunto)s[_ ](?:relacionad|divers)[oa]s|(?:Li(?:gaçõe|nk)|Referência)s[_ ]Intern[ao]s',
@@ -78,7 +78,7 @@
 			// [[w:Especial:Páginas afluentes/Predefinição:Ligações externas]]
 			extLinks: '(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)|(?:Ligaç(?:ão|ões)|Links|Recursos)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?'
 		};
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 		list = [{
 			find: new RegExp( '\\n==\\s*\\{\\{\\s*(?:' + reText.seeAlso + ')\\s*\\}\\}\\s*==', 'gi' ),
 			replace: '\n== Ver também =='
@@ -90,8 +90,8 @@
 			replace: '\n== Ligações externas =='
 		}];
 
-		regex( context, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
-		oldText = context.$target.val();
+		regex( editor, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
+		oldText = editor.$target.val();
 		list = [{
 			find: new RegExp( '\\n==\\s*(?:' + reText.seeAlso + ')\\s*==', 'gi' ),
 			replace: '\n== Ver também =='
@@ -103,8 +103,8 @@
 			replace: '\n== Ligações externas =='
 		}];
 
-		regex( context, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
-		oldText = context.$target.val();
+		regex( editor, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
+		oldText = editor.$target.val();
 		list = [{
 			find: /<!--+ *(?:Inserir categorias e interwikis apenas na página de DOC desta predefinição|(?:Please )?Add (this template's )?categories (?:and interwikis )?to the \/doc (?:sub)?page, (?:not here(?:!|, thanks)|thanks)) *--+>/gi,
 			replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
@@ -118,14 +118,14 @@
 			find: /<!--+ *(?:ADD INTERWIKIS BELOW THIS LINE) *--+>\n/gi,
 			replace: ''
 		}];
-		regex( context, list, 'indique os outros idiomas no Wikidata' );
+		regex( editor, list, 'indique os outros idiomas no Wikidata' );
 	}
 
 	// See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
-	function fixObsoleteHTML( context ) {
+	function fixObsoleteHTML( editor ) {
 		var	colorNames = '(?:AliceBlue|AntiqueWhite|Aqua(?:marine)?|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue(?:Violet)?|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|Dark(?:Blue|Cyan|GoldenRod|Gray|Green|Grey|Khaki|Magenta|OliveGreen|orange|Orchid|Red|Salmon|SeaGreen|Slate(?:Blue|Gray|Grey)|Turquoise|Violet)|DeepPink|DeepSkyBlue|DimGray|DimGrey|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold(?:enRod)?|Gray|Green(?:Yellow)?|Grey|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender(?:Blush)?|LawnGreen|LemonChiffon|Light(?:Blue|Coral|Cyan|GoldenRodYellow|Gray|Green|Grey|Pink|Salmon|SeaGreen|SkyBlue|SlateGray|SlateGrey|SteelBlue|Yellow)|Lime(?:Green)?|Linen|Magenta|Maroon|Medium(?:AquaMarine|Blue|Orchid|Purple|SeaGreen|SlateBlue|SpringGreen|Turquoise|VioletRed)|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive(?:Drab)?|Orange(?:Red)?|Orchid|Pale(?:GoldenRod|Green|Turquoise|VioletRed)|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|Slate(?:Blue|Gray|Grey)|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White(?:Smoke)?|Yellow(?:Green)?)',
 			colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})';
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 		list = [{
 			// <font color="red">[[página]]</font>
 			// [[página|<span style="color: red;">página</span>]]
@@ -235,10 +235,10 @@
 			find: /\n\|-\s*bgcolor\s*=\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*\n/gi,
 			replace: '\n|- style="background: #$1;"\n'
 		}];
-		regex( context, list, '-código HTML obsoleto' );
-		if ( oldText !== context.$target.val() ) {
-			oldText = context.$target.val();
-			regex( context, {
+		regex( editor, list, '-código HTML obsoleto' );
+		if ( oldText !== editor.$target.val() ) {
+			oldText = editor.$target.val();
+			regex( editor, {
 				// Simplify color hex codes
 				find: /#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/g,
 				replace: '#$1$2$3'
@@ -246,12 +246,12 @@
 		}
 	}
 
-	function fixHTTPLinks( context ) {
+	function fixHTTPLinks( editor ) {
 		var secureLink = '[https:$1]',
 			// TODO: Converter links do servidor antigo (https://secure.wikimedia.org/wikipedia/pt)
 			// Ver também: [[Special:SiteMatrix]], [[m:User:Nemo bis/HTTPS]]
 			reOldLink = /\[http:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 		list = [{
 			find: reOldLink,
 			replace: secureLink
@@ -259,14 +259,14 @@
 			find: /https:\/\/secure\.wikimedia\.org\/(wiki(?:pedia|books|news|quote|source|versity)|wiktionary)\/([a-z]{2,3}|meta)/g,
 			replace: 'https://$2.$1.org'
 		}];
-		regex( context, list, '[[wmfblog:2015/06/12/securing-wikimedia-sites-with-https|https]]' );
+		regex( editor, list, '[[wmfblog:2015/06/12/securing-wikimedia-sites-with-https|https]]' );
 	}
 
-	function fixSignature( context ) {
+	function fixSignature( editor ) {
 		var reOldSign = window.reOldSign;
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 		mw.loader.using( 'user.options', function () {
-			regex( context, [{
+			regex( editor, [{
 				find: reOldSign,
 				replace: mw.user.options.get( 'nickname' )
 			}], 'Fixing links (my user account was renamed)' );
@@ -274,18 +274,18 @@
 		} );
 	}
 
-	function convertRefs( context ) {
-		oldText = context.$target.val();
+	function convertRefs( editor ) {
+		oldText = editor.$target.val();
 		list = [{
 			find: /Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img,
 			replace: '* {' + '{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}'
 		}];
-		regex( context, list, 'Referência do Google Books -> [[Predefinição:Referência a livro]]' );
+		regex( editor, list, 'Referência do Google Books -> [[Predefinição:Referência a livro]]' );
 	}
 
-	function formatHeadings( context ) {
+	function formatHeadings( editor ) {
 		var cookbookList = [];
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 
 		// Formatação do livro de receitas
 		if ( mw.config.get( 'wgBookName' ) === 'Livro_de_receitas' ) {
@@ -325,20 +325,20 @@
 			replace: '=\n='
 		}];
 
-		regex( context, cookbookList.concat(list), 'format. cabeçalhos' );
+		regex( editor, cookbookList.concat(list), 'format. cabeçalhos' );
 	}
 
-	function formatTemplates( context ) {
-		oldText = context.$target.val();
+	function formatTemplates( editor ) {
+		oldText = editor.$target.val();
 
-		regex( context, [{
+		regex( editor, [{
 			find: /\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig,
 			replace: '{' + '{$1}}'
 		}], 'format. predefs' );
 	}
 
-	function formatCategories( context ) {
-		oldText = context.$target.val();
+	function formatCategories( editor ) {
+		oldText = editor.$target.val();
 		list = [{
 			find: /\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,
 			replace: '[[Categoria:$1$2$3]]'
@@ -349,32 +349,32 @@
 			find: /\[\[Categoria:([^\|\]]+)\|([\* !])\]\]/ig,
 			replace: '[[Categoria:$1|$2{{SUBPAGENAME}}]]'
 		}];
-		regex( context, list, 'format. categorias' );
+		regex( editor, list, 'format. categorias' );
 	}
 
-	function fixLists( context ) {
-		oldText = context.$target.val();
+	function fixLists( editor ) {
+		oldText = editor.$target.val();
 
-		regex( context, [{
+		regex( editor, [{
 			find: /\s*\n;([^\n]+)\n([^:])/g,
 			replace: '\n;$1\n:$2'
 		}], '+[[' +
 			(mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:') +
 			'Special:PermaLink/31511942|semântica]] na lista de definições (;:)' );
 
-		regex( context, [{
+		regex( editor, [{
 			// Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 			find: /^(:+[*#]+[*#:]*|:+(?![\{:])|[*#][*#:]*)\s+/gm,
 			replace: '$1 '
 		}], 'format. listas' );
 	}
 
-	function abs2rel( context ) {
+	function abs2rel( editor ) {
 		if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ) {
 			// Troca underscores por espaços
 			var nome = mw.config.get( 'wgBookName' ).replace(/_/g, ' ');
 
-			regex( context, [{
+			regex( editor, [{
 				// [[Livro/Cap|Cap]] -> [[/Cap/]]
 				find: new RegExp(
 					'\\[\\[\\s*' + nome +
@@ -386,8 +386,8 @@
 		}
 	}
 
-	function formatLinks( context ) {
-		oldText = context.$target.val();
+	function formatLinks( editor ) {
+		oldText = editor.$target.val();
 
 		list = [{
 			// -espaços redundantes
@@ -427,8 +427,8 @@
 			find: /\[(?:https?)?:\/\/pt.wikipedia.org\/w\/index.php\?title=Wikipedia/ig,
 			replace: '[//pt.wikipedia.org/w/index.php?title=Wikipédia'
 		}];
-		regex( context, list, 'formatação dos links' );
-		regex( context, [{
+		regex( editor, list, 'formatação dos links' );
+		regex( editor, [{
 			find: /\[bugzilla:\s*(\d+)\s*(\]\]|\|)/ig,
 			replace: function ( match, p1, p2, offset, totalStr ) {
 				return '[phab:T' + ( parseInt( p1, 10 ) + 2000 ) + p2;
@@ -436,14 +436,14 @@
 		}], 'Bugzilla → Phabricator' );
 	}
 
-	function fixImageLinks( context ) {
+	function fixImageLinks( editor ) {
 		var summary = '[[$1Special:PermaLink/27949155|$2 → Imagem]]'
 				.replace( /\$1/g, mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ),
 			reSuffix = '\\s*:\\s*([^|\\]]+\\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\\s*(\\||\\]\\])';
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 
 		regex(
-			context, [{
+			editor, [{
 				find: new RegExp(
 					'\\[\\[\\s*[Ii]mage' + reSuffix,
 					'g'
@@ -453,7 +453,7 @@
 			summary.replace( /\$2/g, 'Image' )
 		);
 		regex(
-			context, [{
+			editor, [{
 				find: new RegExp(
 					'\\[\\[\\s*[Aa]rquivo' + reSuffix,
 					'g'
@@ -463,7 +463,7 @@
 			summary.replace( /\$2/g, 'Arquivo' )
 		);
 		regex(
-			context, [{
+			editor, [{
 				find: new RegExp(
 					'\\[\\[\\s*[Ff]icheiro' + reSuffix,
 					'g'
@@ -473,7 +473,7 @@
 			summary.replace( /\$2/g, 'Ficheiro' )
 		);
 		regex(
-			context, [{
+			editor, [{
 				find: new RegExp(
 					'\\[\\[\\s*[Ff]ile' + reSuffix,
 					'g'
@@ -484,15 +484,15 @@
 		);
 	}
 
-	function fixMath( context ) {
+	function fixMath( editor ) {
 		var	reHack, reason;
-		oldText = context.$target.val();
+		oldText = editor.$target.val();
 		reHack = /\s*(?:\\[,!\s\;]\s*)+\s*<(\/)math>|<math>\s*(?:\\[,!\s\;]\s*)+\s*/g;
 		reason = {
 			'pt': '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[phab:T33406#344368]])',
 			'en': '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[phab:T33406#344368]])'
 		};
-		regex( context, [{
+		regex( editor, [{
 			find: reHack,
 			replace: '<$1math>'
 		}], reason[mw.config.get('wgContentLanguage')] || reason.en );
@@ -505,15 +505,15 @@
 			find: /\\sin/mig,
 			replace: '\\mathrm{sen}\\,'
 		}];
-		regex( context, list, 'format. <math> e pontuação' );
+		regex( editor, list, 'format. <math> e pontuação' );
 	}
 
 	function ucFirst(p) {
 		return p.charAt(0).toUpperCase() + p.substr(1);
 	}
 
-	function fixOCR( context ) {
-		var	oldText = context.$target.val(),
+	function fixOCR( editor ) {
+		var	oldText = editor.$target.val(),
 			totalAnchorsBefore = oldText.split( '{{âncora' ).length,
 			tabela;
 		if (mw.config.get('wgNamespaceNumber') === 106 ) {
@@ -563,10 +563,10 @@
 						}
 					}
 					// LanguageConverter.conv_text_from_dic() está em [[oldwikisource:User:He7d3r/Tools/LanguageConverter.js]]
-					context.$target.val(
+					editor.$target.val(
 						/*jshint camelcase: false */
 						LanguageConverter.conv_text_from_dic(
-							context.$target.val(),
+							editor.$target.val(),
 							wsolddict,
 							false,
 							null,
@@ -690,8 +690,8 @@
 			find: /(?:♫|<\/math>)+/g,
 			replace: '</math>'
 		});
-		regex( context, list,
-				'Correção de OCR' + ( totalAnchorsBefore < context.$target.val().split( '{{âncora' ).length ?
+		regex( editor, list,
+				'Correção de OCR' + ( totalAnchorsBefore < editor.$target.val().split( '{{âncora' ).length ?
 				'; Adição de {{âncora}}' :
 				''
 			)
@@ -726,8 +726,8 @@
 	* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	*/
 	/*
-	function convertMath( context ) {
-		var	text = context.$target.val(),
+	function convertMath( editor ) {
+		var	text = editor.$target.val(),
 			regex = 0, subst = 1, func = 2,
 			command, i, dir, summary;
 		command = [// (dir == 0) -> latex2wiki; (dir == 1) -> wiki2latex
@@ -751,17 +751,17 @@
 				text = text.replace(command[i][dir][regex], command[i][dir][subst]);
 			}
 		}
-		context.$target.val( text );
+		editor.$target.val( text );
 		if (0 === dir) {
 			summary = 'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]';
 		} else {
 			summary = 'Criando versão latex [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]] (não era para salvar: REVERTA ESTA EDIÇÃO!)';
 		}
-		pathoschild.TemplateScript.InsertLiteral( context.$editSummary, summary, 'replace' );
+		pathoschild.TemplateScript.InsertLiteral( editor.$editSummary, summary, 'replace' );
 	}
 	*/
 
-	function latex2wiki( context ) {
+	function latex2wiki( editor ) {
 		var	top = '',
 			bottom = [
 				'\n== Notas ==',
@@ -836,16 +836,16 @@
 			replace: '* '
 		}];
 
-		regex( context, list );
-		context.$target.val( top + context.$target.val() + bottom );
+		regex( editor, list );
+		editor.$target.val( top + editor.$target.val() + bottom );
 		pathoschild.TemplateScript.InsertLiteral(
-			context.$editSummary,
+			editor.$editSummary,
 			'Convertendo de LaTeX para Wiki, [usando [[m:User:Pathoschild/Scripts/TemplateScript|regex]]]',
 			'replace'
 		);
 	}
 
-	function wiki2latex( context ) {
+	function wiki2latex( editor ) {
 		var	preambulo, reWikiLink,
 			WikiLink = '',
 			url = mw.config.get( 'wgServer' ) + '/wiki/Special:Search/';
@@ -858,7 +858,7 @@
 			'\\usepackage{amsthm, amssymb, amsmath}' +
 			'\\usepackage{footmisc}\n'
 		].join('\n');
-		if ( context.$target.val().match(/<!--(.|\s)*?-->/) ) {
+		if ( editor.$target.val().match(/<!--(.|\s)*?-->/) ) {
 			preambulo += '\\usepackage{verbatim}' +
 				' %permite usar \\begin{comment}...\\end{comment} para comentar varias linhas\n';
 			list.push( {
@@ -990,34 +990,34 @@
 			find: /\{\{\s*(?:Âncoras?)\|([^}]+)\}\}/ig,
 			replace: '\\label{$1}'
 		});
-		regex( context, list );
+		regex( editor, list );
 
 		reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
-		WikiLink = reWikiLink.exec( context.$target.val() );
+		WikiLink = reWikiLink.exec( editor.$target.val() );
 		while ( WikiLink ) {// [[proj:idioma:alvo|texto]]
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
-			context.$target.val(
-				context.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+			editor.$target.val(
+				editor.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 			);
-			WikiLink = reWikiLink.exec( context.$target.val() );
+			WikiLink = reWikiLink.exec( editor.$target.val() );
 		}
 		reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*\}\}/i;
-		WikiLink = reWikiLink.exec( context.$target.val() );
+		WikiLink = reWikiLink.exec( editor.$target.val() );
 		while ( WikiLink ) {// {{proj|alvo|texto}}
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
-			context.$target.val(
-				context.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+			editor.$target.val(
+				editor.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
 			);
-			WikiLink = reWikiLink.exec( context.$target.val() );
+			WikiLink = reWikiLink.exec( editor.$target.val() );
 		}
 		reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*\}\}/i;
-		WikiLink = reWikiLink.exec( context.$target.val() );
+		WikiLink = reWikiLink.exec( editor.$target.val() );
 		while ( WikiLink ) {// {{proj|alvo}}
 			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
-			context.$target.val(
-				context.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
+			editor.$target.val(
+				editor.$target.val().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
 			);
-			WikiLink = reWikiLink.exec( context.$target.val() );
+			WikiLink = reWikiLink.exec( editor.$target.val() );
 		}
 
 		list = [{
@@ -1084,9 +1084,9 @@
 			replace: '``$1\'\''
 		}];
 
-		regex( context, list );
+		regex( editor, list );
 
-		context.$target.val(
+		editor.$target.val(
 			preambulo + [
 			'\\begin{document}\n',
 			'\\frontmatter\n',
@@ -1094,7 +1094,7 @@
 			'\\mainmatter %Depois de índice e prefácio\n',
 			'\\chapter{' + mw.config.get( 'wgTitle' ) + '}\\label{cap:' +
 				mw.config.get( 'wgTitle' ).toLowerCase() + '}\n\n',
-			context.$target.val(),
+			editor.$target.val(),
 			'\n\\backmatter\n',
 			'\\bibliographystyle{amsalpha} %amsalpha, amsplain, plain, alpha, abbrvnat',
 			'\\bibliography{biblio}\\label{cap:biblio}',
@@ -1103,7 +1103,7 @@
 			].join('\n')
 		);
 		pathoschild.TemplateScript.InsertLiteral(
-			context.$editSummary,
+			editor.$editSummary,
 			'Versão em LaTeX [produzida com' +
 				' [[m:User:Pathoschild/Scripts/TemplateScript|expressões regulares]]]' +
 				'(não era para salvar: REVERTA ESTA EDIÇÃO!)',
@@ -1111,8 +1111,8 @@
 		);
 	}
 
-	function generalFixes( context ) {
-		var c = context;
+	function generalFixes( editor ) {
+		var c = editor;
 		switch ( mw.config.get( 'wgDBname' ) ) {
 		case 'ptwiki':
 			fixObsoleteHTML(c);
@@ -1189,11 +1189,11 @@
 				script: fixMath
 			}, {
 				name: 'Remover linhas duplicadas',
-				script: function ( context ) {
-					var items = context.$target.val()
+				script: function ( editor ) {
+					var items = editor.$target.val()
 						.replace( /\r|\n+/gi, '\n' )
 						.split( '\n' );
-					context.$target.val(
+					editor.$target.val(
 						dedupeList( items ).join( '\r\n' )
 					);
 				}
