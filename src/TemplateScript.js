@@ -15,16 +15,6 @@
 		oldText = null,
 		list = [];
 
-	function showDiff() {
-		var $button = $('#wpDiffLive');
-		// FIXME: Only do a diff if the text was changed
-		// Maybe use bit operators: MINOR & DIFF & SAVE & ...
-		if (!$button.length) {
-			$button = $('#wpDiff');
-		}
-		$button.click();
-	}
-
 	function regex(editor, regexList, summary, pos ) {
 		var text = editor.get(),
 			i, l, rule;
@@ -37,7 +27,7 @@
 			if ( summary ) {
 				switch( pos ) {
 					case 'before':
-						$( '#wpSummary:first' ).val(function(i, val) { return summary + val; });
+						editor.for( '#wpSummary' ).prepend( summary );
 						break;
 
 					case 'replace':
@@ -278,7 +268,7 @@
 				find: reOldSign,
 				replace: mw.user.options.get( 'nickname' )
 			}], 'Fixing links (my user account was renamed)' );
-			showDiff();
+			editor.clickDiff();
 		} );
 	}
 
@@ -704,7 +694,7 @@
 				''
 			)
 		);
-		showDiff.click();
+		editor.clickDiff();
 	}
 
 	/** Latex2wiki **
@@ -1140,7 +1130,7 @@
 		default:
 			fixObsoleteHTML(c);
 		}
-		showDiff();
+		editor.clickDiff();
 	}
 
 	function loadMyRegexTools() {
