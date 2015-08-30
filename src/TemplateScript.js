@@ -37,7 +37,7 @@
 			if ( summary ) {
 				switch( pos ) {
 					case 'before':
-						editor['for']( '#wpSummary' ).prepend( summary );
+						editor.forField( '#wpSummary' ).prepend( summary );
 						break;
 
 					case 'replace':
