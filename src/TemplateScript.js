@@ -15,6 +15,16 @@
 		oldText = null,
 		list = [];
 
+	function showDiff() {
+		var $button = $('#wpDiffLive');
+		// FIXME: Only do a diff if the text was changed
+		// Maybe use bit operators: MINOR & DIFF & SAVE & ...
+		if (!$button.length) {
+			$button = $('#wpDiff');
+		}
+		$button.click();
+	}
+
 	function regex(editor, regexList, summary, pos ) {
 		var text = editor.get(),
 			i, l, rule;
@@ -268,7 +278,7 @@
 				find: reOldSign,
 				replace: mw.user.options.get( 'nickname' )
 			}], 'Fixing links (my user account was renamed)' );
-			editor.clickDiff();
+			showDiff();
 		} );
 	}
 
@@ -694,7 +704,7 @@
 				''
 			)
 		);
-		editor.clickDiff();
+		showDiff();
 	}
 
 	/** Latex2wiki **
@@ -1130,7 +1140,7 @@
 		default:
 			fixObsoleteHTML(c);
 		}
-		editor.clickDiff();
+		showDiff();
 	}
 
 	function loadMyRegexTools() {
