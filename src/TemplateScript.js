@@ -37,7 +37,7 @@
 			if ( summary ) {
 				switch( pos ) {
 					case 'before':
-						$( '#wpSummary:first' ).val(function(i, val) { return summary + val; });
+						editor.for( '#wpSummary' ).prepend( summary );
 						break;
 
 					case 'replace':
@@ -704,7 +704,7 @@
 				''
 			)
 		);
-		showDiff.click();
+		showDiff();
 	}
 
 	/** Latex2wiki **
