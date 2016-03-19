@@ -436,6 +436,7 @@
 			replace: '[//pt.wikipedia.org/w/index.php?title=Wikipédia'
 		}];
 		regex( editor, list, 'formatação dos links' );
+		oldText = editor.get();
 		regex( editor, [{
 			find: /\[bugzilla:\s*(\d+)\s*(\]\]|\|)/ig,
 			replace: function ( match, p1, p2, offset, totalStr ) {
