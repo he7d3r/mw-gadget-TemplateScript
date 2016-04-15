@@ -1,6 +1,7 @@
 /**
  * TemplateScript
  * Adds a menu of configurable templates and scripts to the sidebar
+ *
  * @author: [[m:user:Pathoschild]] ([[m:User:Pathoschild/Scripts/TemplateScript]])
  * @update-token: [[File:pathoschild/templatescript.js]]
  * @author: Helder (https://github.com/he7d3r)
@@ -16,26 +17,26 @@
 		list = [];
 
 	function showDiff() {
-		var $button = $('#wpDiffLive');
+		var $button = $( '#wpDiffLive' );
 		// FIXME: Only do a diff if the text was changed
 		// Maybe use bit operators: MINOR & DIFF & SAVE & ...
-		if (!$button.length) {
-			$button = $('#wpDiff');
+		if ( !$button.length ) {
+			$button = $( '#wpDiff' );
 		}
 		$button.click();
 	}
 
-	function regex(editor, regexList, summary, pos ) {
+	function regex( editor, regexList, summary, pos ) {
 		var text = editor.get(),
 			i, l, rule;
 		for ( i = 0, l = regexList.length; i < l; i++ ) {
-			rule = regexList[i];
+			rule = regexList[ i ];
 			text = text.replace( rule.find, rule.replace );
 		}
-		if (text !== oldText) {
+		if ( text !== oldText ) {
 			editor.set( text );
 			if ( summary ) {
-				switch( pos ) {
+				switch ( pos ) {
 					case 'before':
 						editor.forField( '#wpSummary' ).prepend( summary );
 						break;
@@ -62,7 +63,7 @@
 			return;
 		}
 		for ( i = 0, l = items.length; i < l; i++ )	{
-			if ( hash[items[ i ].toLowerCase()] !== 1 ) {
+			if ( hash[ items[ i ].toLowerCase() ] !== 1 ) {
 				newlist = newlist.concat( items[ i ] );
 				hash[ items[ i ].toLowerCase() ] = 1;
 			} else {
@@ -87,7 +88,7 @@
 			extLinks: '(?:Apontadores|Atalhos?|Elos?|Enlaces?|Lin(?:k|que)s?|Vínculos?)(?: externos?)?|(?:Ligaç(?:ão|ões)|Páginas?|Referências?)(?: externas?)|(?:Ligaç(?:ão|ões)|Links|Recursos)(?: para o exterior| exterior(?:es)?(?: [àa] Wikip[ée]dia)?)?|S(?:ites|[íi]tios)|LE|Links? relacionados?|Páginas? da Internet|Weblinks?'
 		};
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			find: new RegExp( '\\n==\\s*\\{\\{\\s*(?:' + reText.seeAlso + ')\\s*\\}\\}\\s*==', 'gi' ),
 			replace: '\n== Ver também =='
 		}, {
@@ -96,11 +97,11 @@
 		}, {
 			find: new RegExp( '\\n==\\s*\\{\\{\\s*(?:' + reText.extLinks + ')\\s*\\}\\}\\s*==', 'gi' ),
 			replace: '\n== Ligações externas =='
-		}];
+		} ];
 
 		regex( editor, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			find: new RegExp( '\\n==\\s*(?:' + reText.seeAlso + ')\\s*==', 'gi' ),
 			replace: '\n== Ver também =='
 		}, {
@@ -109,11 +110,11 @@
 		}, {
 			find: new RegExp( '\\n==\\s*(?:' + reText.extLinks + ')\\s*==', 'gi' ),
 			replace: '\n== Ligações externas =='
-		}];
+		} ];
 
 		regex( editor, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			find: /<!--+ *(?:Inserir categorias e interwikis apenas na página de DOC desta predefinição|(?:Please )?Add (this template's )?categories (?:and interwikis )?to the \/doc (?:sub)?page, (?:not here(?:!|, thanks)|thanks)) *--+>/gi,
 			replace: '<!-- Inserir categorias apenas na documentação desta predefinição -->'
 		}, {
@@ -125,7 +126,7 @@
 		}, {
 			find: /<!--+ *(?:ADD INTERWIKIS BELOW THIS LINE) *--+>\n/gi,
 			replace: ''
-		}];
+		} ];
 		regex( editor, list, 'indique os outros idiomas no Wikidata' );
 	}
 
@@ -134,7 +135,7 @@
 		var	colorNames = '(?:AliceBlue|AntiqueWhite|Aqua(?:marine)?|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue(?:Violet)?|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|Dark(?:Blue|Cyan|GoldenRod|Gray|Green|Grey|Khaki|Magenta|OliveGreen|orange|Orchid|Red|Salmon|SeaGreen|Slate(?:Blue|Gray|Grey)|Turquoise|Violet)|DeepPink|DeepSkyBlue|DimGray|DimGrey|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold(?:enRod)?|Gray|Green(?:Yellow)?|Grey|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender(?:Blush)?|LawnGreen|LemonChiffon|Light(?:Blue|Coral|Cyan|GoldenRodYellow|Gray|Green|Grey|Pink|Salmon|SeaGreen|SkyBlue|SlateGray|SlateGrey|SteelBlue|Yellow)|Lime(?:Green)?|Linen|Magenta|Maroon|Medium(?:AquaMarine|Blue|Orchid|Purple|SeaGreen|SlateBlue|SpringGreen|Turquoise|VioletRed)|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive(?:Drab)?|Orange(?:Red)?|Orchid|Pale(?:GoldenRod|Green|Turquoise|VioletRed)|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|Slate(?:Blue|Gray|Grey)|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White(?:Smoke)?|Yellow(?:Green)?)',
 			colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})';
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			// <font color="red">[[página]]</font>
 			// [[página|<span style="color: red;">página</span>]]
 			find: new RegExp(
@@ -242,7 +243,7 @@
 		}, {
 			find: /\n\|-\s*bgcolor\s*=\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*\n/gi,
 			replace: '\n|- style="background: #$1;"\n'
-		}];
+		} ];
 		regex( editor, list, '-código HTML obsoleto' );
 		if ( oldText !== editor.get() ) {
 			oldText = editor.get();
@@ -260,13 +261,13 @@
 			// Ver também: [[Special:SiteMatrix]], [[m:User:Nemo bis/HTTPS]]
 			reOldLink = /\[http:(\/\/(?:(?:commons|meta|outreach|species|strategy|wikimania\d{4}|[a-z]{2,3})\.wikimedia|(?:wiki\.)?toolserver|www\.mediawiki|wikimediafoundation|wikisource).+?|\/\/(?:(?:[a-z]{2,3}|bat-smg|be-x-old|cbk-zam|fiu-vro|map-bms|minnan|nds-nl|roa-rup|roa-tara|simple|zh-(?:cfr|classical|min-nan|yue))\.(?:wiki(?:pedia|books|news|quote|source|versity)|wiktionary)).+?)\]/g;
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			find: reOldLink,
 			replace: secureLink
 		}, {
 			find: /https:\/\/secure\.wikimedia\.org\/(wiki(?:pedia|books|news|quote|source|versity)|wiktionary)\/([a-z]{2,3}|meta)/g,
 			replace: 'https://$2.$1.org'
-		}];
+		} ];
 		regex( editor, list, '[[wmfblog:2015/06/12/securing-wikimedia-sites-with-https|https]]' );
 	}
 
@@ -274,20 +275,20 @@
 		var reOldSign = window.reOldSign;
 		oldText = editor.get();
 		mw.loader.using( 'user.options', function () {
-			regex( editor, [{
+			regex( editor, [ {
 				find: reOldSign,
 				replace: mw.user.options.get( 'nickname' )
-			}], 'Fixing links (my user account was renamed)' );
+			} ], 'Fixing links (my user account was renamed)' );
 			showDiff();
 		} );
 	}
 
 	function convertRefs( editor ) {
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			find: /Mais informações sobre o livro\nTítulo\t([^\n]+)\nAutor\t([^\n]+)\s([^\n\s]+)\nEditora\t([^\n,]+)(?:,\s(\d+))?\nISBN\t([^\n,]+)(?:,\s\d+)?\nNum. págs.\t(\d+)[^\n]+/img,
 			replace: '* {' + '{Referência a livro |NomeAutor=$2 |SobrenomeAutor=$3 |Título=$1 |Subtítulo= |Edição= |Local de publicação= |Editora=$4 |Ano=$5 |Páginas=$7 |Volumes= |Volume= |ID=ISBN $6 |URL= }}'
-		}];
+		} ];
 		regex( editor, list, 'Referência do Google Books -> [[Predefinição:Referência a livro]]' );
 	}
 
@@ -297,7 +298,7 @@
 
 		// Formatação do livro de receitas
 		if ( mw.config.get( 'wgBookName' ) === 'Livro_de_receitas' ) {
-			cookbookList = [{
+			cookbookList = [ {
 				find: /\==\s*[^\n]+\s+[\-–]\s+(\d+)\s*==/ig,
 				replace: '== Receita $1 =='
 			}, {
@@ -321,9 +322,9 @@
 			}, {
 				find: /([^\(])Maisena/ig,
 				replace: '$1amido de milho'
-			}];
+			} ];
 		}
-		list = [{
+		list = [ {
 			// +quebra de linha antes de =, -espaços entre = e o título da seção
 			find: /\n*^(=+)\s*(.*?)\s*\1\s*/mig,
 			replace: '\n\n$1 $2 $1\n'
@@ -331,23 +332,23 @@
 			// -quebras de linha entre cabeçalhos consecutivos
 			find: /\=\n+=/ig,
 			replace: '=\n='
-		}];
+		} ];
 
-		regex( editor, cookbookList.concat(list), 'format. cabeçalhos' );
+		regex( editor, cookbookList.concat( list ), 'format. cabeçalhos' );
 	}
 
 	function formatTemplates( editor ) {
 		oldText = editor.get();
 
-		regex( editor, [{
+		regex( editor, [ {
 			find: /\{\{\s*(?:msg:|template:)?([^}]+)\}\}/ig,
 			replace: '{' + '{$1}}'
-		}], 'format. predefs' );
+		} ], 'format. predefs' );
 	}
 
 	function formatCategories( editor ) {
 		oldText = editor.get();
-		list = [{
+		list = [ {
 			find: /\[\[\s*Categor(?:y|ia)\s*:\s*([^\|\]]+)(?:\s*(\|)([^\]]*))?\s*\]\]/ig,
 			replace: '[[Categoria:$1$2$3]]'
 		}, {
@@ -356,33 +357,33 @@
 		}, {
 			find: /\[\[Categoria:([^\|\]]+)\|([\* !])\]\]/ig,
 			replace: '[[Categoria:$1|$2{{SUBPAGENAME}}]]'
-		}];
+		} ];
 		regex( editor, list, 'format. categorias' );
 	}
 
 	function fixLists( editor ) {
 		oldText = editor.get();
 
-		regex( editor, [{
+		regex( editor, [ {
 			find: /\s*\n;([^\n]+)\n([^:])/g,
 			replace: '\n;$1\n:$2'
-		}], '+[[' +
-			(mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:') +
+		} ], '+[[' +
+			( mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ) +
 			'Special:PermaLink/31511942|semântica]] na lista de definições (;:)' );
 
-		regex( editor, [{
+		regex( editor, [ {
 			// Deixa apenas 1 espaço entre *, # ou : e o texto da lista
 			find: /^(:+[*#]+[*#:]*|:+(?![\{:])|[*#][*#:]*)\s+/gm,
 			replace: '$1 '
-		}], 'format. listas' );
+		} ], 'format. listas' );
 	}
 
 	function abs2rel( editor ) {
-		if (mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ) {
+		if ( mw.config.get( 'wgPageName' ) === mw.config.get( 'wgBookName' ) ) {
 			// Troca underscores por espaços
-			var nome = mw.config.get( 'wgBookName' ).replace(/_/g, ' ');
+			var nome = mw.config.get( 'wgBookName' ).replace( /_/g, ' ' );
 
-			regex( editor, [{
+			regex( editor, [ {
 				// [[Livro/Cap|Cap]] -> [[/Cap/]]
 				find: new RegExp(
 					'\\[\\[\\s*' + nome +
@@ -390,14 +391,14 @@
 					'ig'
 				),
 				replace: '[[/$1/]]'
-			}] );
+			} ] );
 		}
 	}
 
 	function formatLinks( editor ) {
 		oldText = editor.get();
 
-		list = [{
+		list = [ {
 			// -espaços redundantes
 			find: /\[\[\s*([^\|\]]+?)\s*(?:(\|)\s*([^\]]+?)\s*)?\]\]/ig,
 			replace: '[[$1$2$3]]'
@@ -434,15 +435,15 @@
 		}, {
 			find: /\[(?:https?)?:\/\/pt.wikipedia.org\/w\/index.php\?title=Wikipedia/ig,
 			replace: '[//pt.wikipedia.org/w/index.php?title=Wikipédia'
-		}];
+		} ];
 		regex( editor, list, 'formatação dos links' );
 		oldText = editor.get();
-		regex( editor, [{
+		regex( editor, [ {
 			find: /\[bugzilla:\s*(\d+)\s*(\]\]|\|)/ig,
 			replace: function ( match, p1, p2, offset, totalStr ) {
 				return '[phab:T' + ( parseInt( p1, 10 ) + 2000 ) + p2;
 			}
-		}], 'Bugzilla → Phabricator' );
+		} ], 'Bugzilla → Phabricator' );
 	}
 
 	function fixImageLinks( editor ) {
@@ -452,43 +453,43 @@
 		oldText = editor.get();
 
 		regex(
-			editor, [{
+			editor, [ {
 				find: new RegExp(
 					'\\[\\[\\s*[Ii]mage' + reSuffix,
 					'g'
 				),
 				replace: '[[Imagem:$1$2'
-			}],
+			} ],
 			summary.replace( /\$2/g, 'Image' )
 		);
 		regex(
-			editor, [{
+			editor, [ {
 				find: new RegExp(
 					'\\[\\[\\s*[Aa]rquivo' + reSuffix,
 					'g'
 				),
 				replace: '[[Imagem:$1$2'
-			}],
+			} ],
 			summary.replace( /\$2/g, 'Arquivo' )
 		);
 		regex(
-			editor, [{
+			editor, [ {
 				find: new RegExp(
 					'\\[\\[\\s*[Ff]icheiro' + reSuffix,
 					'g'
 				),
 				replace: '[[Imagem:$1$2'
-			}],
+			} ],
 			summary.replace( /\$2/g, 'Ficheiro' )
 		);
 		regex(
-			editor, [{
+			editor, [ {
 				find: new RegExp(
 					'\\[\\[\\s*[Ff]ile' + reSuffix,
 					'g'
 				),
 				replace: '[[Imagem:$1$2'
-			}],
+			} ],
 			summary.replace( /\$2/g, 'File' )
 		);
 	}
@@ -498,36 +499,36 @@
 		oldText = editor.get();
 		reHack = /\s*(?:\\[,!\s\;]\s*)+\s*<(\/)math>|<math>\s*(?:\\[,!\s\;]\s*)+\s*/g;
 		reason = {
-			'pt': '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[phab:T33406#344368]])',
-			'en': '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[phab:T33406#344368]])'
+			pt: '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[phab:T33406#344368]])',
+			en: '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[phab:T33406#344368]])'
 		};
-		regex( editor, [{
+		regex( editor, [ {
 			find: reHack,
 			replace: '<$1math>'
-		}], reason[mw.config.get('wgContentLanguage')] || reason.en );
+		} ], reason[ mw.config.get( 'wgContentLanguage' ) ] || reason.en );
 
 		// coloca a pontuação que vem depois de fórmulas dentro das tags <math>
-		list = [{
+		list = [ {
 			find: /<\/math> *([\.,;:\?]|!(?!!)) */ig,
 			replace: '$1</math> '
 		}, {
 			find: /\\sin/mig,
 			replace: '\\mathrm{sen}\\,'
-		}];
+		} ];
 		regex( editor, list, 'format. <math> e pontuação' );
 	}
 
-	function ucFirst(p) {
-		return p.charAt(0).toUpperCase() + p.substr(1);
+	function ucFirst( p ) {
+		return p.charAt( 0 ).toUpperCase() + p.substr( 1 );
 	}
 
 	function fixOCR( editor ) {
 		var	oldText = editor.get(),
 			totalAnchorsBefore = oldText.split( '{{âncora' ).length,
 			tabela;
-		if (mw.config.get('wgNamespaceNumber') === 106 ) {
+		if ( mw.config.get( 'wgNamespaceNumber' ) === 106 ) {
 			$.getJSON(
-				mw.util.wikiScript('api'), {
+				mw.util.wikiScript( 'api' ), {
 					format: 'json',
 					action: 'query',
 					prop: 'revisions',
@@ -537,36 +538,36 @@
 					titles: dictionaries
 				},
 				// FIXME: add callback to run the rest of fixOCR only after this is finished
-				function removeOCRModernization(res) {
+				function removeOCRModernization( res ) {
 					var	pages = res.query.pages,
-						pagenames = dictionaries.split('|'),
+						pagenames = dictionaries.split( '|' ),
 						sortable = [],
 						wsolddict = [],
 						i, j, str, match2, lines;
 					/*jshint unused:false */
-					$.each( pages, function (id, page) {
-						if (!page.pageid) {
-							alert('Erro na função removeOCRModernization usada na correção de OCR!');
+					$.each( pages, function ( id, page ) {
+						if ( !page.pageid ) {
+							alert( 'Erro na função removeOCRModernization usada na correção de OCR!' );
 							return true;
 						}
-						sortable.push([
-							page.revisions[0]['*'], // Wiki code of dictionary page
-							pagenames.indexOf(page.title) // Order of page
+						sortable.push( [
+							page.revisions[ 0 ][ '*' ], // Wiki code of dictionary page
+							pagenames.indexOf( page.title ) // Order of page
 							// , page.title // Title of page
-						]);
-					});
+						] );
+					} );
 					/*jshint unused:true */
-					sortable.sort(function (a, b) {
-						return a[1] - b[1];
-					}); // Sort dictionaries in the given order
-					for (i = 0; i < sortable.length; i++) {
-						str = sortable[i][0];
-						lines = str.split('\n');
-						for (j = 0; j < lines.length; j++) {
+					sortable.sort( function ( a, b ) {
+						return a[ 1 ] - b[ 1 ];
+					} ); // Sort dictionaries in the given order
+					for ( i = 0; i < sortable.length; i++ ) {
+						str = sortable[ i ][ 0 ];
+						lines = str.split( '\n' );
+						for ( j = 0; j < lines.length; j++ ) {
 							// Current syntax: * old word : new word // Some comment
-							match2 = /^\*\s*(\S[^:]*?)\s*:\s*([\S].*?)\s*(?:\/\/.*?)?$/.exec(lines[j]);
-							if (match2) {
-								wsolddict[match2[2]] = match2[1]; // "atual" => "antiga"
+							match2 = /^\*\s*(\S[^:]*?)\s*:\s*([\S].*?)\s*(?:\/\/.*?)?$/.exec( lines[ j ] );
+							if ( match2 ) {
+								wsolddict[ match2[ 2 ] ] = match2[ 1 ]; // "atual" => "antiga"
 								continue;
 							}
 						}
@@ -574,6 +575,7 @@
 					// LanguageConverter.conv_text_from_dic() está em [[oldwikisource:User:He7d3r/Tools/LanguageConverter.js]]
 					editor.set(
 						/*jshint camelcase: false */
+						// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 						LanguageConverter.conv_text_from_dic(
 							editor.get(),
 							wsolddict,
@@ -581,6 +583,7 @@
 							null,
 							false
 						)
+						// jscs:enable requireCamelCaseOrUpperCaseIdentifiers
 						/*jshint camelcase: true */
 					);
 				}
@@ -592,43 +595,43 @@
 		// Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
 		tabela = {
 			'aããição': 'addição',
-			'arithmetiea': 'arithmetica',
-			'aeceito': 'acceito',
+			arithmetiea: 'arithmetica',
+			aeceito: 'acceito',
 			'cólumna': 'columna',
 			'deeompõe': 'decompõe',
 			'eífeito': 'effeito',
 
 			'minuenão': 'minuendo',
 			'mbtrahenão': 'subtrahendo',
-			'mulliplicam': 'multiplicam',
+			mulliplicam: 'multiplicam',
 			'orãe(m|ns)?': 'orde$1',
 			'pôde': 'póde',
 			'proãucto(s?)': 'producto$1',
-			'soramar': 'sommar',
-			'somraando': 'sommando',
-			'subtraliir': 'subtrahir'
+			soramar: 'sommar',
+			somraando: 'sommando',
+			subtraliir: 'subtrahir'
 		};
 
 		// Aplica cada uma das regras da tabela
 		/*jshint unused:false */
-		$.each( tabela, function (id, palavra) {
-			list.push({
-				find: new RegExp('\\b' + palavra + '\\b', 'g'),
+		$.each( tabela, function ( id, palavra ) {
+			list.push( {
+				find: new RegExp( '\\b' + palavra + '\\b', 'g' ),
 				replace: palavra
 				// , 5 // FIXME
 			}, {
 				// Converte também a palavra correspondente com a primeira letra maiúscula
-				find: new RegExp('\\b' + ucFirst(palavra) + '\\b', 'g'),
-				replace: ucFirst(palavra)
+				find: new RegExp( '\\b' + ucFirst( palavra ) + '\\b', 'g' ),
+				replace: ucFirst( palavra )
 				// , 5 // FIXME
-			});
-		});
+			} );
+		} );
 		/*jshint unused:true */
 
 		// Expressões inexistentes (typos do OCR) ou com atualização ortográfica indevida
 		// Estas expressões NÃO SÃO convertidas se estiverem contidas em outras
 		// OSB:	1) Estas expressões precisam de tratamento especial pois o \b se confunde com letras acentuadas e cedilha
-		//	2) São usados dois grupos extras nestas regras: um para o 1º caractere anterior e outro para o 1º posterior à palavra;
+		// 2) São usados dois grupos extras nestas regras: um para o 1º caractere anterior e outro para o 1º posterior à palavra;
 		tabela = {
 			'ã([eo])': '$1d$2$3',
 			// A letra "d" em itálico parece um "ã" (por causa da serifa no topo do "d")
@@ -636,9 +639,9 @@
 			'ê': '$1é$2'
 		};
 
-		$.each( tabela, function (find, rep) {
+		$.each( tabela, function ( find, rep ) {
 			list.push( {
-				find: new RegExp('([^' + LETRA + '])' + find + '([^' + LETRA + '])', 'g'),
+				find: new RegExp( '([^' + LETRA + '])' + find + '([^' + LETRA + '])', 'g' ),
 				replace: rep
 				// 5 // FIXME
 			} );
@@ -661,24 +664,24 @@
 			'(\\d+)\\.[\\t ]': '$1. ',
 			// Correção da numeração manual
 			'ãa': 'da',
-			'qne': 'que'
+			qne: 'que'
 		};
 
-		$.each( tabela, function (find, rep) {
-			list.push({
-				find: new RegExp(find, 'g'),
+		$.each( tabela, function ( find, rep ) {
+			list.push( {
+				find: new RegExp( find, 'g' ),
 				replace: rep
 				// 5 // FIXME
 			}, {
 				// Converte também a palavra correspondente com a primeira letra maiúscula
-				find: new RegExp('\\b' + ucFirst(find), 'g'),
-				replace: ucFirst(rep)
+				find: new RegExp( '\\b' + ucFirst( find ), 'g' ),
+				replace: ucFirst( rep )
 				// 5 // FIXME
-			});
-		});
+			} );
+		} );
 
 		// Sequências de caracteres, contendo dígitos e operadores, iniciada e terminada por números possívelmente são fórmulas
-		list.push({
+		list.push( {
 			find: /(\d+[xX+-\/=<>][xX+-\/=0-9<>]+\d+)/g,
 			replace: '♪$1♫'
 		}, {
@@ -698,7 +701,7 @@
 		}, {
 			find: /(?:♫|<\/math>)+/g,
 			replace: '</math>'
-		});
+		} );
 		regex( editor, list,
 				'Correção de OCR' + ( totalAnchorsBefore < editor.get().split( '{{âncora' ).length ?
 				'; Adição de {{âncora}}' :
@@ -778,9 +781,9 @@
 				'\n== Referências ==',
 				'<references/>',
 				'{' + '{AutoCat}' + '}'
-			].join('\n');
+			].join( '\n' );
 
-		list = [{
+		list = [ {
 			find: /\$\s*([^$]*?)\s*\$/img,
 			replace: '<math>$1</math>'
 		}, {
@@ -843,11 +846,11 @@
 		}, {
 			find: /^\s*\\item\s+/gm,
 			replace: '* '
-		}];
+		} ];
 
 		regex( editor, list );
 		editor.set( top + editor.get() + bottom );
-		editor.setEditSummary('Convertendo de LaTeX para Wiki');
+		editor.setEditSummary( 'Convertendo de LaTeX para Wiki' );
 	}
 
 	function wiki2latex( editor ) {
@@ -862,14 +865,14 @@
 			'\\usepackage[T1]{fontenc}' +
 			'\\usepackage{amsthm, amssymb, amsmath}' +
 			'\\usepackage{footmisc}\n'
-		].join('\n');
-		if ( editor.get().match(/<!--(.|\s)*?-->/) ) {
+		].join( '\n' );
+		if ( editor.get().match( /<!--(.|\s)*?-->/ ) ) {
 			preambulo += '\\usepackage{verbatim}' +
 				' %permite usar \\begin{comment}...\\end{comment} para comentar varias linhas\n';
 			list.push( {
 				find: /<!--(.|\s)*?-->/g,
 				replace: '\\begin{comment}\n$1\n\\end{comment}'
-			});
+			} );
 		}
 
 		preambulo += '\\usepackage[a4paper=true,pagebackref=true]{hyperref}\n\n' +
@@ -901,7 +904,8 @@
 			'\\newtheorem*{tarefa}{Tarefa}' +
 			'\\makeindex\n\n';
 
-	/*	var w = 'pt.wikipedia';
+		/*
+		var w = 'pt.wikipedia';
 		var wikiprojeto = {
 		'b':		'pt.wikibooks',
 		'n':		'pt.wikinews',
@@ -914,7 +918,7 @@
 		'wmf':		'wikimediafoundation',
 		'species':	'wikispecies.wikimedia'
 		}
-	*/
+		*/
 		list.push( {
 			// Comandos wiki que são descartados
 			find: /\{\{Auto(Cat|Nav)\}\}/ig,
@@ -994,38 +998,38 @@
 			// links internos e externos
 			find: /\{\{\s*(?:Âncoras?)\|([^}]+)\}\}/ig,
 			replace: '\\label{$1}'
-		});
+		} );
 		regex( editor, list );
 
 		reWikiLink = /\[\[\s*([a-zA-Z:]+)\s*:\s*([^\|\]]+?)\s*?\|\s*([^\]]*?)\s*\]\]/i;
 		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// [[proj:idioma:alvo|texto]]
-			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
+			WikiLink[ 2 ] = encodeURI( WikiLink[ 2 ] ).replace( /(%|#)/g, '\\$1' );
 			editor.set(
-				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+				editor.get().replace( reWikiLink, '\\href{' + url + '$1:' + WikiLink[ 2 ] + '}{$3}' )
 			);
 			WikiLink = reWikiLink.exec( editor.get() );
 		}
 		reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*?\|\s*([^}]*?)\s*\}\}/i;
 		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// {{proj|alvo|texto}}
-			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
+			WikiLink[ 2 ] = encodeURI( WikiLink[ 2 ] ).replace( /(%|#)/g, '\\$1' );
 			editor.set(
-				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$3}')
+				editor.get().replace( reWikiLink, '\\href{' + url + '$1:' + WikiLink[ 2 ] + '}{$3}' )
 			);
 			WikiLink = reWikiLink.exec( editor.get() );
 		}
 		reWikiLink = /\{\{\s*(w|wikt)\s*\|\s*([^\|}]+?)\s*\}\}/i;
 		WikiLink = reWikiLink.exec( editor.get() );
 		while ( WikiLink ) {// {{proj|alvo}}
-			WikiLink[2] = encodeURI(WikiLink[2]).replace(/(%|#)/g, '\\$1');
+			WikiLink[ 2 ] = encodeURI( WikiLink[ 2 ] ).replace( /(%|#)/g, '\\$1' );
 			editor.set(
-				editor.get().replace(reWikiLink, '\\href{' + url + '$1:' + WikiLink[2] + '}{$2}')
+				editor.get().replace( reWikiLink, '\\href{' + url + '$1:' + WikiLink[ 2 ] + '}{$2}' )
 			);
 			WikiLink = reWikiLink.exec( editor.get() );
 		}
 
-		list = [{
+		list = [ {
 			find: /\[\[(?:\.\.\/[^#]+)?#Definição ([^\]]+)\|([^\]]+)\]\]/ig,
 			replace: '\\hyperref[defi:$1]{$2}'
 		}, {
@@ -1087,7 +1091,7 @@
 			// Aspas
 			find: /"([^"]+)"/ig,
 			replace: '``$1\'\''
-		}];
+		} ];
 
 		regex( editor, list );
 
@@ -1105,9 +1109,9 @@
 			'\\bibliography{biblio}\\label{cap:biblio}',
 			'\\addcontentsline{toc}{chapter}{Referências Bibliográficas}\n',
 			'\\end{document}'
-			].join('\n')
+			].join( '\n' )
 		);
-		editor.setEditSummary('Versão em LaTeX [produzida com' +
+		editor.setEditSummary( 'Versão em LaTeX [produzida com' +
 			' [[m:TemplateScript|expressões regulares]]]' +
 			'(não era para salvar: REVERTA ESTA EDIÇÃO!)' );
 	}
@@ -1116,36 +1120,36 @@
 		var c = editor;
 		switch ( mw.config.get( 'wgDBname' ) ) {
 		case 'ptwiki':
-			fixObsoleteHTML(c);
-			fixMath(c);
-			fixHTTPLinks(c);
-			fixLists(c);
-			fixObsoleteTemplatesOnPtwiki(c);
-			formatLinks(c);
-			fixImageLinks(c);
+			fixObsoleteHTML( c );
+			fixMath( c );
+			fixHTTPLinks( c );
+			fixLists( c );
+			fixObsoleteTemplatesOnPtwiki( c );
+			formatLinks( c );
+			fixImageLinks( c );
 			break;
 		case 'ptwikisource':
 			break;
 		case 'ptwikibooks':
-			fixObsoleteHTML(c);
-			formatHeadings(c);
-			formatTemplates(c);
-			formatCategories(c);
-			fixLists(c);
-			abs2rel(c);
-			formatLinks(c);
-			fixImageLinks(c);
-			fixMath(c);
-			formatHeadings(c);
+			fixObsoleteHTML( c );
+			formatHeadings( c );
+			formatTemplates( c );
+			formatCategories( c );
+			fixLists( c );
+			abs2rel( c );
+			formatLinks( c );
+			fixImageLinks( c );
+			fixMath( c );
+			formatHeadings( c );
 			break;
 		default:
-			fixObsoleteHTML(c);
+			fixObsoleteHTML( c );
 		}
 		showDiff();
 	}
 
 	function loadMyRegexTools() {
-		pathoschild.TemplateScript.add([{
+		pathoschild.TemplateScript.add( [ {
 			name: 'Formatação geral',
 			script: generalFixes
 		}, {
@@ -1156,11 +1160,11 @@
 			name: 'Corrige links HTTP',
 			script: fixHTTPLinks,
 			isMinorEdit: true
-		}]);
+		} ] );
 
 		switch ( mw.config.get( 'wgDBname' ) ) {
 		case 'ptwiki':
-			pathoschild.TemplateScript.add([{
+			pathoschild.TemplateScript.add( [ {
 				name: 'Usar "Ver também,..."',
 				script: fixObsoleteTemplatesOnPtwiki
 			}, {
@@ -1169,16 +1173,16 @@
 			}, {
 				name: 'Corrigir listas',
 				script: fixLists
-			}]);
+			} ] );
 			break;
 		case 'ptwikisource':
-			pathoschild.TemplateScript.add({
+			pathoschild.TemplateScript.add( {
 				name: 'Corrigir OCR',
 				script: fixOCR
-			});
+			} );
 			break;
 		case 'ptwikibooks':
-			pathoschild.TemplateScript.add([{
+			pathoschild.TemplateScript.add( [ {
 				name: 'Corrigi fórmulas',
 				script: fixMath
 			}, {
@@ -1218,14 +1222,14 @@
 			}, {
 				name: 'TEST: LaTeX -> Wiki',
 				script: latex2wiki
-			}]);
+			} ] );
 			break;
 		default:
 			if ( mw.config.get( 'wgContentLanguage' ) === 'pt' ) {
-				pathoschild.TemplateScript.add({
+				pathoschild.TemplateScript.add( {
 					name: 'Corrige [[Ficheiro',
 					script: fixImageLinks
-				});
+				} );
 			}
 		}
 	}
@@ -1238,8 +1242,8 @@
 		$.ajax(
 			'//tools-static.wmflabs.org/meta/scripts/pathoschild.templatescript.js',
 			{
-				dataType:'script',
-				cache:true,
+				dataType: 'script',
+				cache: true,
 				timeout: 30000
 			}
 		).then( loadMyRegexTools );
