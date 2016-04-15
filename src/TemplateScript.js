@@ -499,8 +499,8 @@
 		oldText = editor.get();
 		reHack = /\s*(?:\\[,!\s\;]\s*)+\s*<(\/)math>|<math>\s*(?:\\[,!\s\;]\s*)+\s*/g;
 		reason = {
-			pt: '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[rev:104498]] e [[phab:T33406#344368]])',
-			en: '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[rev:104498]] and [[phab:T33406#344368]])'
+			pt: '-hack obsoleto desde o [[mw:MediaWiki 1.19]] (ver também [[phab:rSVN104498]] e [[phab:T33406#344368]])',
+			en: '-obsolete hack since [[mw:MediaWiki 1.19]] (see also [[phab:rSVN104498]] and [[phab:T33406#344368]])'
 		};
 		regex( editor, [ {
 			find: reHack,
@@ -514,6 +514,9 @@
 		}, {
 			find: /\\sin/mig,
 			replace: '\\mathrm{sen}\\,'
+		}, {
+			find: /\n:+<math>/mig,
+			replace: '\n<math display="block">'
 		} ];
 		regex( editor, list, 'format. <math> e pontuação' );
 	}
