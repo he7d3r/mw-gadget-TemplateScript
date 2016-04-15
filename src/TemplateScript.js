@@ -526,7 +526,7 @@
 			find: /\\sin/mig,
 			replace: '\\mathrm{sen}\\,'
 		}, {
-			find: /\n:+<math>/mig,
+			find: /\n:+\s*<math>/mig,
 			replace: '\n<math display="block">'
 		} ];
 		regex( editor, list, 'format. <math> e pontuação' );
