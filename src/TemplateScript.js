@@ -252,8 +252,8 @@
 			find: /\n!\s*width\s*=\s*(\d+)px\s*\|/g,
 			replace: '\n! style="width: $1px;" |'
 		}, {
-			find: /\n\{\|\s*align\s*=\s*"?center"?\s*\n/g,
-			replace: '\n{| style="margin: 0 auto;"\n'
+			find: /(^|\n)\{\|\s*align\s*=\s*"?center"?\s*\n/g,
+			replace: '$1{| style="margin: 0 auto;"\n'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
 		if ( oldText !== editor.get() ) {
