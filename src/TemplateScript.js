@@ -254,6 +254,9 @@
 		}, {
 			find: /(^|\n)\{\|\s*align\s*=\s*"?center"?\s*\n/g,
 			replace: '$1{| style="margin: 0 auto;"\n'
+		}, {
+			find: /\n\|\s*align\s*=\s*"\s*center\s*"\s*\|/g,
+			replace: '\n| style="tex-align: center;" |'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
 		if ( oldText !== editor.get() ) {
