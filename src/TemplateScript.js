@@ -102,14 +102,14 @@
 		regex( editor, list, '-[[Special:PermaLink/29330043|predef\'s obsoletas]]' );
 		oldText = editor.get();
 		list = [ {
-			find: new RegExp( '\\n==\\s*(?:' + reText.seeAlso + ')\\s*==', 'gi' ),
-			replace: '\n== Ver também =='
+			find: new RegExp( '\\n==(\\s?)\\s*(?:' + reText.seeAlso + ')(\\s?)\\s*==', 'gi' ),
+			replace: '\n==$1Ver também$2=='
 		}, {
-			find: new RegExp( '\\n==\\s*' + reText.biblio + '\\s*==', 'gi' ),
-			replace: '\n== Bibliografia =='
+			find: new RegExp( '\\n==(\\s?)\\s*' + reText.biblio + '(\\s?)\\s*==', 'gi' ),
+			replace: '\n==$1Bibliografia$2=='
 		}, {
-			find: new RegExp( '\\n==\\s*(?:' + reText.extLinks + ')\\s*==', 'gi' ),
-			replace: '\n== Ligações externas =='
+			find: new RegExp( '\\n==(\\s?)\\s*(?:' + reText.extLinks + ')(\\s?)\\s*==', 'gi' ),
+			replace: '\n==$1Ligações externas$2=='
 		} ];
 
 		regex( editor, list, '+[[WP:LE#Seções padrão|padronização das seções]]' );
