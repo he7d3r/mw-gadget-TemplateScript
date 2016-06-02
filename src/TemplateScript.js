@@ -258,8 +258,8 @@
 			// | align="left" |
 			// | align="center" |
 			// | align="right" |
-			find: /\n\|\s*align\s*=\s*"\s*(center|left|right)\s*"\s*\|/g,
-			replace: '\n| style="tex-align: $1;" |'
+			find: /\n(\||!)\s*align\s*=\s*"\s*(center|left|right)\s*"\s*\|/g,
+			replace: '\n$1 style="tex-align: $2;" |'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
 		if ( oldText !== editor.get() ) {
@@ -461,54 +461,6 @@
 				return '[phab:T' + ( parseInt( p1, 10 ) + 2000 ) + p2;
 			}
 		} ], 'Bugzilla → Phabricator' );
-	}
-
-	function fixImageLinks( editor ) {
-		var summary = '[[$1Special:PermaLink/27949155|$2 → Imagem]]'
-				.replace( /\$1/g, mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ),
-			reSuffix = '\\s*:\\s*([^|\\]]+\\.(?:[Pp][Nn][Gg]|[Jj][Pp][Ee]?[Gg]|[Ss][Vv][Gg]|[Gg][Ii][Ff]|[Tt][Ii][Ff]{1,2}))\\s*(\\||\\]\\])';
-		oldText = editor.get();
-
-		regex(
-			editor, [ {
-				find: new RegExp(
-					'\\[\\[\\s*[Ii]mage' + reSuffix,
-					'g'
-				),
-				replace: '[[Imagem:$1$2'
-			} ],
-			summary.replace( /\$2/g, 'Image' )
-		);
-		regex(
-			editor, [ {
-				find: new RegExp(
-					'\\[\\[\\s*[Aa]rquivo' + reSuffix,
-					'g'
-				),
-				replace: '[[Imagem:$1$2'
-			} ],
-			summary.replace( /\$2/g, 'Arquivo' )
-		);
-		regex(
-			editor, [ {
-				find: new RegExp(
-					'\\[\\[\\s*[Ff]icheiro' + reSuffix,
-					'g'
-				),
-				replace: '[[Imagem:$1$2'
-			} ],
-			summary.replace( /\$2/g, 'Ficheiro' )
-		);
-		regex(
-			editor, [ {
-				find: new RegExp(
-					'\\[\\[\\s*[Ff]ile' + reSuffix,
-					'g'
-				),
-				replace: '[[Imagem:$1$2'
-			} ],
-			summary.replace( /\$2/g, 'File' )
-		);
 	}
 
 	function fixMath( editor ) {
@@ -1146,7 +1098,6 @@
 			fixLists( c );
 			fixObsoleteTemplatesOnPtwiki( c );
 			formatLinks( c );
-			fixImageLinks( c );
 			break;
 		case 'ptwikisource':
 			break;
@@ -1158,7 +1109,6 @@
 			fixLists( c );
 			abs2rel( c );
 			formatLinks( c );
-			fixImageLinks( c );
 			fixMath( c );
 			formatHeadings( c );
 			break;
@@ -1245,12 +1195,7 @@
 			} ] );
 			break;
 		default:
-			if ( mw.config.get( 'wgContentLanguage' ) === 'pt' ) {
-				pathoschild.TemplateScript.add( {
-					name: 'Corrige [[Ficheiro',
-					script: fixImageLinks
-				} );
-			}
+			// Pass
 		}
 	}
 	if ( $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit' ] ) !== -1 ) {
