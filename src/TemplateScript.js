@@ -384,15 +384,20 @@
 		regex( editor, [ {
 			find: /\s*\n;([^\n]+)\n([^:])/g,
 			replace: '\n;$1\n:$2'
-		} ], '+[[' +
+		} ], '-uso [[' +
 			( mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ) +
-			'Special:PermaLink/31511942|semântica]] na lista de definições (;:)' );
+			'Special:PermaLink/31511942|semânticamente incorreto]] de lista de definições (;:)' );
 
 		regex( editor, [ {
-			// Deixa apenas 1 espaço entre *, # ou : e o texto da lista
+			// Deixa no máximo 1 espaço entre *, # ou : e o texto da lista
 			find: /^(:+[*#]+[*#:]*|:+(?![\{:])|[*#][*#:]*)\s+/gm,
 			replace: '$1 '
 		} ], 'format. listas' );
+
+		regex( editor, [ {
+			find: /(\| *(?:lista?\d+|acima|ab(?:ove|aixo)|below) *= *)(?:\{\{ *[Nn]owrap begin *\}\} *)?| *(?:(\|list\d+ *= *)(?:\{\{ *[Nn]owrap begin *\}\} *)?|\{\{ *(?:[·•][Ww](?:rap)?|[·,•*]|[Dd]ot|[Pp]onto|[Bb]ullet) *\}\}|(?:(?: )?[·•]|&(?:bull|#8226|#x2022|middot);)) */g,
+			replace: '$1\n* '
+		} ], 'uso da [[Special:PermaLink/43666549|sintaxe correta pra listas]]' );
 	}
 
 	function abs2rel( editor ) {
