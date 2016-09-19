@@ -246,7 +246,7 @@
 			find: /<big>(.+?)<\/big>/g,
 			replace: '<div style="font-size: larger;">$1</div>'
 		}, {
-			find: /\n\|-\s*bgcolor\s*=\s*#([0-9a-f]{6}|[0-9a-f]{3})\s*\n/gi,
+			find: /\n\|-\s*bgcolor\s*=\s*["']?#([0-9a-f]{6}|[0-9a-f]{3})["']?\s*\n/gi,
 			replace: '\n|- style="background: #$1;"\n'
 		}, {
 			find: /\n!\s*width\s*=\s*["']?(\d+)(?:px)?["']?\s*\|/g,
@@ -258,8 +258,8 @@
 			// | align="left" |
 			// | align="center" |
 			// | align="right" |
-			find: /\n(\||!)\s*align\s*=\s*["']?\s*(center|left|right)\s*["']?\s*\|/g,
-			replace: '\n$1 style="tex-align: $2;" |'
+			find: /\n([|!][^|]+)align\s*=\s*["']?\s*(center|left|right)\s*["']?\s*\|/g,
+			replace: '\n$1style="tex-align: $2;" |'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
 		if ( oldText !== editor.get() ) {
