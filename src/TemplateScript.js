@@ -1096,29 +1096,29 @@
 	function generalFixes( editor ) {
 		var c = editor;
 		switch ( mw.config.get( 'wgDBname' ) ) {
-		case 'ptwiki':
-			fixObsoleteHTML( c );
-			fixMath( c );
-			fixHTTPLinks( c );
-			fixLists( c );
-			fixObsoleteTemplatesOnPtwiki( c );
-			formatLinks( c );
-			break;
-		case 'ptwikisource':
-			break;
-		case 'ptwikibooks':
-			fixObsoleteHTML( c );
-			formatHeadings( c );
-			formatTemplates( c );
-			formatCategories( c );
-			fixLists( c );
-			abs2rel( c );
-			formatLinks( c );
-			fixMath( c );
-			formatHeadings( c );
-			break;
-		default:
-			fixObsoleteHTML( c );
+			case 'ptwiki':
+				fixObsoleteHTML( c );
+				fixMath( c );
+				fixHTTPLinks( c );
+				fixLists( c );
+				fixObsoleteTemplatesOnPtwiki( c );
+				formatLinks( c );
+				break;
+			case 'ptwikisource':
+				break;
+			case 'ptwikibooks':
+				fixObsoleteHTML( c );
+				formatHeadings( c );
+				formatTemplates( c );
+				formatCategories( c );
+				fixLists( c );
+				abs2rel( c );
+				formatLinks( c );
+				fixMath( c );
+				formatHeadings( c );
+				break;
+			default:
+				fixObsoleteHTML( c );
 		}
 		showDiff();
 	}
@@ -1138,68 +1138,68 @@
 		} ] );
 
 		switch ( mw.config.get( 'wgDBname' ) ) {
-		case 'ptwiki':
-			pathoschild.TemplateScript.add( [ {
-				name: 'Usar "Ver também,..."',
-				script: fixObsoleteTemplatesOnPtwiki
-			}, {
-				name: 'Corrigir fórmulas',
-				script: fixMath
-			}, {
-				name: 'Corrigir listas',
-				script: fixLists
-			} ] );
-			break;
-		case 'ptwikisource':
-			pathoschild.TemplateScript.add( {
-				name: 'Corrigir OCR',
-				script: fixOCR
-			} );
-			break;
-		case 'ptwikibooks':
-			pathoschild.TemplateScript.add( [ {
-				name: 'Corrigi fórmulas',
-				script: fixMath
-			}, {
-				name: 'Remover linhas duplicadas',
-				script: function ( editor ) {
-					var items = editor.get()
-						.replace( /\r|\n+/gi, '\n' )
-						.split( '\n' );
-					editor.set(
-						dedupeList( items ).join( '\r\n' )
-					);
-				}
-			}, {
-				name: 'Formatar cabeçalhos',
-				script: formatHeadings
-			}, {
-				name: 'Formatar predefinições',
-				script: formatTemplates
-			}, {
-				name: 'Formatar categorias',
-				script: formatCategories
-			}, {
-				name: 'Corrigir listas',
-				script: fixLists
-			}, {
-				name: 'Usar links relativos',
-				script: abs2rel
-			}, {
-				name: 'Formatar links',
-				script: formatLinks
-			}, {
-				name: 'TEST: Refs do Google Books',
-				script: convertRefs
-			}, {
-				name: 'TEST: Wiki -> LaTeX',
-				script: wiki2latex
-			}, {
-				name: 'TEST: LaTeX -> Wiki',
-				script: latex2wiki
-			} ] );
-			break;
-		default:
+			case 'ptwiki':
+				pathoschild.TemplateScript.add( [ {
+					name: 'Usar "Ver também,..."',
+					script: fixObsoleteTemplatesOnPtwiki
+				}, {
+					name: 'Corrigir fórmulas',
+					script: fixMath
+				}, {
+					name: 'Corrigir listas',
+					script: fixLists
+				} ] );
+				break;
+			case 'ptwikisource':
+				pathoschild.TemplateScript.add( {
+					name: 'Corrigir OCR',
+					script: fixOCR
+				} );
+				break;
+			case 'ptwikibooks':
+				pathoschild.TemplateScript.add( [ {
+					name: 'Corrigi fórmulas',
+					script: fixMath
+				}, {
+					name: 'Remover linhas duplicadas',
+					script: function ( editor ) {
+						var items = editor.get()
+							.replace( /\r|\n+/gi, '\n' )
+							.split( '\n' );
+						editor.set(
+							dedupeList( items ).join( '\r\n' )
+						);
+					}
+				}, {
+					name: 'Formatar cabeçalhos',
+					script: formatHeadings
+				}, {
+					name: 'Formatar predefinições',
+					script: formatTemplates
+				}, {
+					name: 'Formatar categorias',
+					script: formatCategories
+				}, {
+					name: 'Corrigir listas',
+					script: fixLists
+				}, {
+					name: 'Usar links relativos',
+					script: abs2rel
+				}, {
+					name: 'Formatar links',
+					script: formatLinks
+				}, {
+					name: 'TEST: Refs do Google Books',
+					script: convertRefs
+				}, {
+					name: 'TEST: Wiki -> LaTeX',
+					script: wiki2latex
+				}, {
+					name: 'TEST: LaTeX -> Wiki',
+					script: latex2wiki
+				} ] );
+				break;
+			default:
 			// Pass
 		}
 	}
