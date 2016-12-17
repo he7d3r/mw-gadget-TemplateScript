@@ -216,6 +216,26 @@
 			),
 			replace: '<span style="color: #$4;font-family: $2;">$5</span>'
 		}, {
+			// <font color="#123456" face="Verdana">texto</font>
+			// <span style="color: #123456;font-family: Verdana;">texto</span>
+			find: new RegExp(
+				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
+					colorCodes +
+					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>(.+?)<\\/font>',
+				'gi'
+			),
+			replace: '<span style="color: #$2;font-family: $4;">$5</span>'
+		}, {
+			// <font color="red" face="Verdana">texto</font>
+			// <span style="color: red;font-family: Verdana;">texto</span>
+			find: new RegExp(
+				'<font\\s+color\\s*=\\s*(["\']?)(' +
+					colorNames +
+					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>(.+?)<\\/font>',
+				'gi'
+			),
+			replace: '<span style="color: #$2;font-family: $4;">$5</span>'
+		}, {
 			// <font face="Verdana">texto</font>
 			// <span style="font-family: Verdana;">texto</span>
 			find: /<font\s+face\s*=\s*(["']?)([^"'>]+?)\1\s*>(.+?)<\/font>/gi,
