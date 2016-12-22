@@ -238,13 +238,13 @@
 		}, {
 			// <font face="Verdana">texto</font>
 			// <span style="font-family: Verdana;">texto</span>
-			find: /<font\s+face\s*=\s*(["']?)([^"'>]+?)\1\s*>(.+?)<\/font>/gi,
-			replace: '<span style="font-family: $2;">$3</span>'
+			find: /<font\s+face\s*=\s*["']?([^"'>]+?)["']?\s*>(.+?)<\/font>/gi,
+			replace: '<span style="font-family: $1;">$2</span>'
 		}, {
 			// <font face="Bauhaus 93" color="black" size="6">texto</font>
 			// <span style="font-family: Bauhaus 93; color: black; font-size: 100%;">texto</span>
-			find: /<font\s+face\s*=\s*(["']?)([^"'>]+?)\1\s+color\s*=\s*(["']?)([^"]+?)\3\s*size\s*=\s*(["']?)([^"]+?)\5>(.+?)<\/font>/g,
-			replace: '<span style="font-family: $2; color: $4; font-size: 100%;">$7</span>'
+			find: /<font\s+face\s*=\s*["']?([^"'>]+?)["']?\s+color\s*=\s*["']?([^"']+?)["']?\s*size\s*=\s*["']?([^"']+?)["']?>(.+?)<\/font>/g,
+			replace: '<span style="font-family: $1; color: $2; font-size: 100%;">$4</span>'
 		}, {
 			// <source lang=...>...</source>
 			// <syntaxhighlight lang=...>...</syntaxhighlight>
@@ -269,8 +269,8 @@
 			find: /\n\|-\s*bgcolor\s*=\s*["']?#([0-9a-f]{6}|[0-9a-f]{3})["']?\s*\n/gi,
 			replace: '\n|- style="background: #$1;"\n'
 		}, {
-			find: /\n([!|])\s*width\s*=\s*["']?(\d+)(?:px)?["']?\s*\|/g,
-			replace: '\n$1 style="width: $2px;" |'
+			find: /\n([|!][^|]+)width\s*=\s*["']?([^"']+?)["']?\s*\|/g,
+			replace: '\n$1style="width: $2;" |'
 		}, {
 			find: /(^|\n)\{\|\s*align\s*=\s*["']?center["']?\s*\n/g,
 			replace: '$1{| style="margin: 0 auto;"\n'
