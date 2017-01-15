@@ -269,7 +269,7 @@
 			find: /\n\|-\s*bgcolor\s*=\s*["']?#([0-9a-f]{6}|[0-9a-f]{3})["']?\s*\n/gi,
 			replace: '\n|- style="background: #$1;"\n'
 		}, {
-			find: /\n([|!][^|]+)width\s*=\s*["']?([^"']+?)["']?\s*\|/g,
+			find: /\n([|!][^|]*)width\s*=\s*["']?([^"']+?)["']?\s*\|/g,
 			replace: '\n$1style="width: $2;" |'
 		}, {
 			find: /(^|\n)\{\|\s*align\s*=\s*["']?center["']?\s*\n/g,
@@ -284,11 +284,11 @@
 			// | align="left" |
 			// | align="center" |
 			// | align="right" |
-			find: /\n([|!][^|]+)align\s*=\s*["']?\s*(center|left|right)\s*["']?\s*\|/g,
+			find: /\n([|!][^|]*)align\s*=\s*["']?\s*(center|left|right)\s*["']?\s*\|/g,
 			replace: '\n$1style="text-align: $2;" |'
 		}, {
 			// | valign="top" |
-			find: /\n([|!][^|]+)valign\s*=\s*["']?\s*(top|middle|bottom|baseline)\s*["']?\s*\|/g,
+			find: /\n([|!][^|]*)valign\s*=\s*["']?\s*(top|middle|bottom|baseline)\s*["']?\s*\|/g,
 			replace: '\n$1style="vertical-align: $2;" |'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
