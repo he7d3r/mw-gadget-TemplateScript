@@ -416,7 +416,7 @@
 			replace: '\n;$1\n:$2'
 		} ], '-uso [[' +
 			( mw.config.get( 'wgDBname' ) === 'ptwiki' ? '' : 'w:' ) +
-			'Special:PermaLink/31511942|semânticamente incorreto]] de lista de definições (;:)' );
+			'Special:PermaLink/31511942|semanticamente incorreto]] de lista de definições (;:)' );
 
 		regex( editor, [ {
 			// Deixa no máximo 1 espaço entre *, # ou : e o texto da lista
