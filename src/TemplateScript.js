@@ -266,11 +266,12 @@
 			find: /<big>(.+?)<\/big>/g,
 			replace: '<div style="font-size: larger;">$1</div>'
 		}, {
-			find: /\n\|-\s*bgcolor\s*=\s*["']?#([0-9a-f]{6}|[0-9a-f]{3})["']?\s*\n/gi,
-			replace: '\n|- style="background: #$1;"\n'
+			find: /\n\|-([^|]*)bgcolor\s*=\s*["']?#([0-9a-f]{6}|[0-9a-f]{3})["']?\s*$/gmi,
+			replace: '\n|-$1style="background: #$2;"'
 		}, {
-			find: /\n([|!][^|]*)width\s*=\s*["']?([^"']+?)["']?\s*\|/g,
-			replace: '\n$1style="width: $2;" |'
+			// | width="10px" |
+			find: /\n([|!][^|]*)width\s*=\s*["']?([^"'|]+)["']?\s*([^|]*)/g,
+			replace: '\n$1style="width: $2;" $3'
 		}, {
 			find: /(^|\n)\{\|\s*align\s*=\s*["']?center["']?\s*\n/g,
 			replace: '$1{| style="margin: 0 auto;"\n'
@@ -284,12 +285,16 @@
 			// | align="left" |
 			// | align="center" |
 			// | align="right" |
-			find: /\n([|!][^|]*)align\s*=\s*["']?\s*(center|left|right)\s*["']?\s*\|/g,
-			replace: '\n$1style="text-align: $2;" |'
+			find: /\n([|!][^|]*)align\s*=\s*["']?\s*(center|left|right)[\t ]*["']?[\t ]*([^|]*)/g,
+			replace: '\n$1style="text-align: $2;" $3'
 		}, {
 			// | valign="top" |
-			find: /\n([|!][^|]*)valign\s*=\s*["']?\s*(top|middle|bottom|baseline)\s*["']?\s*\|/g,
-			replace: '\n$1style="vertical-align: $2;" |'
+			find: /\n([|!][^|]*)valign\s*=\s*["']?\s*(top|middle|bottom|baseline)[\t ]*["']?[\t ]*([^|]*)/g,
+			replace: '\n$1style="vertical-align: $2;" $3'
+		}, {
+			// |- style="abc;" def style="xyz;"
+			find: /\n([|!][^|]*)style\s*=\s*["']([^|"']+);["']([^|]*)style\s*=\s*["']([^|"']+);["']/g,
+			replace: '\n$1style="$2;$4;"$3'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
 		if ( oldText !== editor.get() ) {
