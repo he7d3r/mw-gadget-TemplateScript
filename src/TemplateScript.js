@@ -293,7 +293,7 @@
 			replace: '\n$1style="vertical-align: $2;" $3'
 		}, {
 			// |- style="abc;" def style="xyz;"
-			find: /\n([|!][^|]*)style\s*=\s*["']([^|"']+);["']([^|]*)style\s*=\s*["']([^|"']+);["']/g,
+			find: /\n([|!][^|\n]*)style\s*=\s*["']([^|"'\n]+);["']([^|\n]*)style\s*=\s*["']([^|"'\n]+);["']/g,
 			replace: '\n$1style="$2;$4;"$3'
 		} ];
 		regex( editor, list, '-código HTML obsoleto' );
