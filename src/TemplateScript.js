@@ -133,118 +133,133 @@
 	// See also https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob;f=includes/Sanitizer.php;hb=bc9d9f1f9c796ee01234f484724cc064b9008eba#l615
 	function fixObsoleteHTML( editor ) {
 		var	colorNames = '(?:AliceBlue|AntiqueWhite|Aqua(?:marine)?|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue(?:Violet)?|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|Dark(?:Blue|Cyan|GoldenRod|Gray|Green|Grey|Khaki|Magenta|OliveGreen|orange|Orchid|Red|Salmon|SeaGreen|Slate(?:Blue|Gray|Grey)|Turquoise|Violet)|DeepPink|DeepSkyBlue|DimGray|DimGrey|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold(?:enRod)?|Gray|Green(?:Yellow)?|Grey|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender(?:Blush)?|LawnGreen|LemonChiffon|Light(?:Blue|Coral|Cyan|GoldenRodYellow|Gray|Green|Grey|Pink|Salmon|SeaGreen|SkyBlue|SlateGray|SlateGrey|SteelBlue|Yellow)|Lime(?:Green)?|Linen|Magenta|Maroon|Medium(?:AquaMarine|Blue|Orchid|Purple|SeaGreen|SlateBlue|SpringGreen|Turquoise|VioletRed)|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive(?:Drab)?|Orange(?:Red)?|Orchid|Pale(?:GoldenRod|Green|Turquoise|VioletRed)|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|Slate(?:Blue|Gray|Grey)|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White(?:Smoke)?|Yellow(?:Green)?)',
-			colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})';
+			colorCodes = '(?:[a-f0-9]{6}|[a-f0-9]{3})',
+			color = '(?:' + colorNames + '|\\#?' + colorCodes + ')',
+			link = '(\\s*\\[\\[)([^\\]]+)(\\]\\]\\s*)',
+			pipedLink = '(\\s*\\[\\[[^\\|]+\\|)([^\\]]+)(\\]\\]\\s*)';
 		oldText = editor.get();
 		list = [ {
-			// <font color="red">[[página]]</font>
-			// [[página|<span style="color: red;">página</span>]]
+			// <font color="red">[[page]]</font>
+			// [[page|<span style="color: red;">page</span>]]
 			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)(' +
-					colorNames +
-					')\\1\\s*>(\\s*\\[\\[)([^\\|\\]]+)(\\]\\]\\s*)<\\/font>',
+				'<font\\s+color\\s*=\\s*(["\']?)(' + color + ')\\1\\s*>' +
+					link + '<\\/font>',
 				'gi'
 			),
 			replace: '$3$4|<span style="color: $2;">$4</span>$5'
 		}, {
-			// <font color="#123456">[[página]]</font>
-			// [[página|<span style="color: #123456;">página</span>]]
+			// <font color="red">[[page|text]]</font>
+			// [[page|<span style="color: red;">text</span>]]
 			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
-					colorCodes +
-					')\\1\\s*>(\\s*\\[\\[)([^\\|\\]]+)(\\]\\]\\s*)<\\/font>',
-				'gi'
-			),
-			replace: '$3$4|<span style="color: #$2;">$4</span>$5'
-		}, {
-			// <font color="red">[[página|texto]]</font>
-			// [[página|<span style="color: red;">texto</span>]]
-			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)(' +
-					colorNames +
-					')\\1\\s*>(\\s*\\[\\[[^\\|\\]]+\\|)([^\\]]+)(\\]\\]\\s*)<\\/font>',
+				'<font\\s+color\\s*=\\s*(["\']?)(' + color + ')\\1\\s*>' +
+					pipedLink + '<\\/font>',
 				'gi'
 			),
 			replace: '$3<span style="color: $2;">$4</span>$5'
 		}, {
-			// <font color="#123456">[[página|texto]]</font>
-			// [[página|<span style="color: #123456;">texto</span>]]
+			// <font color="red">text [[page|text]] text</font>
+			// <span style="color: red;">text [[page|text]] text</span>
 			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
-					colorCodes +
-					')\\1\\s*>(\\s*\\[\\[[^\\|\\]]+\\|)([^\\]]+)(\\]\\]\\s*)<\\/font>',
-				'gi'
-			),
-			replace: '$3<span style="color: #$2;">$4</span>$5'
-		}, {
-			// <font color="red">texto [[página|texto]] texto</font>
-			// <span style="color: red;">texto [[página|texto]] texto</span>
-			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)(' +
-					colorNames +
+				'<font\\s+color\\s*=\\s*(["\']?)(' + color +
 					')\\1\\s*>(.+?)<\\/font>',
 				'gi'
 			),
 			replace: '<span style="color: $2;">$3</span>'
 		}, {
-			// <font color="#123456">texto [[página|texto]] texto</font>
-			// <span style="color: #123456;">texto [[página|texto]] texto</span>
+			// <font color="red" face="Verdana">text</font>
+			// <span style="color: red; font-family: Verdana;">text</span>
 			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
-					colorCodes +
-					')\\1\\s*>(.+?)<\\/font>',
-				'gi'
-			),
-			replace: '<span style="color: #$2;">$3</span>'
-		}, {
-			// <font color="#123456" face="Verdana">texto</font>
-			// <span style="color: #123456;font-family: Verdana;">texto</span>
-			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
-					colorCodes +
+				'<font\\s+color\\s*=\\s*(["\']?)(' + color +
 					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>(.+?)<\\/font>',
 				'gi'
 			),
-			replace: '<span style="color: #$2;font-family: $4;">$5</span>'
+			replace: '<span style="color: $2; font-family: $4;">$5</span>'
 		}, {
-			// <font face="Verdana" color="#123456">texto</font>
-			// <span style="color: #123456;font-family: Verdana;">texto</span>
+			// <font color="red" face="Verdana">[[page]]</font>
+			// [[page|<span style="color: red; font-family: Verdana;">page</span>]]
 			find: new RegExp(
-				'<font\\s+face\\s*=\\s*(["\']?)([^"\'>]+?)\\1\\s*color\\s*=\\s*(["\']?)\\#?(' +
-					colorCodes +
+				'<font\\s+color\\s*=\\s*(["\']?)(' + color +
+					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>' +
+					link + '<\\/font>',
+				'gi'
+			),
+			replace: '$5$6|<span style="color: $2; font-family: $4;">$6</span>$7'
+		}, {
+			// <font color="red" face="Verdana">[[page|text]]</font>
+			// [[page|<span style="color: red; font-family: Verdana;">text</span>]]
+			find: new RegExp(
+				'<font\\s+color\\s*=\\s*(["\']?)(' + color +
+					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>' +
+					pipedLink + '<\\/font>',
+				'gi'
+			),
+			replace: '$5$6|<span style="color: $2; font-family: $4;">$6</span>$7'
+		}, {
+			// <font face="Verdana" color="red">text</font>
+			// <span style="color: red;font-family: Verdana;">text</span>
+			find: new RegExp(
+				'<font\\s+face\\s*=\\s*(["\']?)([^"\'>]+?)\\1\\s*color\\s*=\\s*(["\']?)(' +
+					color +
 					')\\3\\s*>(.+?)<\\/font>',
 				'gi'
 			),
-			replace: '<span style="color: #$4;font-family: $2;">$5</span>'
+			replace: '<span style="font-family: $2; color: $4;">$5</span>'
 		}, {
-			// <font color="#123456" face="Verdana">texto</font>
-			// <span style="color: #123456;font-family: Verdana;">texto</span>
+			// <font face="Verdana" color="red">[[page]]</font>
+			// [[page|<span style="font-family: Verdana; color: red;">page</span>]]
 			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)\\#?(' +
-					colorCodes +
-					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>(.+?)<\\/font>',
+				'<font\\s+face\\s*=\\s*(["\']?)([^"\'>]+?)\\1\\s*color\\s*=\\s*(["\']?)(' +
+					color +
+					')\\3\\s*>(.+?)<\\/font>',
 				'gi'
 			),
-			replace: '<span style="color: #$2;font-family: $4;">$5</span>'
+			replace: '$5$6|<span style="font-family: $2; color: $4;">$6</span>$7'
 		}, {
-			// <font color="red" face="Verdana">texto</font>
-			// <span style="color: red;font-family: Verdana;">texto</span>
+			// <font face="Verdana" color="red">[[page|text]]</font>
+			// [[page|<span style="font-family: Verdana; color: red;">text</span>]]
 			find: new RegExp(
-				'<font\\s+color\\s*=\\s*(["\']?)(' +
-					colorNames +
-					')\\1\\s*face\\s*=\\s*(["\']?)([^"\'>]+?)\\3\\s*>(.+?)<\\/font>',
+				'<font\\s+face\\s*=\\s*(["\']?)([^"\'>]+?)\\1\\s*color\\s*=\\s*(["\']?)(' +
+					color +
+					')\\3\\s*>' +
+					pipedLink + '<\\/font>',
 				'gi'
 			),
-			replace: '<span style="color: #$2;font-family: $4;">$5</span>'
+			replace: '$5$6|<span style="font-family: $2; color: $4;">$6</span>$7'
 		}, {
-			// <font face="Verdana">texto</font>
-			// <span style="font-family: Verdana;">texto</span>
+			// <font face="Verdana">text</font>
+			// <span style="font-family: Verdana;">text</span>
 			find: /<font\s+face\s*=\s*["']?([^"'>]+?)["']?\s*>(.+?)<\/font>/gi,
 			replace: '<span style="font-family: $1;">$2</span>'
 		}, {
-			// <font face="Bauhaus 93" color="black" size="6">texto</font>
-			// <span style="font-family: Bauhaus 93; color: black; font-size: 100%;">texto</span>
-			find: /<font\s+face\s*=\s*["']?([^"'>]+?)["']?\s+color\s*=\s*["']?([^"']+?)["']?\s*size\s*=\s*["']?([^"']+?)["']?>(.+?)<\/font>/g,
+			// <font face="Verdana" color="red" size="6">text</font>
+			// <span style="font-family: Verdana; color: red; font-size: 100%;">text</span>
+			find: /<font\s+face\s*=\s*["']?([^"'>]+?)["']?\s*color\s*=\s*["']?([^"']+?)["']?\s*size\s*=\s*["']?([^"']+?)["']?\s*>(.+?)<\/font>/g,
 			replace: '<span style="font-family: $1; color: $2; font-size: 100%;">$4</span>'
+		}, {
+			// <font face="Verdana" size="6" color="red">text</font>
+			// <span style="font-family: Verdana; font-size: 100%; color: red;">text</span>
+			find: /<font\s+face\s*=\s*["']?([^"'>]+?)["']?\s*size\s*=\s*["']?([^"']+?)["']?\s*color\s*=\s*["']?([^"']+?)["']?\s*>(.+?)<\/font>/g,
+			replace: '<span style="font-family: $1; font-size: 100%; color: $3;">$4</span>'
+		}, {
+			// <font color="red" face="Verdana" size="6">text</font>
+			// <span style="color: red; font-family: Verdana; font-size: 100%;">text</span>
+			find: /<font\s+color\s*=\s*["']?([^"']+?)["']?\s*face\s*=\s*["']?([^"'>]+?)["']?\s*size\s*=\s*["']?([^"']+?)["']?\s*>(.+?)<\/font>/g,
+			replace: '<span style="color: $1; font-family: $2; font-size: 100%;">$4</span>'
+		}, {
+			// <font color="red" size="6" face="Verdana">text</font>
+			// <span style="color: red; font-size: 100%; font-family: Verdana;">text</span>
+			find: /<font\s+color\s*=\s*["']?([^"']+?)["']?\s*size\s*=\s*["']?([^"']+?)["']?\s*face\s*=\s*["']?([^"'>]+?)["']?\s*>(.+?)<\/font>/g,
+			replace: '<span style="color: $1; font-size: 100%; font-family: $3;">$4</span>'
+		}, {
+			// <font size="6" face="Verdana" color="red">text</font>
+			// <span style="font-size: 100%; font-family: Verdana; color: red;">text</span>
+			find: /<font\s+size\s*=\s*["']?([^"']+?)["']?\s*face\s*=\s*["']?([^"'>]+?)["']?\s*color\s*=\s*["']?([^"']+?)["']?\s*>(.+?)<\/font>/g,
+			replace: '<span style="font-size: 100%; font-family: $2; color: $3;">$4</span>'
+		}, {
+			// <font size="6" color="red" face="Verdana">text</font>
+			// <span style="font-size: 100%; color: red; font-family: Verdana;">text</span>
+			find: /<font\s+size\s*=\s*["']?([^"']+?)["']?\s*color\s*=\s*["']?([^"']+?)["']?\s*face\s*=\s*["']?([^"'>]+?)["']?\s*>(.+?)<\/font>/g,
+			replace: '<span style="font-size: 100%; color: $2; font-family: $3;">$4</span>'
 		}, {
 			// <source lang=...>...</source>
 			// <syntaxhighlight lang=...>...</syntaxhighlight>
