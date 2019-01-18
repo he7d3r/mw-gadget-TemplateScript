@@ -1253,7 +1253,7 @@
 			// Pass
 		}
 	}
-	if ( $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit', 'parsermigration-edit' ] ) !== -1 ) {
+	if ( $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit' ] ) !== -1 ) {
 		/**
 		 * TemplateScript adds configurable templates and scripts to the sidebar, and adds an example regex editor.
 		 * @see https://meta.wikimedia.org/wiki/TemplateScript
