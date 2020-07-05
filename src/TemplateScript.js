@@ -14,12 +14,15 @@
 		// Maiúsculas e minúsculas usadas em português
 		LETRA = 'A-Za-zÁÀÂÃÇÉÊÍÓÒÔÕÚáàâãçéêíóòôõú',
 		oldText = null,
+		textChanged = false,
 		list = [];
 
-	function showDiff() {
-		var $button = $( '#wpDiffLive' );
-		// FIXME: Only do a diff if the text was changed
-		// Maybe use bit operators: MINOR & DIFF & SAVE & ...
+	function clickDiff() {
+		var $button;
+		if ( !textChanged ) {
+			return;
+		}
+		$button = $( '#wpDiffLive' );
 		if ( !$button.length ) {
 			$button = $( '#wpDiff' );
 		}
@@ -27,14 +30,20 @@
 	}
 
 	function regex( editor, regexList, summary, pos ) {
-		var text = editor.get(),
+		var $textBox = $( '#wpTextbox1' ),
 			i, l, rule;
+		// By default, apply the regexes to the whole text
+		if ( !$textBox.textSelection( 'getSelection' )) {
+			$textBox.textSelection( 'setSelection', { start: 0, end: $textBox.val().length } );
+		}
 		for ( i = 0, l = regexList.length; i < l; i++ ) {
 			rule = regexList[ i ];
-			text = text.replace( rule.find, rule.replace );
+			editor.replaceSelection( function( selectedText ) {
+				return selectedText.replace( rule.find, rule.replace );
+			} );
 		}
-		if ( text !== oldText ) {
-			editor.set( text );
+		if ( editor.get() !== oldText ) {
+			textChanged = true
 			if ( summary ) {
 				switch ( pos ) {
 					case 'before':
@@ -346,7 +355,7 @@
 				find: reOldSign,
 				replace: mw.user.options.get( 'nickname' )
 			} ], 'Fixing links (my user account was renamed)' );
-			showDiff();
+			clickDiff();
 		} );
 	}
 
@@ -735,7 +744,7 @@
 				''
 			)
 		);
-		showDiff();
+		clickDiff();
 	}
 
 	/** Latex2wiki **
@@ -1170,7 +1179,7 @@
 			default:
 				fixObsoleteHTML( c );
 		}
-		showDiff();
+		clickDiff();
 	}
 
 	function loadMyRegexTools() {
@@ -1259,13 +1268,16 @@
 		 * @see https://meta.wikimedia.org/wiki/TemplateScript
 		 * @update-token [[File:pathoschild/templatescript.js]]
 		 */
-		$.ajax(
-			'//tools-static.wmflabs.org/meta/scripts/pathoschild.templatescript.js',
-			{
-				dataType: 'script',
-				cache: true,
-				timeout: 30000
-			}
+		$.when(
+			mw.loader.using( [ 'jquery.textSelection' ] ),
+			$.ajax(
+				'//tools-static.wmflabs.org/meta/scripts/pathoschild.templatescript.js',
+				{
+					dataType: 'script',
+					cache: true,
+					timeout: 30000
+				}
+			)
 		).then( loadMyRegexTools );
 	}
 
